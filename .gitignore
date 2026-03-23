@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Expo
+.expo/
+
+# macOS
+.DS_Store
+
+# Vim swap files
+*.swp
+
+# iOS build artifacts
+ios/Pods/
+ios/build/
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+.agents/

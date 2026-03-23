@@ -1,0 +1,39 @@
+{
+  "name": "menuplanapp-mobile",
+  "version": "0.1.0",
+  "main": "expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "~14.0.4",
+    "@gorhom/bottom-sheet": "^5.1.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-navigation/bottom-tabs": "^7.2.2",
+    "@react-navigation/native": "^7.0.15",
+    "@react-navigation/native-stack": "^7.2.3",
+    "expo": "~52.0.0",
+    "expo-asset": "~11.0.1",
+    "expo-dev-client": "~5.0.20",
+    "expo-font": "~13.0.1",
+    "expo-image-picker": "~16.0.6",
+    "react": "18.3.1",
+    "react-native": "0.76.9",
+    "react-native-calendars": "^1.1307.0",
+    "react-native-gesture-handler": "~2.20.2",
+    "react-native-reanimated": "~3.16.1",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.4.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@types/react": "~18.3.12",
+    "babel-preset-expo": "~12.0.0",
+    "typescript": "~5.3.3"
+  },
+  "private": true
+}

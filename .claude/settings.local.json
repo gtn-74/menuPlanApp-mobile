@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx expo install:*)",
+      "Bash(npm start -- --help)",
+      "Bash(kill:*)",
+      "Bash(timeout 10 npx expo:*)",
+      "Bash(npx expo-doctor)",
+      "Bash(npm audit:*)",
+      "Bash(npm install:*)",
+      "Bash(watchman watch-del:*)",
+      "Bash(watchman watch-project:*)",
+      "Bash(npx expo start:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(npx tsc:*)",
+      "Bash(grep:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

@@ -1,0 +1,187 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="画面遷移図" id="screen-flow">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== セクションラベル ===== -->
+        <mxCell id="label-auth" value="認証フロー" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="60" y="40" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="label-main" value="メインアプリ" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="560" y="40" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="label-sheet" value="ボトムシート" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="560" y="440" width="140" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ===== 認証フロー ===== -->
+
+        <!-- LoginScreen -->
+        <mxCell id="login" value="&lt;b&gt;LoginScreen&lt;/b&gt;&lt;br&gt;ログイン" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- SignUpScreen -->
+        <mxCell id="signup" value="&lt;b&gt;SignUpScreen&lt;/b&gt;&lt;br&gt;新規登録" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="340" y="120" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ForgotPasswordScreen -->
+        <mxCell id="forgot" value="&lt;b&gt;ForgotPasswordScreen&lt;/b&gt;&lt;br&gt;パスワードを忘れた" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="320" y="300" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== タブナビゲーター枠 ===== -->
+        <mxCell id="tab-frame" value="タブナビゲーター" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;fontColor=#333333;verticalAlign=top;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="560" y="80" width="580" height="320" as="geometry" />
+        </mxCell>
+
+        <!-- CalendarScreen (実装済み) -->
+        <mxCell id="calendar" value="&lt;b&gt;CalendarScreen&lt;/b&gt;&lt;br&gt;カレンダー" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="590" y="160" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- MenuScreen (未実装) -->
+        <mxCell id="menu" value="&lt;b&gt;MenuScreen&lt;/b&gt;&lt;br&gt;献立（未実装）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;fontColor=#999999;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="160" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- BudgetScreen (未実装) -->
+        <mxCell id="budget" value="&lt;b&gt;BudgetScreen&lt;/b&gt;&lt;br&gt;家計簿（未実装）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;fontColor=#999999;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="280" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ScheduleScreen (未実装) -->
+        <mxCell id="schedule" value="&lt;b&gt;ScheduleScreen&lt;/b&gt;&lt;br&gt;予定（未実装）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;fontColor=#999999;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="280" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ProfileScreen (モーダル) -->
+        <mxCell id="profile" value="&lt;b&gt;ProfileScreen&lt;/b&gt;&lt;br&gt;プロフィール（モーダル）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="160" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ボトムシート ===== -->
+
+        <!-- CalendarScreen BottomSheet -->
+        <mxCell id="bs-calendar" value="&lt;b&gt;BottomSheet&lt;/b&gt;&lt;br&gt;日付詳細（DayScheduleList）&lt;br&gt;・献立 / 予定 / 家計 / Todo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="500" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ProfileScreen BottomSheet -->
+        <mxCell id="bs-profile" value="&lt;b&gt;BottomSheet&lt;/b&gt;&lt;br&gt;グループ設定&lt;br&gt;・グループ名編集&lt;br&gt;・家族メンバー管理&lt;br&gt;・招待リンク" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="480" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===== オンボーディングフロー（未実装） ===== -->
+        <mxCell id="label-onboard" value="オンボーディング（未実装）" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="60" y="440" width="260" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- OnboardingScreen -->
+        <mxCell id="onboarding" value="&lt;b&gt;OnboardingScreen&lt;/b&gt;&lt;br&gt;グループ選択&lt;br&gt;（未実装）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;fontColor=#999999;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="490" width="180" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- GroupSetupScreen -->
+        <mxCell id="group-setup" value="&lt;b&gt;GroupSetupScreen&lt;/b&gt;&lt;br&gt;グループ作成&lt;br&gt;（未実装）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;fontColor=#999999;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="620" width="180" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- JoinGroupScreen -->
+        <mxCell id="join-group" value="&lt;b&gt;JoinGroupScreen&lt;/b&gt;&lt;br&gt;グループ参加&lt;br&gt;（招待コード入力）&lt;br&gt;（未実装）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;fontColor=#999999;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="620" width="180" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ===== エッジ（画面遷移） ===== -->
+
+        <!-- 認証: ログイン成功 → メイン -->
+        <mxCell id="e-login-main" value="ログイン成功" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#d6b656;fontColor=#d6b656;fontSize=11;" edge="1" source="login" target="tab-frame" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 認証: ログイン → 新規登録 -->
+        <mxCell id="e-login-signup" value="新規登録" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#d6b656;fontSize=11;" edge="1" source="login" target="signup" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 認証: ログイン → パスワード忘れた -->
+        <mxCell id="e-login-forgot" value="パスワードを忘れた" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#d6b656;fontSize=11;" edge="1" source="login" target="forgot" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 認証: 新規登録 → ログイン (戻る) -->
+        <mxCell id="e-signup-login" value="戻る" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;strokeColor=#999999;fontSize=11;dashed=1;" edge="1" source="signup" target="login" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 認証: パスワード忘れた → ログイン (戻る) -->
+        <mxCell id="e-forgot-login" value="戻る" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.7;entryDx=0;entryDy=0;strokeColor=#999999;fontSize=11;dashed=1;" edge="1" source="forgot" target="login" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ログアウト → ログイン -->
+        <mxCell id="e-logout" value="ログアウト" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#cc0000;fontColor=#cc0000;fontSize=11;" edge="1" source="profile" target="login" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1280" y="780" />
+              <mxPoint x="180" y="780" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- カレンダー → プロフィール (モーダル) -->
+        <mxCell id="e-cal-profile" value="プロフィールアイコン" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#9673a6;fontColor=#9673a6;fontSize=11;" edge="1" source="calendar" target="profile" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- カレンダー → 日付詳細ボトムシート -->
+        <mxCell id="e-cal-bs" value="日付タップ" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#b85450;fontColor=#b85450;fontSize=11;" edge="1" source="calendar" target="bs-calendar" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- プロフィール → グループ設定ボトムシート -->
+        <mxCell id="e-profile-bs" value="グループ設定タップ" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#b85450;fontColor=#b85450;fontSize=11;" edge="1" source="profile" target="bs-profile" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 新規登録 → オンボーディング -->
+        <mxCell id="e-signup-onboard" value="登録完了" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#b3b3b3;fontColor=#b3b3b3;fontSize=11;dashed=1;" edge="1" source="signup" target="onboarding" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- オンボーディング → グループ作成 -->
+        <mxCell id="e-onboard-setup" value="新しく作る" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#b3b3b3;fontColor=#b3b3b3;fontSize=11;dashed=1;" edge="1" source="onboarding" target="group-setup" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- オンボーディング → グループ参加 -->
+        <mxCell id="e-onboard-join" value="招待コードで参加" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#b3b3b3;fontColor=#b3b3b3;fontSize=11;dashed=1;" edge="1" source="onboarding" target="join-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- グループ作成 → メイン -->
+        <mxCell id="e-setup-main" value="作成完了" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;strokeColor=#b3b3b3;fontColor=#b3b3b3;fontSize=11;dashed=1;" edge="1" source="group-setup" target="tab-frame" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- グループ参加 → メイン -->
+        <mxCell id="e-join-main" value="参加完了" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;strokeColor=#b3b3b3;fontColor=#b3b3b3;fontSize=11;dashed=1;" edge="1" source="join-group" target="tab-frame" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 招待リンク → グループ参加（ディープリンク） -->
+        <mxCell id="e-invite-join" value="招待リンクを開く" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#b3b3b3;fontColor=#b3b3b3;fontSize=11;dashed=1;" edge="1" source="bs-profile" target="join-group" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1300" y="820" />
+              <mxPoint x="370" y="820" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

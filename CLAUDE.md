@@ -33,11 +33,23 @@ refactor: リファクタリング（機能変更なし）
 test: テスト追加・修正
 ```
 
+### ブランチ戦略
+
+```
+main      — ステージング環境。develop からの PR 経由でのみ更新。
+develop   — 開発の統合ブランチ。デフォルトブランチ。feature/* はここへマージ。
+feature/* — 機能開発ブランチ。develop から切って develop へ PR。
+fix/*     — バグ修正ブランチ。同上。
+```
+
 ### プルリクエスト
 
-- **main への直接 push 禁止**。必ず PR 経由でマージする。
+- **develop・main への直接 push 禁止**。必ず PR 経由でマージする。
+- feature/fix ブランチは **develop** をベースにする。
+- develop → main の PR はリリース時のみ作成する。
 - PR 本文に `Closes #<issue番号>` を必ず記載して issue とリンクする。
 - PR タイトルはコミットメッセージと同じ形式（例: `feat: OnboardingScreen 実装`）。
+- PR 作成時は **assignee・reviewer（@copilot）・milestone** を必ず設定する。
 - PR のセルフレビュー後にマージ。
 
 ### issue 番号とブランチの対応

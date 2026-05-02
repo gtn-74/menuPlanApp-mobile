@@ -6,17 +6,6 @@ import { tokenStorage } from '../services/apiClient';
 
 const AUTH_USER_KEY = '@menuPlanApp:user';
 
-// idToken（JWT）のペイロードから sub（userId）を取り出す
-function decodeJwtSub(token: string): string | null {
-  try {
-    const payload = token.split('.')[1];
-    const decoded = JSON.parse(atob(payload));
-    return decoded.sub ?? null;
-  } catch {
-    return null;
-  }
-}
-
 interface AuthStore {
   isAuthenticated: boolean;
   user: UserResponse | null;
@@ -44,10 +33,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       idToken: tokens.idToken,
     });
 
-    const userId = decodeJwtSub(tokens.idToken);
-    if (!userId) throw new Error('idToken から userId を取得できませんでした');
-
-    const user = await userService.getUser(userId);
+    const user = await userService.getUser(tokens.userId);
     await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
     set({ isAuthenticated: true, user });
   },

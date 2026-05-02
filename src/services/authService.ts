@@ -18,6 +18,7 @@ export interface LoginResponse {
   refreshToken: string;
   idToken: string;
   expiresIn: number;
+  userId: string;
 }
 
 export const authService = {

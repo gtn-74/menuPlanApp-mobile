@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -21,27 +20,22 @@ export const ConfirmEmailScreen = ({ navigation, route }: Props) => {
   const { email } = route.params;
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const confirmEmail = useAuthStore((state) => state.confirmEmail);
   const inputRef = useRef<TextInput>(null);
 
   const handleConfirm = async () => {
-    if (code.length !== 6) {
-      Alert.alert('エラー', '6桁の確認コードを入力してください');
-      return;
-    }
+    if (code.length !== 6) return;
     setIsLoading(true);
+    setErrorMsg('');
     try {
       await confirmEmail(email, code);
-      Alert.alert(
-        'メール確認完了',
-        'アカウントが有効化されました。ログインしてください。',
-        [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
-      );
+      navigation.navigate('Login');
     } catch (e: any) {
       const msg = e?.response?.status === 400
-        ? '確認コードが無効か期限切れです。再度お試しください'
+        ? '確認コードが無効か期限切れです'
         : '確認に失敗しました。しばらくしてから再試行してください';
-      Alert.alert('エラー', msg);
+      setErrorMsg(msg);
     } finally {
       setIsLoading(false);
     }
@@ -81,6 +75,10 @@ export const ConfirmEmailScreen = ({ navigation, route }: Props) => {
             textAlign="center"
           />
         </TouchableOpacity>
+
+        {errorMsg ? (
+          <Text style={styles.errorText}>{errorMsg}</Text>
+        ) : null}
 
         <TouchableOpacity
           style={[styles.button, (isLoading || code.length !== 6) && { opacity: 0.6 }]}
@@ -181,5 +179,11 @@ const styles = StyleSheet.create({
   backLinkText: {
     fontSize: 14,
     color: colors.textSecondary,
+  },
+  errorText: {
+    fontSize: 13,
+    color: colors.error,
+    textAlign: 'center',
+    marginBottom: 12,
   },
 });

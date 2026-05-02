@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -25,6 +24,7 @@ export const SignUpScreen = ({ navigation }: Props) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [apiError, setApiError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const register = useAuthStore((state) => state.register);
 
@@ -60,6 +60,7 @@ export const SignUpScreen = ({ navigation }: Props) => {
 
   const handleSignUp = async () => {
     if (!validate()) return;
+    setApiError('');
     setIsLoading(true);
     try {
       await register(name, email, password);
@@ -68,7 +69,7 @@ export const SignUpScreen = ({ navigation }: Props) => {
       const msg = e?.response?.status === 409
         ? 'このメールアドレスは既に登録されています'
         : '登録に失敗しました。しばらくしてから再試行してください';
-      Alert.alert('エラー', msg);
+      setApiError(msg);
     } finally {
       setIsLoading(false);
     }
@@ -161,6 +162,8 @@ export const SignUpScreen = ({ navigation }: Props) => {
             </View>
             {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
           </View>
+
+          {apiError ? <Text style={styles.apiErrorText}>{apiError}</Text> : null}
 
           <TouchableOpacity
             style={[styles.signUpButton, isLoading && { opacity: 0.6 }]}
@@ -276,5 +279,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: colors.primary,
+  },
+  apiErrorText: {
+    fontSize: 13,
+    color: colors.error,
+    textAlign: 'center',
+    marginBottom: 8,
   },
 });

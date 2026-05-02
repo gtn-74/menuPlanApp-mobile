@@ -1,29 +1,11 @@
+import type { LoginResponse, RegisterResponse } from '../api/types';
 import client from './apiClient';
 
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  displayName: string;
-}
-
-export interface RegisterResponse {
-  userId: string;
-  email: string;
-  displayName: string;
-  createdAt: string;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  idToken: string;
-  expiresIn: number;
-  userId: string;
-}
+export type { RegisterResponse, LoginResponse };
 
 export const authService = {
-  register: async (data: RegisterRequest): Promise<RegisterResponse> => {
-    const res = await client.post<RegisterResponse>('/auth/register', data);
+  register: async (email: string, password: string, displayName: string): Promise<RegisterResponse> => {
+    const res = await client.post<RegisterResponse>('/auth/register', { email, password, displayName });
     return res.data;
   },
 

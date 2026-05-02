@@ -1,17 +1,7 @@
+import type { FamilyGroupResponse, InvitationResponse } from '../api/types';
 import client from './apiClient';
 
-export interface FamilyGroupResponse {
-  id: string;
-  name: string;
-  ownerId: string;
-  memberIds: string[];
-  createdAt: string;
-}
-
-export interface InvitationResponse {
-  token: string;
-  expiresAt: string;
-}
+export type { FamilyGroupResponse, InvitationResponse };
 
 export const familyGroupService = {
   create: async (name: string, ownerId: string): Promise<FamilyGroupResponse> => {

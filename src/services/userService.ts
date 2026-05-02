@@ -1,19 +1,7 @@
+import type { UserResponse, UpdateProfileRequest } from '../api/types';
 import client from './apiClient';
 
-export interface UserResponse {
-  userId: string;
-  email: string;
-  displayName: string;
-  avatarUrl: string | null;
-  familyGroupId: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface UpdateProfileRequest {
-  displayName?: string;
-  avatarUrl?: string;
-}
+export type { UserResponse, UpdateProfileRequest };
 
 export const userService = {
   getUser: async (userId: string): Promise<UserResponse> => {

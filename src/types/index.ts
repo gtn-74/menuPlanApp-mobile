@@ -91,5 +91,30 @@ export type MarkedDates = {
 export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
+  ConfirmEmail: { email: string };
   ForgotPassword: undefined;
 };
+
+// オンボーディングスタックのナビゲーション型
+export type OnboardingStackParamList = {
+  Onboarding: undefined;
+  GroupSetup: undefined;
+  JoinGroup: undefined;
+};
+
+// メインスタックのナビゲーション型
+export type MainStackParamList = {
+  Main: undefined;
+  Profile: undefined;
+};
+
+// API レスポンス型（openapi.yaml より）
+export interface ApiUser {
+  userId: string;
+  email: string;
+  displayName: string;
+  avatarUrl: string | null;
+  familyGroupId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

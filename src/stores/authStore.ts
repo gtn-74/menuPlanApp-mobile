@@ -1,69 +1,98 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authService } from '../services/authService';
+import { userService, UserResponse } from '../services/userService';
+import { tokenStorage } from '../services/apiClient';
 
-const AUTH_STORAGE_KEY = '@menuPlanApp:auth';
+const AUTH_USER_KEY = '@menuPlanApp:user';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
+// idToken（JWT）のペイロードから sub（userId）を取り出す
+function decodeJwtSub(token: string): string | null {
+  try {
+    const payload = token.split('.')[1];
+    const decoded = JSON.parse(atob(payload));
+    return decoded.sub ?? null;
+  } catch {
+    return null;
+  }
 }
 
 interface AuthStore {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserResponse | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  signup: (name: string, email: string, password: string) => Promise<boolean>;
+  pendingEmail: string | null;
+  login: (email: string, password: string) => Promise<void>;
+  register: (displayName: string, email: string, password: string) => Promise<void>;
+  confirmEmail: (email: string, code: string) => Promise<void>;
   logout: () => Promise<void>;
+  updateUser: (user: UserResponse) => void;
   loadAuth: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthStore>((set, get) => ({
+export const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticated: false,
   user: null,
   isLoading: true,
+  pendingEmail: null,
 
-  login: async (email: string, _password: string) => {
-    // モック認証: どんな値でもログイン成功
-    const user: User = {
-      id: 'user-1',
-      name: email.split('@')[0],
-      email,
-    };
+  login: async (email, password) => {
+    const tokens = await authService.login(email, password);
+    await tokenStorage.set({
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      idToken: tokens.idToken,
+    });
+
+    const userId = decodeJwtSub(tokens.idToken);
+    if (!userId) throw new Error('idToken から userId を取得できませんでした');
+
+    const user = await userService.getUser(userId);
+    await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
     set({ isAuthenticated: true, user });
-    await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ isAuthenticated: true, user }));
-    return true;
   },
 
-  signup: async (name: string, email: string, _password: string) => {
-    // モック登録: 常に成功
-    const user: User = {
-      id: `user-${Date.now()}`,
-      name,
-      email,
-    };
-    // サインアップ後は自動ログインしない（LoginScreenに戻る）
-    await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ isAuthenticated: false, user: null }));
-    return true;
+  register: async (displayName, email, password) => {
+    await authService.register({ email, password, displayName });
+    set({ pendingEmail: email });
+  },
+
+  confirmEmail: async (email, code) => {
+    await authService.confirm(email, code);
   },
 
   logout: async () => {
-    set({ isAuthenticated: false, user: null });
-    await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+    try {
+      const tokens = await tokenStorage.get();
+      if (tokens?.accessToken) {
+        await authService.logout(tokens.accessToken);
+      }
+    } catch {
+      // サーバー側エラーでもローカルはクリア
+    }
+    await tokenStorage.clear();
+    await AsyncStorage.removeItem(AUTH_USER_KEY);
+    set({ isAuthenticated: false, user: null, pendingEmail: null });
+  },
+
+  updateUser: (user) => {
+    set({ user });
+    AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
   },
 
   loadAuth: async () => {
     try {
-      const saved = await AsyncStorage.getItem(AUTH_STORAGE_KEY);
-      if (saved) {
-        const { isAuthenticated, user } = JSON.parse(saved);
-        set({ isAuthenticated, user, isLoading: false });
+      const [tokens, savedUser] = await Promise.all([
+        tokenStorage.get(),
+        AsyncStorage.getItem(AUTH_USER_KEY),
+      ]);
+
+      if (tokens?.accessToken && savedUser) {
+        set({ isAuthenticated: true, user: JSON.parse(savedUser), isLoading: false });
       } else {
         set({ isLoading: false });
       }
-    } catch (error) {
-      console.error('Failed to load auth:', error);
+    } catch {
       set({ isLoading: false });
     }
   },

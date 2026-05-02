@@ -25,7 +25,8 @@ export const SignUpScreen = ({ navigation }: Props) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const signup = useAuthStore((state) => state.signup);
+  const [isLoading, setIsLoading] = useState(false);
+  const register = useAuthStore((state) => state.register);
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -43,8 +44,8 @@ export const SignUpScreen = ({ navigation }: Props) => {
 
     if (!password) {
       newErrors.password = 'パスワードを入力してください';
-    } else if (password.length < 6) {
-      newErrors.password = 'パスワードは6文字以上で入力してください';
+    } else if (password.length < 8) {
+      newErrors.password = 'パスワードは8文字以上で入力してください';
     }
 
     if (!confirmPassword) {
@@ -59,14 +60,17 @@ export const SignUpScreen = ({ navigation }: Props) => {
 
   const handleSignUp = async () => {
     if (!validate()) return;
-
-    const success = await signup(name, email, password);
-    if (success) {
-      Alert.alert('登録完了', 'アカウントが作成されました。ログインしてください。', [
-        { text: 'OK', onPress: () => navigation.navigate('Login') },
-      ]);
-    } else {
-      Alert.alert('エラー', '登録に失敗しました。');
+    setIsLoading(true);
+    try {
+      await register(name, email, password);
+      navigation.navigate('ConfirmEmail', { email });
+    } catch (e: any) {
+      const msg = e?.response?.status === 409
+        ? 'このメールアドレスは既に登録されています'
+        : '登録に失敗しました。しばらくしてから再試行してください';
+      Alert.alert('エラー', msg);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -158,8 +162,14 @@ export const SignUpScreen = ({ navigation }: Props) => {
             {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
           </View>
 
-          <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-            <Text style={styles.signUpButtonText}>アカウント作成</Text>
+          <TouchableOpacity
+            style={[styles.signUpButton, isLoading && { opacity: 0.6 }]}
+            onPress={handleSignUp}
+            disabled={isLoading}
+          >
+            <Text style={styles.signUpButtonText}>
+              {isLoading ? '登録中...' : 'アカウント作成'}
+            </Text>
           </TouchableOpacity>
         </View>
 

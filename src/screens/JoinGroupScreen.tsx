@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -15,24 +14,23 @@ import { useFamilyGroupStore } from '../stores/familyGroupStore';
 
 export const JoinGroupScreen = () => {
   const [token, setToken] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const { joinGroup, isLoading } = useFamilyGroupStore();
 
   const handleJoin = async () => {
     const trimmed = token.trim();
-    if (!trimmed) {
-      Alert.alert('エラー', '招待トークンを入力してください');
-      return;
-    }
+    if (!trimmed) return;
+    setErrorMsg('');
     try {
       await joinGroup(trimmed);
-      // 成功時は authStore の user.familyGroupId が更新され App.tsx が自動遷移
+      // 成功時: authStore の user.familyGroupId が更新 → App.tsx が MainNavigator へ自動遷移
     } catch (e: any) {
       const status = e?.response?.status;
       const msg =
         status === 400 ? '招待トークンが無効か期限切れです' :
         status === 409 ? '既にグループに参加しています' :
         'グループへの参加に失敗しました。しばらくしてから再試行してください';
-      Alert.alert('エラー', msg);
+      setErrorMsg(msg);
     }
   };
 
@@ -72,6 +70,8 @@ export const JoinGroupScreen = () => {
             )}
           </View>
         </View>
+
+        {errorMsg ? <Text style={styles.errorText}>{errorMsg}</Text> : null}
 
         <TouchableOpacity
           style={[styles.button, (isLoading || !token.trim()) && { opacity: 0.6 }]}
@@ -184,5 +184,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textSecondary,
     lineHeight: 18,
+  },
+  errorText: {
+    fontSize: 13,
+    color: colors.error,
+    textAlign: 'center',
+    marginBottom: 12,
   },
 });

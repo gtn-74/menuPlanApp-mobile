@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -15,26 +14,21 @@ import { useFamilyGroupStore } from '../stores/familyGroupStore';
 
 export const GroupSetupScreen = () => {
   const [groupName, setGroupName] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const { createGroup, isLoading } = useFamilyGroupStore();
 
   const handleCreate = async () => {
     const trimmed = groupName.trim();
-    if (!trimmed) {
-      Alert.alert('エラー', 'グループ名を入力してください');
-      return;
-    }
-    if (trimmed.length > 50) {
-      Alert.alert('エラー', 'グループ名は50文字以内で入力してください');
-      return;
-    }
+    if (!trimmed || trimmed.length > 50) return;
+    setErrorMsg('');
     try {
       await createGroup(trimmed);
-      // 成功時は authStore の user.familyGroupId が更新され App.tsx が自動遷移
+      // 成功時: authStore の user.familyGroupId が更新 → App.tsx が MainNavigator へ自動遷移
     } catch (e: any) {
       const msg = e?.response?.status === 409
         ? '既にグループに参加しています'
         : 'グループの作成に失敗しました。しばらくしてから再試行してください';
-      Alert.alert('エラー', msg);
+      setErrorMsg(msg);
     }
   };
 
@@ -69,6 +63,8 @@ export const GroupSetupScreen = () => {
           </View>
           <Text style={styles.charCount}>{groupName.trim().length} / 50</Text>
         </View>
+
+        {errorMsg ? <Text style={styles.errorText}>{errorMsg}</Text> : null}
 
         <TouchableOpacity
           style={[styles.button, (isLoading || !groupName.trim()) && { opacity: 0.6 }]}
@@ -162,5 +158,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  errorText: {
+    fontSize: 13,
+    color: colors.error,
+    textAlign: 'center',
+    marginBottom: 12,
   },
 });

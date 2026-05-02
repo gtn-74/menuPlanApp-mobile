@@ -18,13 +18,11 @@ export const useFamilyGroupStore = create<FamilyGroupStore>((set) => ({
   createGroup: async (name) => {
     set({ isLoading: true });
     try {
-      const group = await familyGroupService.create(name);
-      // ユーザー情報を再取得して familyGroupId を反映
-      const user = useAuthStore.getState().user;
-      if (user) {
-        const updated = await userService.getUser(user.userId);
-        useAuthStore.getState().updateUser(updated);
-      }
+      const currentUser = useAuthStore.getState().user;
+      if (!currentUser) throw new Error('ログインが必要です');
+      const group = await familyGroupService.create(name, currentUser.userId);
+      const updated = await userService.getUser(currentUser.userId);
+      useAuthStore.getState().updateUser(updated);
       set({ group, isLoading: false });
     } catch (e) {
       set({ isLoading: false });

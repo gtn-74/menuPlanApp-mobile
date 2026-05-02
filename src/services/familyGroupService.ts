@@ -14,8 +14,8 @@ export interface InvitationResponse {
 }
 
 export const familyGroupService = {
-  create: async (name: string): Promise<FamilyGroupResponse> => {
-    const res = await client.post<FamilyGroupResponse>('/family-groups', { name });
+  create: async (name: string, ownerId: string): Promise<FamilyGroupResponse> => {
+    const res = await client.post<FamilyGroupResponse>('/family-groups', { name, ownerId });
     return res.data;
   },
 

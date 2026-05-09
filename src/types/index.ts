@@ -28,7 +28,7 @@ export interface Event {
   date: string; // YYYY-MM-DD
   title: string;
   time: string; // HH:mm
-  type: 'personal' | 'family';
+  type: "personal" | "family";
   userId: string;
   familyGroupId?: string;
   createdAt: string;
@@ -39,7 +39,7 @@ export interface TodoItem {
   date: string; // YYYY-MM-DD
   title: string;
   completed: boolean;
-  priority: 'high' | 'medium' | 'low';
+  priority: "high" | "medium" | "low";
   userId: string; // 作成者
   assignedTo?: string; // 割り振り先ユーザーID
   familyGroupId?: string;
@@ -60,7 +60,7 @@ export interface DayData {
   todos: TodoItem[];
 }
 
-export type CategoryFilter = 'all' | 'menu' | 'budget' | 'todo';
+export type CategoryFilter = "all" | "menu" | "budget" | "todo";
 
 export interface FilterState {
   showMenu: boolean;
@@ -91,7 +91,7 @@ export type MarkedDates = {
 export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
-  ConfirmEmail: { email: string };
+  ConfirmEmail: { email: string; password: string };
   ForgotPassword: undefined;
 };
 

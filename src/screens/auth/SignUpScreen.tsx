@@ -64,7 +64,7 @@ export const SignUpScreen = ({ navigation }: Props) => {
     setIsLoading(true);
     try {
       await register(name, email, password);
-      navigation.navigate('ConfirmEmail', { email });
+      navigation.navigate('ConfirmEmail', { email, password });
     } catch (e: any) {
       const msg = e?.response?.status === 409
         ? 'このメールアドレスは既に登録されています'

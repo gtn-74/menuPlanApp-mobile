@@ -17,11 +17,12 @@ import { AuthStackParamList } from '../../types';
 type Props = NativeStackScreenProps<AuthStackParamList, 'ConfirmEmail'>;
 
 export const ConfirmEmailScreen = ({ navigation, route }: Props) => {
-  const { email } = route.params;
+  const { email, password } = route.params;
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const confirmEmail = useAuthStore((state) => state.confirmEmail);
+  const login = useAuthStore((state) => state.login);
   const inputRef = useRef<TextInput>(null);
 
   const handleConfirm = async () => {
@@ -30,9 +31,11 @@ export const ConfirmEmailScreen = ({ navigation, route }: Props) => {
     setErrorMsg('');
     try {
       await confirmEmail(email, code);
-      navigation.navigate('Login');
+      await login(email, password);
+      // 成功: isAuthenticated=true, familyGroupId=null → App.tsx が OnboardingNavigator へ自動遷移
     } catch (e: any) {
-      const msg = e?.response?.status === 400
+      const status = e?.response?.status;
+      const msg = status === 400
         ? '確認コードが無効か期限切れです'
         : '確認に失敗しました。しばらくしてから再試行してください';
       setErrorMsg(msg);

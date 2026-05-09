@@ -3,7 +3,6 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import * as ImagePicker from "expo-image-picker";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
-  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -63,6 +62,8 @@ export const ProfileScreen: React.FC = () => {
   const [familyMembers, setFamilyMembers] = useState<User[]>(initialMembers);
   const [newMemberName, setNewMemberName] = useState("");
   const [isAddingMember, setIsAddingMember] = useState(false);
+
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const { quickFilterUserIds, toggleQuickFilterUser } = useFilterStore();
   const logout = useAuthStore((state) => state.logout);
@@ -365,24 +366,35 @@ export const ProfileScreen: React.FC = () => {
             <Ionicons name="chevron-forward" size={18} color={colors.textLight} />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.settingItem}
-            onPress={() =>
-              Alert.alert("ログアウト", "ログアウトしますか？", [
-                { text: "キャンセル", style: "cancel" },
-                {
-                  text: "ログアウト",
-                  style: "destructive",
-                  onPress: () => logout(),
-                },
-              ])
-            }
-          >
-            <View style={styles.settingInfo}>
-              <Ionicons name="log-out-outline" size={22} color={colors.error} />
-              <Text style={[styles.settingLabel, { color: colors.error }]}>ログアウト</Text>
+          {showLogoutConfirm ? (
+            <View style={styles.logoutConfirm}>
+              <Text style={styles.logoutConfirmText}>ログアウトしますか？</Text>
+              <View style={styles.logoutConfirmButtons}>
+                <TouchableOpacity
+                  style={styles.logoutCancelButton}
+                  onPress={() => setShowLogoutConfirm(false)}
+                >
+                  <Text style={styles.logoutCancelText}>キャンセル</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.logoutConfirmButton}
+                  onPress={() => logout()}
+                >
+                  <Text style={styles.logoutConfirmButtonText}>ログアウト</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.settingItem}
+              onPress={() => setShowLogoutConfirm(true)}
+            >
+              <View style={styles.settingInfo}>
+                <Ionicons name="log-out-outline" size={22} color={colors.error} />
+                <Text style={[styles.settingLabel, { color: colors.error }]}>ログアウト</Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
@@ -1087,6 +1099,46 @@ const styles = StyleSheet.create({
   settingValue: {
     fontSize: 13,
     color: colors.textSecondary,
+  },
+  logoutConfirm: {
+    backgroundColor: colors.backgroundSecondary,
+    borderRadius: 8,
+    padding: 12,
+  },
+  logoutConfirmText: {
+    fontSize: 14,
+    color: colors.text,
+    marginBottom: 10,
+  },
+  logoutConfirmButtons: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  logoutCancelButton: {
+    flex: 1,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoutCancelText: {
+    fontSize: 14,
+    color: colors.textSecondary,
+  },
+  logoutConfirmButton: {
+    flex: 1,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: colors.error,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoutConfirmButtonText: {
+    fontSize: 14,
+    color: "#FFFFFF",
+    fontWeight: "600",
   },
   dangerItem: {
     flexDirection: "row",

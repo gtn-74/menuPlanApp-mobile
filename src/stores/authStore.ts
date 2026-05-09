@@ -39,7 +39,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   register: async (displayName, email, password) => {
-    await authService.register({ email, password, displayName });
+    await authService.register(email, password, displayName);
     set({ pendingEmail: email });
   },
 

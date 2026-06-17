@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -23,6 +22,8 @@ export const LoginScreen = ({ navigation }: Props) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [apiError, setApiError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const login = useAuthStore((state) => state.login);
 
   const validate = (): boolean => {
@@ -47,10 +48,17 @@ export const LoginScreen = ({ navigation }: Props) => {
 
   const handleLogin = async () => {
     if (!validate()) return;
-
-    const success = await login(email, password);
-    if (!success) {
-      Alert.alert('エラー', 'ログインに失敗しました。');
+    setApiError('');
+    setIsLoading(true);
+    try {
+      await login(email, password);
+    } catch (e: any) {
+      const msg = e?.response?.status === 401
+        ? 'メールアドレスまたはパスワードが正しくありません'
+        : 'ログインに失敗しました。しばらくしてから再試行してください';
+      setApiError(msg);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -113,8 +121,16 @@ export const LoginScreen = ({ navigation }: Props) => {
             {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
           </View>
 
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginButtonText}>ログイン</Text>
+          {apiError ? <Text style={styles.apiErrorText}>{apiError}</Text> : null}
+
+          <TouchableOpacity
+            style={[styles.loginButton, isLoading && { opacity: 0.6 }]}
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            <Text style={styles.loginButtonText}>
+              {isLoading ? 'ログイン中...' : 'ログイン'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -245,5 +261,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: colors.primary,
+  },
+  apiErrorText: {
+    fontSize: 13,
+    color: colors.error,
+    textAlign: 'center',
+    marginBottom: 8,
   },
 });

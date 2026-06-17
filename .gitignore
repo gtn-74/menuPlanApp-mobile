@@ -26,3 +26,6 @@ ios/build/
 
 # Claude Code
 .claude/
+
+# 自動生成ファイル（npm run gen:api で生成）
+src/api/generated/

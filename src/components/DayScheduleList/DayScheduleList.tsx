@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { DayData } from '../../types';
 import { colors } from '../../theme/colors';
 import { getUserName } from '../../mocks/data';
+import { formatDateJa } from '../../utils/date';
 
 interface DayScheduleListProps {
   data: DayData;
@@ -24,20 +25,11 @@ const priorityColors = {
 };
 
 export const DayScheduleList: React.FC<DayScheduleListProps> = ({ data, hideHeader = false }) => {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-    const weekday = weekdays[date.getDay()];
-    return `${month}月${day}日（${weekday}）`;
-  };
-
   const hasData = data.events.length > 0 || data.menus.length > 0 || data.todos.length > 0;
 
   return (
     <View style={styles.container}>
-      {!hideHeader && <Text style={styles.dateHeader}>{formatDate(data.date)}</Text>}
+      {!hideHeader && <Text style={styles.dateHeader}>{formatDateJa(data.date)}</Text>}
 
       <View style={styles.listContainer}>
         {!hasData && (

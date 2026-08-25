@@ -10,7 +10,9 @@
     "typecheck": "tsgo --noEmit",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write ."
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
@@ -39,6 +41,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@biomejs/biome": "^2.5.10",
     "@playwright/test": "^1.62.1",
     "@types/react": "~19.1.0",
     "@typescript/native-preview": "^7.0.0-dev.20260707.2",

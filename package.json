@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.1.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260707.2",
     "babel-preset-expo": "~54.0.10",
     "typescript": "~5.9.2"
   },

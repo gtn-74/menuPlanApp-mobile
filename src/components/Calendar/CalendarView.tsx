@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Calendar, DateData, LocaleConfig } from 'react-native-calendars';
+
+type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import { colors } from '../../theme/colors';
@@ -45,7 +47,7 @@ interface CalendarViewProps {
 
 interface CustomDayProps {
   date?: DateData;
-  state?: 'disabled' | 'today' | '';
+  state?: DayState;
   marking?: any;
   onPress?: (date: DateData) => void;
   labels?: DayLabel[];

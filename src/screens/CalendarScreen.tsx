@@ -2,19 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { DateData } from "react-native-calendars";
 
 import { CalendarView } from "../components/Calendar/CalendarView";
 import { Header } from "../components/common/Header";
 import { DayScheduleList } from "../components/DayScheduleList/DayScheduleList";
 import { UserFilterButton } from "../components/molecules/UserFilterButton";
+import { CalendarLayout } from "../components/templates/CalendarLayout";
 import { buildMarkedDates } from "../features/calendar/buildMarkedDates";
 import { formatDateJa } from "../utils/date";
 import {
@@ -180,18 +175,19 @@ export const CalendarScreen: React.FC = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header
-        selectedCategory={selectedCategory}
-        onCategoryChange={setCategory}
-        onProfilePress={() => navigation.navigate("Profile")}
-        onTodayPress={handleTodayPress}
-        currentMonth={currentMonth}
-        onPrevMonth={handlePrevMonth}
-        onNextMonth={handleNextMonth}
-      />
-
-      <View style={styles.calendarContainer}>
+    <CalendarLayout
+      header={
+        <Header
+          selectedCategory={selectedCategory}
+          onCategoryChange={setCategory}
+          onProfilePress={() => navigation.navigate("Profile")}
+          onTodayPress={handleTodayPress}
+          currentMonth={currentMonth}
+          onPrevMonth={handlePrevMonth}
+          onNextMonth={handleNextMonth}
+        />
+      }
+      calendar={
         <CalendarView
           markedDates={markedDates}
           selectedDate={selectedDate}
@@ -209,89 +205,46 @@ export const CalendarScreen: React.FC = () => {
           todoItems={calendarTodoItems}
           hideHeader
         />
-      </View>
-
-      <View style={styles.userFilterContainer}>
-        {mockUsers
-          .filter((user) => quickFilterUserIds.includes(user.id))
-          .slice(0, 5)
-          .map((user) => (
-            <UserFilterButton
-              key={user.id}
-              name={user.name}
-              isVisible={visibleUserIds.includes(user.id)}
-              onPress={() => toggleUserVisibility(user.id)}
-            />
-          ))}
-      </View>
-
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        backgroundStyle={styles.bottomSheetBackground}
-        handleIndicatorStyle={styles.bottomSheetIndicator}
-      >
-        <View style={styles.sheetHeader}>
-          <Text style={styles.sheetTitle}>{formatDateJa(selectedDate)}</Text>
-          <TouchableOpacity
-            onPress={handleCloseSheet}
-            style={styles.closeButton}
-          >
-            <Ionicons name="close" size={24} color={colors.text} />
-          </TouchableOpacity>
-        </View>
-        <BottomSheetScrollView contentContainerStyle={styles.sheetContent}>
-          <DayScheduleList data={selectedDayData} hideHeader />
-        </BottomSheetScrollView>
-      </BottomSheet>
-    </SafeAreaView>
+      }
+      userFilter={mockUsers
+        .filter((user) => quickFilterUserIds.includes(user.id))
+        .slice(0, 5)
+        .map((user) => (
+          <UserFilterButton
+            key={user.id}
+            name={user.name}
+            isVisible={visibleUserIds.includes(user.id)}
+            onPress={() => toggleUserVisibility(user.id)}
+          />
+        ))}
+      sheet={
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={-1}
+          snapPoints={snapPoints}
+          enablePanDownToClose
+          backgroundStyle={styles.bottomSheetBackground}
+          handleIndicatorStyle={styles.bottomSheetIndicator}
+        >
+          <View style={styles.sheetHeader}>
+            <Text style={styles.sheetTitle}>{formatDateJa(selectedDate)}</Text>
+            <TouchableOpacity
+              onPress={handleCloseSheet}
+              style={styles.closeButton}
+            >
+              <Ionicons name="close" size={24} color={colors.text} />
+            </TouchableOpacity>
+          </View>
+          <BottomSheetScrollView contentContainerStyle={styles.sheetContent}>
+            <DayScheduleList data={selectedDayData} hideHeader />
+          </BottomSheetScrollView>
+        </BottomSheet>
+      }
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  calendarContainer: {
-    flex: 1,
-  },
-  userFilterContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    gap: 20,
-  },
-  userFilterButton: {
-    alignItems: "center",
-    gap: 4,
-  },
-  userFilterButtonInactive: {
-    opacity: 0.6,
-  },
-  userFilterAvatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.primary,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  userFilterAvatarInactive: {
-    backgroundColor: colors.border,
-  },
-  userFilterName: {
-    fontSize: 13,
-    color: colors.text,
-    fontWeight: "500",
-  },
-  userFilterNameInactive: {
-    color: colors.textLight,
-  },
   bottomSheetBackground: {
     backgroundColor: colors.background,
     borderTopLeftRadius: 20,

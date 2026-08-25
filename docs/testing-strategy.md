@@ -54,7 +54,15 @@ templates を「props だけ受ける薄い器」に保てば迷いが消える�
 - `CalendarScreen` と `DayScheduleList` に**重複**していた日付整形を `formatDateJa` に一本化（片方だけ直すデグレを防止）。
 - インラインのユーザーフィルタを molecule `UserFilterButton` に切り出し → 単体で操作テスト可能に。
 
+### templates と page の緑化（追記）
+- template `CalendarLayout` を抽出し、`CalendarScreen` から状態なしの器を分離 → RNTL で構造テスト（[CalendarLayout.test.tsx](../src/components/templates/CalendarLayout.tsx)）。
+- page は Playwright を**実走**して緑化。VRT の基準画像 `e2e/*-snapshots/calendar-screen-chromium-darwin.png` を生成済み。
+  - 注意: VRT 基準は**プラットフォーム依存**（`-chromium-darwin`）。CI(Linux)では別基準になるため、CI では Docker 等で基準を撮り直すのが定石。更新は `npx playwright test --update-snapshots`。
+
 ## まだやっていないこと（次の候補）
-- templates 層の明示的な抽出（`CalendarLayout` として器を分離）
+- `App.tsx` のテスト観点での分割:
+  - `iconMap`（route名→アイコン名）を純関数 `getTabIcon()` へ抽出 → vitest
+  - 認証ゲート（loading / auth / main の出し分け）を props で受ける presentational な `RootGate` に分離 → RNTL
+  - ファイル中段の `import`（`PlaceholderScreen` 付近）を整理
 - コンポーネント単位の VRT（Storybook + Chromatic など、必要になったら）
 - `filterStore` の vitest テスト（AsyncStorage モック）

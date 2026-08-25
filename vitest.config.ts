@@ -10,9 +10,10 @@ export default defineConfig({
     },
   },
   test: {
-    // ロジックの単体テストが対象。RN コンポーネントは描画しない
+    // 純ロジックの単体テストが対象。RN コンポーネントは描画しない。
+    // 描画テスト(*.test.tsx)は jest-expo + RNTL に任せるため .ts のみ対象にする。
     environment: 'node',
     globals: true,
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    include: ['src/**/*.test.ts'],
   },
 });

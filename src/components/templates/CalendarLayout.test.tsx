@@ -1,7 +1,8 @@
 /// <reference types="jest" />
-import React from 'react';
-import { Text } from 'react-native';
+
 import { render, screen } from '@testing-library/react-native';
+import type React from 'react';
+import { Text } from 'react-native';
 import { CalendarLayout } from './CalendarLayout';
 
 /**

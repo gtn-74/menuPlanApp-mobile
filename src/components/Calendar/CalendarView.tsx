@@ -1,18 +1,45 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { Calendar, DateData, LocaleConfig } from 'react-native-calendars';
+import type React from 'react';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Calendar, type DateData, LocaleConfig } from 'react-native-calendars';
 
 type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
+
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
-import { colors } from '../../theme/colors';
-import { MarkedDates, MenuItem, Event, BudgetItem, TodoItem } from '../../types';
 import { getUserName } from '../../mocks/data';
+import { colors } from '../../theme/colors';
+import type { BudgetItem, Event, MarkedDates, MenuItem, TodoItem } from '../../types';
 
 // 日本語ロケール設定
 LocaleConfig.locales['ja'] = {
-  monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-  monthNamesShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  monthNames: [
+    '1月',
+    '2月',
+    '3月',
+    '4月',
+    '5月',
+    '6月',
+    '7月',
+    '8月',
+    '9月',
+    '10月',
+    '11月',
+    '12月',
+  ],
+  monthNamesShort: [
+    '1月',
+    '2月',
+    '3月',
+    '4月',
+    '5月',
+    '6月',
+    '7月',
+    '8月',
+    '9月',
+    '10月',
+    '11月',
+    '12月',
+  ],
   dayNames: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
   dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
   today: '今日',
@@ -76,10 +103,7 @@ const CustomDay: React.FC<CustomDayProps> = ({
     <TouchableOpacity
       onPress={handlePress}
       disabled={isDisabled}
-      style={[
-        styles.dayContainer,
-        hasLabels && styles.dayContainerWithLabels,
-      ]}
+      style={[styles.dayContainer, hasLabels && styles.dayContainerWithLabels]}
     >
       <View
         style={[
@@ -118,10 +142,7 @@ const CustomDay: React.FC<CustomDayProps> = ({
       {!hasLabels && marking?.dots && marking.dots.length > 0 && (
         <View style={styles.dotsContainer}>
           {marking.dots.slice(0, 4).map((dot: any, index: number) => (
-            <View
-              key={dot.key || index}
-              style={[styles.dot, { backgroundColor: dot.color }]}
-            />
+            <View key={dot.key || index} style={[styles.dot, { backgroundColor: dot.color }]} />
           ))}
         </View>
       )}
@@ -170,9 +191,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   events.forEach((event) => {
     if (!labelsByDate[event.date]) labelsByDate[event.date] = [];
     const userName = getUserName(event.userId);
-    const displayText = event.type === 'personal'
-      ? `${userName}: ${event.title}`
-      : event.title;
+    const displayText = event.type === 'personal' ? `${userName}: ${event.title}` : event.title;
     labelsByDate[event.date].push({
       text: displayText,
       color: event.type === 'family' ? colors.dots.familyEvent : colors.dots.personalEvent,
@@ -230,9 +249,13 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       // ISO週番号を計算
       const tempDate = new Date(current.getTime());
       tempDate.setHours(0, 0, 0, 0);
-      tempDate.setDate(tempDate.getDate() + 3 - (tempDate.getDay() + 6) % 7);
+      tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
       const week1 = new Date(tempDate.getFullYear(), 0, 4);
-      const weekNum = 1 + Math.round(((tempDate.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+      const weekNum =
+        1 +
+        Math.round(
+          ((tempDate.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7,
+        );
       weekNumbers.push(weekNum);
       current.setDate(current.getDate() + 7);
     }

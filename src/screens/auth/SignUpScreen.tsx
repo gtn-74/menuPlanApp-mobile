@@ -1,20 +1,20 @@
+import { Ionicons } from '@expo/vector-icons';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
   Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { colors } from '../../theme/colors';
 import { useAuthStore } from '../../stores/authStore';
-import { AuthStackParamList } from '../../types';
+import { colors } from '../../theme/colors';
+import type { AuthStackParamList } from '../../types';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'SignUp'>;
 
@@ -75,10 +75,7 @@ export const SignUpScreen = ({ navigation }: Props) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <Text style={styles.title}>新規登録</Text>
           <Text style={styles.subtitle}>アカウントを作成して始めましょう</Text>
@@ -88,7 +85,12 @@ export const SignUpScreen = ({ navigation }: Props) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>表示名</Text>
             <View style={[styles.inputContainer, errors.name && styles.inputError]}>
-              <Ionicons name="person-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <Ionicons
+                name="person-outline"
+                size={20}
+                color={colors.textSecondary}
+                style={styles.inputIcon}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="名前を入力"
@@ -104,7 +106,12 @@ export const SignUpScreen = ({ navigation }: Props) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>メールアドレス</Text>
             <View style={[styles.inputContainer, errors.email && styles.inputError]}>
-              <Ionicons name="mail-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <Ionicons
+                name="mail-outline"
+                size={20}
+                color={colors.textSecondary}
+                style={styles.inputIcon}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="example@email.com"
@@ -122,7 +129,12 @@ export const SignUpScreen = ({ navigation }: Props) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>パスワード</Text>
             <View style={[styles.inputContainer, errors.password && styles.inputError]}>
-              <Ionicons name="lock-closed-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color={colors.textSecondary}
+                style={styles.inputIcon}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="6文字以上"
@@ -131,7 +143,10 @@ export const SignUpScreen = ({ navigation }: Props) => {
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
               />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeIcon}
+              >
                 <Ionicons
                   name={showPassword ? 'eye-outline' : 'eye-off-outline'}
                   size={20}
@@ -145,7 +160,12 @@ export const SignUpScreen = ({ navigation }: Props) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>パスワード確認</Text>
             <View style={[styles.inputContainer, errors.confirmPassword && styles.inputError]}>
-              <Ionicons name="lock-closed-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color={colors.textSecondary}
+                style={styles.inputIcon}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="パスワードを再入力"
@@ -155,7 +175,9 @@ export const SignUpScreen = ({ navigation }: Props) => {
                 secureTextEntry={!showPassword}
               />
             </View>
-            {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
+            {errors.confirmPassword && (
+              <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+            )}
           </View>
 
           <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>

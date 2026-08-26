@@ -1,15 +1,10 @@
-import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import {
-  Modal,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Ionicons } from '@expo/vector-icons';
+import type React from 'react';
+import { useState } from 'react';
+import { Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { colors } from '../../theme/colors';
+import type { CategoryFilter } from '../../types';
 import { styles } from './Header.styles';
-import { colors } from "../../theme/colors";
-import { CategoryFilter } from "../../types";
 
 interface HeaderProps {
   title?: string;
@@ -23,10 +18,10 @@ interface HeaderProps {
 }
 
 const categoryLabels: Record<CategoryFilter, string> = {
-  all: "すべて",
-  menu: "献立",
-  budget: "家計簿",
-  todo: "予定",
+  all: 'すべて',
+  menu: '献立',
+  budget: '家計簿',
+  todo: '予定',
 };
 
 export const Header: React.FC<HeaderProps> = ({
@@ -72,23 +67,14 @@ export const Header: React.FC<HeaderProps> = ({
           </TouchableOpacity>
         )}
 
-        <TouchableOpacity
-          onPress={() => setDropdownVisible(true)}
-          style={styles.dropdownButton}
-        >
-          <Text style={styles.dropdownButtonText}>
-            {categoryLabels[selectedCategory]}
-          </Text>
+        <TouchableOpacity onPress={() => setDropdownVisible(true)} style={styles.dropdownButton}>
+          <Text style={styles.dropdownButtonText}>{categoryLabels[selectedCategory]}</Text>
           <Ionicons name="chevron-down" size={18} color={colors.text} />
         </TouchableOpacity>
 
         {onProfilePress && (
           <TouchableOpacity onPress={onProfilePress} style={styles.iconButton}>
-            <Ionicons
-              name="person-circle-outline"
-              size={28}
-              color={colors.text}
-            />
+            <Ionicons name="person-circle-outline" size={28} color={colors.text} />
           </TouchableOpacity>
         )}
       </View>
@@ -99,41 +85,30 @@ export const Header: React.FC<HeaderProps> = ({
         animationType="fade"
         onRequestClose={() => setDropdownVisible(false)}
       >
-        <Pressable
-          style={styles.modalOverlay}
-          onPress={() => setDropdownVisible(false)}
-        >
+        <Pressable style={styles.modalOverlay} onPress={() => setDropdownVisible(false)}>
           <View style={styles.dropdownMenu}>
-            {(Object.keys(categoryLabels) as CategoryFilter[]).map(
-              (category) => (
-                <TouchableOpacity
-                  key={category}
+            {(Object.keys(categoryLabels) as CategoryFilter[]).map((category) => (
+              <TouchableOpacity
+                key={category}
+                style={[
+                  styles.dropdownItem,
+                  selectedCategory === category && styles.dropdownItemSelected,
+                ]}
+                onPress={() => handleCategorySelect(category)}
+              >
+                <Text
                   style={[
-                    styles.dropdownItem,
-                    selectedCategory === category &&
-                      styles.dropdownItemSelected,
+                    styles.dropdownItemText,
+                    selectedCategory === category && styles.dropdownItemTextSelected,
                   ]}
-                  onPress={() => handleCategorySelect(category)}
                 >
-                  <Text
-                    style={[
-                      styles.dropdownItemText,
-                      selectedCategory === category &&
-                        styles.dropdownItemTextSelected,
-                    ]}
-                  >
-                    {categoryLabels[category]}
-                  </Text>
-                  {selectedCategory === category && (
-                    <Ionicons
-                      name="checkmark"
-                      size={18}
-                      color={colors.primary}
-                    />
-                  )}
-                </TouchableOpacity>
-              ),
-            )}
+                  {categoryLabels[category]}
+                </Text>
+                {selectedCategory === category && (
+                  <Ionicons name="checkmark" size={18} color={colors.primary} />
+                )}
+              </TouchableOpacity>
+            ))}
           </View>
         </Pressable>
       </Modal>

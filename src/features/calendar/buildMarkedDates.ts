@@ -58,16 +58,10 @@ export function buildMarkedDates(input: BuildMarkedDatesInput): MarkedDates {
     if (flags.showBudget && budgets.some((b) => b.date === date)) {
       dots.push({ key: 'budget', color: colors.dots.budget });
     }
-    if (
-      flags.showPersonalEvents &&
-      events.some((e) => e.date === date && e.type === 'personal')
-    ) {
+    if (flags.showPersonalEvents && events.some((e) => e.date === date && e.type === 'personal')) {
       dots.push({ key: 'personalEvent', color: colors.dots.personalEvent });
     }
-    if (
-      flags.showFamilyEvents &&
-      events.some((e) => e.date === date && e.type === 'family')
-    ) {
+    if (flags.showFamilyEvents && events.some((e) => e.date === date && e.type === 'family')) {
       dots.push({ key: 'familyEvent', color: colors.dots.familyEvent });
     }
     if (flags.showTodo && todos.some((t) => t.date === date)) {

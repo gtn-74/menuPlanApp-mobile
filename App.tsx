@@ -1,19 +1,18 @@
+import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
-import { CalendarScreen } from './src/screens/CalendarScreen';
-import { ProfileScreen } from './src/screens/ProfileScreen';
+import { ForgotPasswordScreen } from './src/screens/auth/ForgotPasswordScreen';
 import { LoginScreen } from './src/screens/auth/LoginScreen';
 import { SignUpScreen } from './src/screens/auth/SignUpScreen';
-import { ForgotPasswordScreen } from './src/screens/auth/ForgotPasswordScreen';
-import { colors } from './src/theme/colors';
+import { CalendarScreen } from './src/screens/CalendarScreen';
+import { ProfileScreen } from './src/screens/ProfileScreen';
 import { useAuthStore } from './src/stores/authStore';
-import { AuthStackParamList } from './src/types';
+import { colors } from './src/theme/colors';
+import type { AuthStackParamList } from './src/types';
 
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
@@ -45,26 +44,10 @@ function TabNavigator() {
         headerShown: false,
       })}
     >
-      <Tab.Screen
-        name="Calendar"
-        component={CalendarScreen}
-        options={{ title: 'カレンダー' }}
-      />
-      <Tab.Screen
-        name="Menu"
-        component={PlaceholderScreen}
-        options={{ title: '献立' }}
-      />
-      <Tab.Screen
-        name="Budget"
-        component={PlaceholderScreen}
-        options={{ title: '家計簿' }}
-      />
-      <Tab.Screen
-        name="Schedule"
-        component={PlaceholderScreen}
-        options={{ title: '予定' }}
-      />
+      <Tab.Screen name="Calendar" component={CalendarScreen} options={{ title: 'カレンダー' }} />
+      <Tab.Screen name="Menu" component={PlaceholderScreen} options={{ title: '献立' }} />
+      <Tab.Screen name="Budget" component={PlaceholderScreen} options={{ title: '家計簿' }} />
+      <Tab.Screen name="Schedule" component={PlaceholderScreen} options={{ title: '予定' }} />
       {/* 以下はプロフィール設定で有効化可能
       <Tab.Screen
         name="Todo"
@@ -107,11 +90,7 @@ function AuthNavigator() {
 function MainNavigator() {
   return (
     <MainStack.Navigator>
-      <MainStack.Screen
-        name="Main"
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      />
+      <MainStack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
       <MainStack.Screen
         name="Profile"
         component={ProfileScreen}
@@ -136,7 +115,14 @@ export default function App() {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: colors.background,
+        }}
+      >
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
@@ -152,13 +138,11 @@ export default function App() {
 }
 
 // プレースホルダー画面（後で実装）
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
 const PlaceholderScreen = ({ route }: any) => (
   <View style={placeholderStyles.container}>
-    <Text style={placeholderStyles.text}>
-      {route.name} 画面は今後実装予定です
-    </Text>
+    <Text style={placeholderStyles.text}>{route.name} 画面は今後実装予定です</Text>
   </View>
 );
 

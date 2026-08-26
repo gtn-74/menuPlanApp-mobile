@@ -1,52 +1,47 @@
-import { Ionicons } from "@expo/vector-icons";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { useNavigation } from "@react-navigation/native";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { styles } from './CalendarScreen.styles';
-import { DateData } from "react-native-calendars";
-
-import { CalendarView } from "../components/Calendar/CalendarView";
-import { Header } from "../components/common/Header";
-import { DayScheduleList } from "../components/DayScheduleList/DayScheduleList";
-import { UserFilterButton } from "../components/molecules/UserFilterButton";
-import { CalendarLayout } from "../components/templates/CalendarLayout";
-import { buildMarkedDates } from "../features/calendar/buildMarkedDates";
-import { formatDateJa } from "../utils/date";
+import { Ionicons } from '@expo/vector-icons';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import type { DateData } from 'react-native-calendars';
+import { CalendarView } from '../components/Calendar/CalendarView';
+import { Header } from '../components/common/Header';
+import { DayScheduleList } from '../components/DayScheduleList/DayScheduleList';
+import { UserFilterButton } from '../components/molecules/UserFilterButton';
+import { CalendarLayout } from '../components/templates/CalendarLayout';
+import { buildMarkedDates } from '../features/calendar/buildMarkedDates';
 import {
   mockBudgetItems,
   mockEvents,
   mockMenuItems,
   mockTodoItems,
   mockUsers,
-} from "../mocks/data";
-import { useFilterStore } from "../stores/filterStore";
-import { colors } from "../theme/colors";
-import { DayData, MarkedDates } from "../types";
+} from '../mocks/data';
+import { useFilterStore } from '../stores/filterStore';
+import { colors } from '../theme/colors';
+import type { DayData, MarkedDates } from '../types';
+import { formatDateJa } from '../utils/date';
+import { styles } from './CalendarScreen.styles';
 
 export const CalendarScreen: React.FC = () => {
   const navigation = useNavigation<any>();
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0],
-  );
-  const [currentMonth, setCurrentMonth] = useState(
-    new Date().toISOString().split("T")[0],
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [currentMonth, setCurrentMonth] = useState(new Date().toISOString().split('T')[0]);
 
   const handlePrevMonth = () => {
     const date = new Date(currentMonth);
     date.setMonth(date.getMonth() - 1);
-    setCurrentMonth(date.toISOString().split("T")[0]);
+    setCurrentMonth(date.toISOString().split('T')[0]);
   };
 
   const handleNextMonth = () => {
     const date = new Date(currentMonth);
     date.setMonth(date.getMonth() + 1);
-    setCurrentMonth(date.toISOString().split("T")[0]);
+    setCurrentMonth(date.toISOString().split('T')[0]);
   };
 
   const handleTodayPress = () => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toISOString().split('T')[0];
     setSelectedDate(today);
     setCurrentMonth(today);
   };
@@ -76,8 +71,7 @@ export const CalendarScreen: React.FC = () => {
     [visibleUserIds],
   );
   const filteredBudgetItems = useMemo(
-    () =>
-      mockBudgetItems.filter((item) => visibleUserIds.includes(item.userId)),
+    () => mockBudgetItems.filter((item) => visibleUserIds.includes(item.userId)),
     [visibleUserIds],
   );
   const filteredEvents = useMemo(
@@ -127,21 +121,15 @@ export const CalendarScreen: React.FC = () => {
   const selectedDayData: DayData = useMemo(() => {
     return {
       date: selectedDate,
-      menus: showMenu
-        ? filteredMenuItems.filter((item) => item.date === selectedDate)
-        : [],
-      budgets: showBudget
-        ? filteredBudgetItems.filter((item) => item.date === selectedDate)
-        : [],
+      menus: showMenu ? filteredMenuItems.filter((item) => item.date === selectedDate) : [],
+      budgets: showBudget ? filteredBudgetItems.filter((item) => item.date === selectedDate) : [],
       events: filteredEvents.filter(
         (e) =>
           e.date === selectedDate &&
-          ((e.type === "personal" && showPersonalEvents) ||
-            (e.type === "family" && showFamilyEvents)),
+          ((e.type === 'personal' && showPersonalEvents) ||
+            (e.type === 'family' && showFamilyEvents)),
       ),
-      todos: showTodo
-        ? filteredTodoItems.filter((item) => item.date === selectedDate)
-        : [],
+      todos: showTodo ? filteredTodoItems.filter((item) => item.date === selectedDate) : [],
     };
   }, [
     selectedDate,
@@ -158,13 +146,13 @@ export const CalendarScreen: React.FC = () => {
 
   // カレンダー表示用：「すべて」または「予定」カテゴリ時に高優先度Todoを表示
   const calendarTodoItems = useMemo(() => {
-    if (selectedCategory !== "all" && selectedCategory !== "todo") return [];
-    return filteredTodoItems.filter((todo) => todo.priority === "high");
+    if (selectedCategory !== 'all' && selectedCategory !== 'todo') return [];
+    return filteredTodoItems.filter((todo) => todo.priority === 'high');
   }, [selectedCategory, filteredTodoItems]);
 
   // ボトムシート
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["85%", "95%"], []);
+  const snapPoints = useMemo(() => ['85%', '95%'], []);
 
   const handleDayPress = (day: DateData) => {
     setSelectedDate(day.dateString);
@@ -181,7 +169,7 @@ export const CalendarScreen: React.FC = () => {
         <Header
           selectedCategory={selectedCategory}
           onCategoryChange={setCategory}
-          onProfilePress={() => navigation.navigate("Profile")}
+          onProfilePress={() => navigation.navigate('Profile')}
           onTodayPress={handleTodayPress}
           currentMonth={currentMonth}
           onPrevMonth={handlePrevMonth}
@@ -199,8 +187,8 @@ export const CalendarScreen: React.FC = () => {
           menuItems={showMenu ? filteredMenuItems : []}
           events={filteredEvents.filter(
             (e) =>
-              (e.type === "personal" && showPersonalEvents) ||
-              (e.type === "family" && showFamilyEvents),
+              (e.type === 'personal' && showPersonalEvents) ||
+              (e.type === 'family' && showFamilyEvents),
           )}
           budgetItems={showBudget ? filteredBudgetItems : []}
           todoItems={calendarTodoItems}
@@ -229,10 +217,7 @@ export const CalendarScreen: React.FC = () => {
         >
           <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle}>{formatDateJa(selectedDate)}</Text>
-            <TouchableOpacity
-              onPress={handleCloseSheet}
-              style={styles.closeButton}
-            >
+            <TouchableOpacity onPress={handleCloseSheet} style={styles.closeButton}>
               <Ionicons name="close" size={24} color={colors.text} />
             </TouchableOpacity>
           </View>

@@ -1,4 +1,4 @@
-import { MenuItem, BudgetItem, Event, TodoItem, User } from '../types';
+import type { BudgetItem, Event, MenuItem, TodoItem, User } from '../types';
 
 // モックユーザーデータ
 export const mockUsers: User[] = [

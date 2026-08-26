@@ -1,5 +1,5 @@
-import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
 
 const AUTH_STORAGE_KEY = '@menuPlanApp:auth';
 
@@ -44,7 +44,10 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       email,
     };
     // サインアップ後は自動ログインしない（LoginScreenに戻る）
-    await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ isAuthenticated: false, user: null }));
+    await AsyncStorage.setItem(
+      AUTH_STORAGE_KEY,
+      JSON.stringify({ isAuthenticated: false, user: null }),
+    );
     return true;
   },
 

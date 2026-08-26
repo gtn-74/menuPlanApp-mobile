@@ -14,6 +14,8 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './e2e',
+  // Storybook の VRT は専用設定(playwright.storybook.config.ts)で実行するため除外
+  testIgnore: /storybook\.spec\.ts/,
   // 各テストを独立させる（順序に依存しない）
   fullyParallel: true,
   // 共通設定

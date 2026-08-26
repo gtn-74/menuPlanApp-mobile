@@ -30,3 +30,6 @@ ios/build/
 /test-results/
 /playwright-report/
 /blob-report/
+
+# Storybook
+/storybook-static/

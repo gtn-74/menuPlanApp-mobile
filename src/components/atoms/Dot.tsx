@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { styles } from './Dot.styles';
 
 interface DotProps {
   color: string;
@@ -21,9 +22,3 @@ export const Dot: React.FC<DotProps> = ({ color, size = 6, testID }) => (
     ]}
   />
 );
-
-const styles = StyleSheet.create({
-  dot: {
-    // 個別値は props から算出
-  },
-});

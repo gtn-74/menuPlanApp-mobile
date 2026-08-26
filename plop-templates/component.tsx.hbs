@@ -1,0 +1,16 @@
+import React from 'react';
+import { View } from 'react-native';
+import { styles } from './{{pascalCase name}}.styles';
+
+interface {{pascalCase name}}Props {
+  /** テストや支援技術から参照する識別子 */
+  testID?: string;
+}
+
+/**
+ * {{layer}}: {{pascalCase name}}
+ * presentational な部品。状態を持たず props を見た目へ写像する。
+ */
+export const {{pascalCase name}}: React.FC<{{pascalCase name}}Props> = ({ testID }) => {
+  return <View testID={testID} style={styles.container} />;
+};

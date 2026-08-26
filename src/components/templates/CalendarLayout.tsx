@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
+import { styles } from './CalendarLayout.styles';
 
-import { colors } from '@/theme/colors';
 
 interface CalendarLayoutProps {
   /** 上部のヘッダー（カテゴリ切替・月移動など） */
@@ -37,21 +37,3 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
     {sheet}
   </SafeAreaView>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  calendarRegion: {
-    flex: 1,
-  },
-  filterRegion: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    gap: 20,
-  },
-});

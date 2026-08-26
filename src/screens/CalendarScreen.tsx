@@ -2,7 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { styles } from './CalendarScreen.styles';
 import { DateData } from "react-native-calendars";
 
 import { CalendarView } from "../components/Calendar/CalendarView";
@@ -243,40 +244,3 @@ export const CalendarScreen: React.FC = () => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  bottomSheetBackground: {
-    backgroundColor: colors.background,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  bottomSheetIndicator: {
-    backgroundColor: colors.border,
-    width: 40,
-  },
-  sheetHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  sheetTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: colors.text,
-  },
-  closeButton: {
-    padding: 4,
-  },
-  sheetContent: {
-    paddingBottom: 40,
-  },
-});

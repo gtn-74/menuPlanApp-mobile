@@ -3,9 +3,9 @@ import { colors } from '../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: colors.background,
@@ -16,13 +16,13 @@ export const styles = StyleSheet.create({
     padding: 4,
   },
   rightSection: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   monthNavigation: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   navButton: {
@@ -30,10 +30,10 @@ export const styles = StyleSheet.create({
   },
   monthText: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.text,
     minWidth: 90,
-    textAlign: "center",
+    textAlign: 'center',
   },
   todayButton: {
     paddingHorizontal: 10,
@@ -43,12 +43,12 @@ export const styles = StyleSheet.create({
   },
   todayButtonText: {
     fontSize: 14,
-    fontWeight: "500",
-    color: "#FFFFFF",
+    fontWeight: '500',
+    color: '#FFFFFF',
   },
   dropdownButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
     backgroundColor: colors.backgroundSecondary,
@@ -57,14 +57,14 @@ export const styles = StyleSheet.create({
   },
   dropdownButtonText: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     color: colors.text,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
     paddingTop: 100,
     paddingRight: 16,
   },
@@ -73,16 +73,16 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 8,
     minWidth: 140,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
     elevation: 8,
   },
   dropdownItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
@@ -94,7 +94,7 @@ export const styles = StyleSheet.create({
     color: colors.text,
   },
   dropdownItemTextSelected: {
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.primary,
   },
 });

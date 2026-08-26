@@ -1,20 +1,20 @@
+import { Ionicons } from '@expo/vector-icons';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
   Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { colors } from '../../theme/colors';
 import { useAuthStore } from '../../stores/authStore';
-import { AuthStackParamList } from '../../types';
+import { colors } from '../../theme/colors';
+import type { AuthStackParamList } from '../../types';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -59,10 +59,7 @@ export const LoginScreen = ({ navigation }: Props) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <View style={styles.logoContainer}>
           <View style={styles.logoCircle}>
             <Ionicons name="restaurant" size={48} color={colors.primary} />
@@ -75,7 +72,12 @@ export const LoginScreen = ({ navigation }: Props) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>メールアドレス</Text>
             <View style={[styles.inputContainer, errors.email && styles.inputError]}>
-              <Ionicons name="mail-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <Ionicons
+                name="mail-outline"
+                size={20}
+                color={colors.textSecondary}
+                style={styles.inputIcon}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="example@email.com"
@@ -93,7 +95,12 @@ export const LoginScreen = ({ navigation }: Props) => {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>パスワード</Text>
             <View style={[styles.inputContainer, errors.password && styles.inputError]}>
-              <Ionicons name="lock-closed-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color={colors.textSecondary}
+                style={styles.inputIcon}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="6文字以上"
@@ -102,7 +109,10 @@ export const LoginScreen = ({ navigation }: Props) => {
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
               />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeIcon}
+              >
                 <Ionicons
                   name={showPassword ? 'eye-outline' : 'eye-off-outline'}
                   size={20}

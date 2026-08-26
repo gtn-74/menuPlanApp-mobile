@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 /**
  * Playwright の基本形（このファイルがそのまま「書き方」の見本）

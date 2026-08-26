@@ -11,7 +11,9 @@
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "test:components": "jest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write ."
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
@@ -40,6 +42,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@biomejs/biome": "^2.5.10",
     "@playwright/test": "^1.62.1",
     "@testing-library/react-native": "13.3.3",
     "@types/jest": "^29.5.14",

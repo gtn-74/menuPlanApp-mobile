@@ -1,6 +1,7 @@
 /// <reference types="jest" />
-import React from 'react';
+
 import { render, screen } from '@testing-library/react-native';
+import React from 'react';
 import { Dot } from './Dot';
 
 /**

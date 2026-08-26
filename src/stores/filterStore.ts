@@ -1,6 +1,6 @@
-import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FilterState, CategoryFilter } from '../types';
+import { create } from 'zustand';
+import type { CategoryFilter, FilterState } from '../types';
 
 const FILTER_STORAGE_KEY = '@menuPlanApp:filters';
 
@@ -31,10 +31,34 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
   // カテゴリ選択
   setCategory: (category: CategoryFilter) => {
     const filters = {
-      all: { showMenu: true, showBudget: true, showPersonalEvents: true, showFamilyEvents: true, showTodo: true },
-      menu: { showMenu: true, showBudget: false, showPersonalEvents: false, showFamilyEvents: false, showTodo: false },
-      budget: { showMenu: false, showBudget: true, showPersonalEvents: false, showFamilyEvents: false, showTodo: false },
-      todo: { showMenu: false, showBudget: false, showPersonalEvents: false, showFamilyEvents: false, showTodo: true },
+      all: {
+        showMenu: true,
+        showBudget: true,
+        showPersonalEvents: true,
+        showFamilyEvents: true,
+        showTodo: true,
+      },
+      menu: {
+        showMenu: true,
+        showBudget: false,
+        showPersonalEvents: false,
+        showFamilyEvents: false,
+        showTodo: false,
+      },
+      budget: {
+        showMenu: false,
+        showBudget: true,
+        showPersonalEvents: false,
+        showFamilyEvents: false,
+        showTodo: false,
+      },
+      todo: {
+        showMenu: false,
+        showBudget: false,
+        showPersonalEvents: false,
+        showFamilyEvents: false,
+        showTodo: true,
+      },
     };
     set({ selectedCategory: category, ...filters[category] });
     get().saveFilters();
@@ -115,7 +139,16 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
   // フィルター設定をAsyncStorageに保存
   saveFilters: async () => {
     try {
-      const { showMenu, showBudget, showPersonalEvents, showFamilyEvents, showTodo, selectedCategory, visibleUserIds, quickFilterUserIds } = get();
+      const {
+        showMenu,
+        showBudget,
+        showPersonalEvents,
+        showFamilyEvents,
+        showTodo,
+        selectedCategory,
+        visibleUserIds,
+        quickFilterUserIds,
+      } = get();
       const filters: FilterState = {
         showMenu,
         showBudget,

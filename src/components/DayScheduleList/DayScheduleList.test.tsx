@@ -1,12 +1,17 @@
 /// <reference types="jest" />
-import React from 'react';
+
 import { render, screen } from '@testing-library/react-native';
-import { DayScheduleList } from './DayScheduleList';
+import React from 'react';
 import type { DayData } from '../../types';
+import { DayScheduleList } from './DayScheduleList';
 
 // 空の1日ぶんデータ。テストごとに必要なセクションだけ足す。
 const emptyDay = (date = '2026-01-05'): DayData => ({
-  date, menus: [], budgets: [], events: [], todos: [],
+  date,
+  menus: [],
+  budgets: [],
+  events: [],
+  todos: [],
 });
 
 /**
@@ -25,7 +30,15 @@ describe('DayScheduleList (organism)', () => {
   it('予定があると「予定」セクションと内容を表示する', () => {
     const data = emptyDay();
     data.events = [
-      { id: 'e1', date: data.date, title: '歯医者', time: '10:00', type: 'personal', userId: 'user-1', createdAt: '' },
+      {
+        id: 'e1',
+        date: data.date,
+        title: '歯医者',
+        time: '10:00',
+        type: 'personal',
+        userId: 'user-1',
+        createdAt: '',
+      },
     ];
     render(<DayScheduleList data={data} />);
     expect(screen.getByText('予定')).toBeTruthy();
@@ -38,9 +51,17 @@ describe('DayScheduleList (organism)', () => {
   it('献立の材料は先頭3つ＋省略記号で表示する', () => {
     const data = emptyDay();
     data.menus = [
-      { id: 'm1', date: data.date, name: 'カレー', budget: 800,
-        ingredients: ['肉', '玉ねぎ', 'にんじん', 'じゃがいも'], photos: [],
-        userId: 'user-1', familyGroupId: 'f', createdAt: '' },
+      {
+        id: 'm1',
+        date: data.date,
+        name: 'カレー',
+        budget: 800,
+        ingredients: ['肉', '玉ねぎ', 'にんじん', 'じゃがいも'],
+        photos: [],
+        userId: 'user-1',
+        familyGroupId: 'f',
+        createdAt: '',
+      },
     ];
     render(<DayScheduleList data={data} />);
     expect(screen.getByText('カレー')).toBeTruthy();
@@ -50,8 +71,16 @@ describe('DayScheduleList (organism)', () => {
   it('Todo の担当者IDは名前に解決して表示する', () => {
     const data = emptyDay();
     data.todos = [
-      { id: 't1', date: data.date, title: '買い物', completed: false,
-        priority: 'high', userId: 'user-1', assignedTo: 'user-2', createdAt: '' },
+      {
+        id: 't1',
+        date: data.date,
+        title: '買い物',
+        completed: false,
+        priority: 'high',
+        userId: 'user-1',
+        assignedTo: 'user-2',
+        createdAt: '',
+      },
     ];
     render(<DayScheduleList data={data} />);
     expect(screen.getByText('買い物')).toBeTruthy();

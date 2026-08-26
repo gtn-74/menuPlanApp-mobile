@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 /**
  * page 層のテスト（Playwright）= 実データ・store・画面遷移を結線した状態のフロー検証。

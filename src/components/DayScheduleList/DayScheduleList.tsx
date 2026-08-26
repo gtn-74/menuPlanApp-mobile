@@ -1,12 +1,11 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { styles } from './DayScheduleList.styles';
 import { Ionicons } from '@expo/vector-icons';
-
-import { DayData } from '../../types';
-import { colors } from '../../theme/colors';
+import type React from 'react';
+import { ScrollView, Text, View } from 'react-native';
 import { getUserName } from '../../mocks/data';
+import { colors } from '../../theme/colors';
+import type { DayData } from '../../types';
 import { formatDateJa } from '../../utils/date';
+import { styles } from './DayScheduleList.styles';
 
 interface DayScheduleListProps {
   data: DayData;
@@ -49,16 +48,21 @@ export const DayScheduleList: React.FC<DayScheduleListProps> = ({ data, hideHead
             </View>
             {data.events.map((event) => (
               <View key={event.id} style={styles.listItem}>
-                <View style={[
-                  styles.indicator,
-                  { backgroundColor: event.type === 'family' ? colors.dots.familyEvent : colors.dots.personalEvent }
-                ]} />
+                <View
+                  style={[
+                    styles.indicator,
+                    {
+                      backgroundColor:
+                        event.type === 'family'
+                          ? colors.dots.familyEvent
+                          : colors.dots.personalEvent,
+                    },
+                  ]}
+                />
                 <View style={styles.itemContent}>
                   <Text style={styles.itemTime}>{event.time}</Text>
                   <Text style={styles.itemTitle}>{event.title}</Text>
-                  <Text style={styles.itemType}>
-                    {event.type === 'family' ? '家族' : '個人'}
-                  </Text>
+                  <Text style={styles.itemType}>{event.type === 'family' ? '家族' : '個人'}</Text>
                 </View>
               </View>
             ))}
@@ -105,16 +109,23 @@ export const DayScheduleList: React.FC<DayScheduleListProps> = ({ data, hideHead
                       size={20}
                       color={todo.completed ? colors.success : colors.textSecondary}
                     />
-                    <Text style={[
-                      styles.itemTitle,
-                      styles.todoTitle,
-                      todo.completed && styles.todoCompleted,
-                    ]}>
+                    <Text
+                      style={[
+                        styles.itemTitle,
+                        styles.todoTitle,
+                        todo.completed && styles.todoCompleted,
+                      ]}
+                    >
                       {todo.title}
                     </Text>
                   </View>
                   <View style={styles.todoMeta}>
-                    <View style={[styles.priorityBadge, { backgroundColor: priorityColors[todo.priority] }]}>
+                    <View
+                      style={[
+                        styles.priorityBadge,
+                        { backgroundColor: priorityColors[todo.priority] },
+                      ]}
+                    >
                       <Text style={styles.priorityText}>{priorityLabels[todo.priority]}</Text>
                     </View>
                     <View style={styles.assigneeInfo}>

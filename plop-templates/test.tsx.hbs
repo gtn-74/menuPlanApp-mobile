@@ -1,0 +1,16 @@
+/// <reference types="jest" />
+import React from 'react';
+import { render, screen } from '@testing-library/react-native';
+import { {{pascalCase name}} } from './{{pascalCase name}}';
+
+/**
+ * {{layer}} のテスト観点:
+ *  - 描画されるか（最低限）
+ *  - props → 見た目/振る舞いの写像（適宜追加）
+ */
+describe('{{pascalCase name}} ({{layer}})', () => {
+  it('描画される', () => {
+    render(<{{pascalCase name}} testID="{{camelCase name}}" />);
+    expect(screen.getByTestId('{{camelCase name}}')).toBeTruthy();
+  });
+});

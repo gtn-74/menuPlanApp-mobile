@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,10 +13,13 @@ import { CalendarScreen } from './src/screens/CalendarScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { useAuthStore } from './src/stores/authStore';
 import { colors } from './src/theme/colors';
-import type { AuthStackParamList } from './src/types';
+import type { AuthStackParamList, MainStackParamList, MainTabParamList } from './src/types';
 
-const Tab = createBottomTabNavigator();
-const MainStack = createNativeStackNavigator();
+// Ionicons が受け付けるアイコン名（ライブラリの glyphMap から導出）
+type IconName = keyof typeof Ionicons.glyphMap;
+
+const Tab = createBottomTabNavigator<MainTabParamList>();
+const MainStack = createNativeStackNavigator<MainStackParamList>();
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
 function TabNavigator() {
@@ -23,7 +27,7 @@ function TabNavigator() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          const iconMap: Record<string, { active: string; inactive: string }> = {
+          const iconMap: Record<string, { active: IconName; inactive: IconName }> = {
             Calendar: { active: 'calendar', inactive: 'calendar-outline' },
             Menu: { active: 'restaurant', inactive: 'restaurant-outline' },
             Budget: { active: 'wallet', inactive: 'wallet-outline' },
@@ -37,7 +41,7 @@ function TabNavigator() {
           const icon = iconMap[route.name];
           const iconName = focused ? icon?.active : icon?.inactive;
 
-          return <Ionicons name={iconName as any} size={size} color={color} />;
+          return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
@@ -140,7 +144,7 @@ export default function App() {
 // プレースホルダー画面（後で実装）
 import { StyleSheet, Text } from 'react-native';
 
-const PlaceholderScreen = ({ route }: any) => (
+const PlaceholderScreen = ({ route }: BottomTabScreenProps<MainTabParamList>) => (
   <View style={placeholderStyles.container}>
     <Text style={placeholderStyles.text}>{route.name} 画面は今後実装予定です</Text>
   </View>

@@ -14,6 +14,10 @@ const STORY_IDS = [
   'molecules-userfilterbutton--visible',
   'molecules-userfilterbutton--inactive',
   'templates-calendarlayout--basic',
+  'organisms-header--all',
+  'organisms-header--budget',
+  'organisms-calendarview--default',
+  'organisms-calendarview--empty',
 ];
 
 for (const id of STORY_IDS) {

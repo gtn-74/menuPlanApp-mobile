@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -11,10 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { styles } from './LoginScreen.styles';
+import { firstFieldErrors, loginFormSchema } from '../../schemas/auth';
 import { useAuthStore } from '../../stores/authStore';
 import { colors } from '../../theme/colors';
 import type { AuthStackParamList } from '../../types';
+import { styles } from './LoginScreen.styles';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -26,23 +27,9 @@ export const LoginScreen = ({ navigation }: Props) => {
   const login = useAuthStore((state) => state.login);
 
   const validate = (): boolean => {
-    const newErrors: { email?: string; password?: string } = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email.trim()) {
-      newErrors.email = 'メールアドレスを入力してください';
-    } else if (!emailRegex.test(email)) {
-      newErrors.email = '正しいメールアドレスを入力してください';
-    }
-
-    if (!password) {
-      newErrors.password = 'パスワードを入力してください';
-    } else if (password.length < 6) {
-      newErrors.password = 'パスワードは6文字以上で入力してください';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const result = loginFormSchema.safeParse({ email, password });
+    setErrors(result.success ? {} : firstFieldErrors(result.error));
+    return result.success;
   };
 
   const handleLogin = async () => {

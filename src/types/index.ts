@@ -1,5 +1,7 @@
 // 型定義
 
+import type { NavigatorScreenParams } from '@react-navigation/native';
+
 export interface MenuItem {
   id: string;
   date: string; // YYYY-MM-DD
@@ -92,4 +94,18 @@ export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
+};
+
+// メインスタック（タブ配下＋モーダル）のナビゲーション型
+export type MainStackParamList = {
+  Main: NavigatorScreenParams<MainTabParamList>;
+  Profile: undefined;
+};
+
+// ボトムタブのナビゲーション型
+export type MainTabParamList = {
+  Calendar: undefined;
+  Menu: undefined;
+  Budget: undefined;
+  Schedule: undefined;
 };

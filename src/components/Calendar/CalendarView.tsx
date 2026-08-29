@@ -1,6 +1,6 @@
 import type React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Calendar, type DateData, LocaleConfig } from 'react-native-calendars';
+import { Calendar, type CalendarProps, type DateData, LocaleConfig } from 'react-native-calendars';
 
 type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 
@@ -72,10 +72,13 @@ interface CalendarViewProps {
   hideHeader?: boolean;
 }
 
+// dayComponent に渡される marking の型をライブラリの公開型から導出する
+type DayComponentProps = React.ComponentProps<NonNullable<CalendarProps['dayComponent']>>;
+
 interface CustomDayProps {
   date?: DateData;
   state?: DayState;
-  marking?: any;
+  marking?: DayComponentProps['marking'];
   onPress?: (date: DateData) => void;
   labels?: DayLabel[];
   isSelected?: boolean;
@@ -141,7 +144,7 @@ const CustomDay: React.FC<CustomDayProps> = ({
 
       {!hasLabels && marking?.dots && marking.dots.length > 0 && (
         <View style={styles.dotsContainer}>
-          {marking.dots.slice(0, 4).map((dot: any, index: number) => (
+          {marking.dots.slice(0, 4).map((dot, index) => (
             <View key={dot.key || index} style={[styles.dot, { backgroundColor: dot.color }]} />
           ))}
         </View>

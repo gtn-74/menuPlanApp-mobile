@@ -1,6 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { CompositeNavigationProp } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import type { DateData } from 'react-native-calendars';
@@ -19,12 +22,18 @@ import {
 } from '../mocks/data';
 import { useFilterStore } from '../stores/filterStore';
 import { colors } from '../theme/colors';
-import type { DayData, MarkedDates } from '../types';
+import type { DayData, MainStackParamList, MainTabParamList, MarkedDates } from '../types';
 import { formatDateJa } from '../utils/date';
 import { styles } from './CalendarScreen.styles';
 
+// カレンダーはタブ配下だが、Profile は親のメインスタックにあるため両者を合成する
+type CalendarScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabParamList, 'Calendar'>,
+  NativeStackNavigationProp<MainStackParamList>
+>;
+
 export const CalendarScreen: React.FC = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<CalendarScreenNavigationProp>();
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [currentMonth, setCurrentMonth] = useState(new Date().toISOString().split('T')[0]);
 

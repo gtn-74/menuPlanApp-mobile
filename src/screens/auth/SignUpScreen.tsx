@@ -31,27 +31,16 @@ export const SignUpScreen = ({ navigation }: Props) => {
     const newErrors: Record<string, string> = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!name.trim()) {
-      newErrors.name = '表示名を入力してください';
-    }
+    if (!name.trim()) newErrors.name = '表示名を入力してください';
 
-    if (!email.trim()) {
-      newErrors.email = 'メールアドレスを入力してください';
-    } else if (!emailRegex.test(email)) {
-      newErrors.email = '正しいメールアドレスを入力してください';
-    }
+    if (!email.trim()) newErrors.email = 'メールアドレスを入力してください';
+    if (!emailRegex.test(email)) newErrors.email = '正しいメールアドレスを入力してください';
 
-    if (!password) {
-      newErrors.password = 'パスワードを入力してください';
-    } else if (password.length < 6) {
-      newErrors.password = 'パスワードは6文字以上で入力してください';
-    }
+    if (!password) newErrors.password = 'パスワードを入力してください';
+    if (password.length < 6) newErrors.password = 'パスワードは6文字以上で入力してください';
 
-    if (!confirmPassword) {
-      newErrors.confirmPassword = 'パスワード確認を入力してください';
-    } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'パスワードが一致しません';
-    }
+    if (!confirmPassword) newErrors.confirmPassword = 'パスワード確認を入力してください';
+    if (password !== confirmPassword) newErrors.confirmPassword = 'パスワードが一致しません';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

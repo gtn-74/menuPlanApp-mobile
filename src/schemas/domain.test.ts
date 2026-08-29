@@ -32,6 +32,12 @@ describe('domain schemas', () => {
     expect(MenuItemSchema.safeParse({ ...validMenu, budget: '800' }).success).toBe(false);
   });
 
+  it('MenuItem: date は YYYY-MM-DD 以外・存在しない日付を弾く', () => {
+    expect(MenuItemSchema.safeParse({ ...validMenu, date: '2026-1-1' }).success).toBe(false);
+    expect(MenuItemSchema.safeParse({ ...validMenu, date: '2026-13-40' }).success).toBe(false);
+    expect(MenuItemSchema.safeParse({ ...validMenu, date: '2026/01/10' }).success).toBe(false);
+  });
+
   it('Event: type は personal/family 以外を弾く', () => {
     const base = {
       id: 'e1',

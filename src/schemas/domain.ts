@@ -10,9 +10,14 @@ export const CategoryFilterSchema = z.enum(['all', 'menu', 'budget', 'todo']);
 export const EventTypeSchema = z.enum(['personal', 'family']);
 export const PrioritySchema = z.enum(['high', 'medium', 'low']);
 
+// 日付/時刻は zod 組み込みの ISO 形式で厳密に検証（型は string のまま）。
+// z.iso.date は YYYY-MM-DD を検証し、存在しない日付（2026-13-40 等）も弾く。
+const isoDate = z.iso.date('YYYY-MM-DD 形式で指定してください');
+const isoTime = z.iso.time('HH:mm 形式で指定してください');
+
 export const MenuItemSchema = z.object({
   id: z.string(),
-  date: z.string(), // YYYY-MM-DD
+  date: isoDate,
   name: z.string(),
   budget: z.number(),
   ingredients: z.array(z.string()),
@@ -24,7 +29,7 @@ export const MenuItemSchema = z.object({
 
 export const BudgetItemSchema = z.object({
   id: z.string(),
-  date: z.string(), // YYYY-MM-DD
+  date: isoDate,
   category: z.string(),
   amount: z.number(), // 負の値は支出
   description: z.string(),
@@ -35,9 +40,9 @@ export const BudgetItemSchema = z.object({
 
 export const EventSchema = z.object({
   id: z.string(),
-  date: z.string(), // YYYY-MM-DD
+  date: isoDate,
   title: z.string(),
-  time: z.string(), // HH:mm
+  time: isoTime,
   type: EventTypeSchema,
   userId: z.string(),
   familyGroupId: z.string().optional(),
@@ -46,7 +51,7 @@ export const EventSchema = z.object({
 
 export const TodoItemSchema = z.object({
   id: z.string(),
-  date: z.string(), // YYYY-MM-DD
+  date: isoDate,
   title: z.string(),
   completed: z.boolean(),
   priority: PrioritySchema,
@@ -63,7 +68,7 @@ export const UserSchema = z.object({
 });
 
 export const DayDataSchema = z.object({
-  date: z.string(),
+  date: isoDate,
   menus: z.array(MenuItemSchema),
   budgets: z.array(BudgetItemSchema),
   events: z.array(EventSchema),

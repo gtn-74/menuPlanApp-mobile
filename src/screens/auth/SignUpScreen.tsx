@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -11,10 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { styles } from './SignUpScreen.styles';
+import { firstFieldErrors, signUpFormSchema } from '../../schemas/auth';
 import { useAuthStore } from '../../stores/authStore';
 import { colors } from '../../theme/colors';
 import type { AuthStackParamList } from '../../types';
+import { styles } from './SignUpScreen.styles';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'SignUp'>;
 
@@ -28,22 +29,9 @@ export const SignUpScreen = ({ navigation }: Props) => {
   const signup = useAuthStore((state) => state.signup);
 
   const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!name.trim()) newErrors.name = '表示名を入力してください';
-
-    if (!email.trim()) newErrors.email = 'メールアドレスを入力してください';
-    if (!emailRegex.test(email)) newErrors.email = '正しいメールアドレスを入力してください';
-
-    if (!password) newErrors.password = 'パスワードを入力してください';
-    if (password.length < 6) newErrors.password = 'パスワードは6文字以上で入力してください';
-
-    if (!confirmPassword) newErrors.confirmPassword = 'パスワード確認を入力してください';
-    if (password !== confirmPassword) newErrors.confirmPassword = 'パスワードが一致しません';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const result = signUpFormSchema.safeParse({ name, email, password, confirmPassword });
+    setErrors(result.success ? {} : firstFieldErrors(result.error));
+    return result.success;
   };
 
   const handleSignUp = async () => {

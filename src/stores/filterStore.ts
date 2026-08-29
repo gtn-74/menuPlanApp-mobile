@@ -1,8 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
+import { FilterStateSchema } from '../schemas/domain';
 import type { CategoryFilter, FilterState } from '../types';
+import { createTypedStorage } from '../utils/storage';
 
 const FILTER_STORAGE_KEY = '@menuPlanApp:filters';
+const filterStorage = createTypedStorage(FILTER_STORAGE_KEY, FilterStateSchema);
 
 interface FilterStore extends FilterState {
   setCategory: (category: CategoryFilter) => void;
@@ -118,50 +120,37 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
     get().saveFilters();
   },
 
-  // フィルター設定をAsyncStorageから読み込み
+  // フィルター設定を AsyncStorage から読み込み（境界でスキーマ検証）
   loadFilters: async () => {
-    try {
-      const savedFilters = await AsyncStorage.getItem(FILTER_STORAGE_KEY);
-      if (savedFilters) {
-        const filters = JSON.parse(savedFilters);
-        // 新しいフィールドがない場合はデフォルト値を維持
-        set({
-          ...filters,
-          visibleUserIds: filters.visibleUserIds ?? get().visibleUserIds,
-          quickFilterUserIds: filters.quickFilterUserIds ?? get().quickFilterUserIds,
-        });
-      }
-    } catch (error) {
-      console.error('Failed to load filters:', error);
+    // 壊れた/古い形（必須フィールド欠損など）は get() が null を返し、既定値が維持される
+    const saved = await filterStorage.get();
+    if (saved) {
+      set(saved);
     }
   },
 
-  // フィルター設定をAsyncStorageに保存
+  // フィルター設定を AsyncStorage に保存
   saveFilters: async () => {
-    try {
-      const {
-        showMenu,
-        showBudget,
-        showPersonalEvents,
-        showFamilyEvents,
-        showTodo,
-        selectedCategory,
-        visibleUserIds,
-        quickFilterUserIds,
-      } = get();
-      const filters: FilterState = {
-        showMenu,
-        showBudget,
-        showPersonalEvents,
-        showFamilyEvents,
-        showTodo,
-        selectedCategory,
-        visibleUserIds,
-        quickFilterUserIds,
-      };
-      await AsyncStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(filters));
-    } catch (error) {
-      console.error('Failed to save filters:', error);
-    }
+    const {
+      showMenu,
+      showBudget,
+      showPersonalEvents,
+      showFamilyEvents,
+      showTodo,
+      selectedCategory,
+      visibleUserIds,
+      quickFilterUserIds,
+    } = get();
+    const filters: FilterState = {
+      showMenu,
+      showBudget,
+      showPersonalEvents,
+      showFamilyEvents,
+      showTodo,
+      selectedCategory,
+      visibleUserIds,
+      quickFilterUserIds,
+    };
+    await filterStorage.set(filters);
   },
 }));

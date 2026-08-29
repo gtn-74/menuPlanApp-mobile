@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -11,9 +11,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { styles } from './ForgotPasswordScreen.styles';
 import { colors } from '../../theme/colors';
 import type { AuthStackParamList } from '../../types';
+import { styles } from './ForgotPasswordScreen.styles';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'ForgotPassword'>;
 

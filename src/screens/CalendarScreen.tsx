@@ -13,14 +13,9 @@ import { DayScheduleList } from '../components/DayScheduleList/DayScheduleList';
 import { UserFilterButton } from '../components/molecules/UserFilterButton';
 import { CalendarLayout } from '../components/templates/CalendarLayout';
 import { buildMarkedDates } from '../features/calendar/buildMarkedDates';
-import {
-  mockBudgetItems,
-  mockEvents,
-  mockMenuItems,
-  mockTodoItems,
-  mockUsers,
-} from '../mocks/data';
+import { mockBudgetItems, mockEvents, mockTodoItems, mockUsers } from '../mocks/data';
 import { useFilterStore } from '../stores/filterStore';
+import { useMenuStore } from '../stores/menuStore';
 import { colors } from '../theme/colors';
 import type { DayData, MainStackParamList, MainTabParamList, MarkedDates } from '../types';
 import { formatDateJa } from '../utils/date';
@@ -69,15 +64,20 @@ export const CalendarScreen: React.FC = () => {
     quickFilterUserIds,
   } = useFilterStore();
 
-  // フィルター設定を読み込み
+  // 献立は menuStore（＝AsyncStorage 永続化）から取得（local-first）
+  const menuItems = useMenuStore((s) => s.items);
+  const loadMenus = useMenuStore((s) => s.load);
+
+  // フィルター設定・献立を読み込み
   React.useEffect(() => {
     loadFilters();
+    loadMenus();
   }, []);
 
   // ユーザーフィルターを適用したデータ
   const filteredMenuItems = useMemo(
-    () => mockMenuItems.filter((item) => visibleUserIds.includes(item.userId)),
-    [visibleUserIds],
+    () => menuItems.filter((item) => visibleUserIds.includes(item.userId)),
+    [menuItems, visibleUserIds],
   );
   const filteredBudgetItems = useMemo(
     () => mockBudgetItems.filter((item) => visibleUserIds.includes(item.userId)),
@@ -226,9 +226,22 @@ export const CalendarScreen: React.FC = () => {
         >
           <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle}>{formatDateJa(selectedDate)}</Text>
-            <TouchableOpacity onPress={handleCloseSheet} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color={colors.text} />
-            </TouchableOpacity>
+            <View style={styles.sheetHeaderActions}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleCloseSheet();
+                  navigation.navigate('MenuAdd', { date: selectedDate });
+                }}
+                style={styles.addMenuButton}
+                accessibilityRole="button"
+              >
+                <Ionicons name="add" size={16} color="#fff" />
+                <Text style={styles.addMenuButtonText}>献立</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleCloseSheet} style={styles.closeButton}>
+                <Ionicons name="close" size={24} color={colors.text} />
+              </TouchableOpacity>
+            </View>
           </View>
           <BottomSheetScrollView contentContainerStyle={styles.sheetContent}>
             <DayScheduleList data={selectedDayData} hideHeader />

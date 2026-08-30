@@ -32,3 +32,52 @@ export function createTypedStorage<S extends z.ZodType>(key: string, schema: S) 
     },
   };
 }
+
+export interface VersionedStorageOptions<S extends z.ZodType> {
+  key: string;
+  version: number;
+  schema: S;
+  /** 保存されている全体の既定値（未保存/復旧不能時に返す） */
+  fallback: z.infer<S>;
+  /** 旧 version のデータを現行形式へ変換（best-effort） */
+  migrate?: (data: unknown, fromVersion: number) => unknown;
+}
+
+/**
+ * ユーザー生成データ向けの type-safe な永続化ラッパ。
+ * `createTypedStorage` と違い「壊れたら黙って破棄」しない：
+ *  - `{ version, data }` エンベロープで保存
+ *  - version 不一致は migrate を通す
+ *  - それでも zod 検証に失敗したら、元データを別キーへ**バックアップ退避**してから fallback を返す
+ *    （＝ユーザーデータのロストを最小化。後から復旧調査できる）
+ */
+export function createVersionedStorage<S extends z.ZodType>(opts: VersionedStorageOptions<S>) {
+  type T = z.infer<S>;
+  const { key, version, schema, fallback, migrate } = opts;
+  return {
+    async get(): Promise<T> {
+      try {
+        const raw = await AsyncStorage.getItem(key);
+        if (raw == null) return fallback;
+        const envelope = JSON.parse(raw) as { version?: number; data?: unknown };
+        let data = envelope?.data;
+        const from = envelope?.version ?? 0;
+        if (from !== version && migrate) {
+          data = migrate(data, from);
+        }
+        const parsed = schema.safeParse(data);
+        if (parsed.success) return parsed.data as T;
+        // 復旧不能: 破棄せずバックアップしてから既定値で継続
+        await AsyncStorage.setItem(`${key}:corrupt:${Date.now()}`, raw);
+        console.warn(`[storage] ${key}: 壊れた値をバックアップして継続`, parsed.error.issues);
+        return fallback;
+      } catch (error) {
+        console.warn(`[storage] ${key}: 読み込みに失敗しました`, error);
+        return fallback;
+      }
+    },
+    async set(value: T): Promise<void> {
+      await AsyncStorage.setItem(key, JSON.stringify({ version, data: value }));
+    },
+  };
+}

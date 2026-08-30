@@ -33,3 +33,6 @@ ios/build/
 
 # Storybook
 /storybook-static/
+
+# Expo web export
+/dist/

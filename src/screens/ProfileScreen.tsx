@@ -13,12 +13,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { styles } from './ProfileScreen.styles';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAuthStore } from '../stores/authStore';
 import { useFilterStore } from '../stores/filterStore';
 import { colors } from '../theme/colors';
 import type { User } from '../types';
+import { styles } from './ProfileScreen.styles';
 
 // タブ設定の型
 interface TabSetting {

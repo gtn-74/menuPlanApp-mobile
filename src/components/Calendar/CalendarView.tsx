@@ -5,11 +5,11 @@ import { Calendar, type CalendarProps, type DateData, LocaleConfig } from 'react
 type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { scheduleOnRN } from 'react-native-worklets';
 import { getUserName } from '../../mocks/data';
 import { colors } from '../../theme/colors';
 import type { BudgetItem, Event, MarkedDates, MenuItem, TodoItem } from '../../types';
 import { MAX_LABELS, styles } from './CalendarView.styles';
-import { scheduleOnRN } from 'react-native-worklets';
 
 // 日本語ロケール設定
 LocaleConfig.locales['ja'] = {
@@ -173,145 +173,143 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       }
     });
 
-// 日付ごとのラベルをマップ
-const labelsByDate: Record<string, DayLabel[]> = {};
+  // 日付ごとのラベルをマップ
+  const labelsByDate: Record<string, DayLabel[]> = {};
 
-// 献立を追加
-menuItems.forEach((item) => {
-  if (!labelsByDate[item.date]) labelsByDate[item.date] = [];
-  labelsByDate[item.date].push({
-    text: item.name,
-    color: colors.dots.menu,
+  // 献立を追加
+  menuItems.forEach((item) => {
+    if (!labelsByDate[item.date]) labelsByDate[item.date] = [];
+    labelsByDate[item.date].push({
+      text: item.name,
+      color: colors.dots.menu,
+    });
   });
-});
 
-// 予定を追加
-events.forEach((event) => {
-  if (!labelsByDate[event.date]) labelsByDate[event.date] = [];
-  const userName = getUserName(event.userId);
-  const displayText = event.type === 'personal' ? `${userName}: ${event.title}` : event.title;
-  labelsByDate[event.date].push({
-    text: displayText,
-    color: event.type === 'family' ? colors.dots.familyEvent : colors.dots.personalEvent,
+  // 予定を追加
+  events.forEach((event) => {
+    if (!labelsByDate[event.date]) labelsByDate[event.date] = [];
+    const userName = getUserName(event.userId);
+    const displayText = event.type === 'personal' ? `${userName}: ${event.title}` : event.title;
+    labelsByDate[event.date].push({
+      text: displayText,
+      color: event.type === 'family' ? colors.dots.familyEvent : colors.dots.personalEvent,
+    });
   });
-});
 
-// 家計簿を追加
-budgetItems.forEach((item) => {
-  if (!labelsByDate[item.date]) labelsByDate[item.date] = [];
-  labelsByDate[item.date].push({
-    text: `¥${Math.abs(item.amount).toLocaleString()}`,
-    color: colors.dots.budget,
+  // 家計簿を追加
+  budgetItems.forEach((item) => {
+    if (!labelsByDate[item.date]) labelsByDate[item.date] = [];
+    labelsByDate[item.date].push({
+      text: `¥${Math.abs(item.amount).toLocaleString()}`,
+      color: colors.dots.budget,
+    });
   });
-});
 
-// Todo（高優先度）を追加
-todoItems.forEach((item) => {
-  if (!labelsByDate[item.date]) labelsByDate[item.date] = [];
-  const assignedName = item.assignedTo ? getUserName(item.assignedTo) : '';
-  const displayText = assignedName ? `${assignedName}: ${item.title}` : item.title;
-  labelsByDate[item.date].push({
-    text: displayText,
-    color: colors.dots.todo,
+  // Todo（高優先度）を追加
+  todoItems.forEach((item) => {
+    if (!labelsByDate[item.date]) labelsByDate[item.date] = [];
+    const assignedName = item.assignedTo ? getUserName(item.assignedTo) : '';
+    const displayText = assignedName ? `${assignedName}: ${item.title}` : item.title;
+    labelsByDate[item.date].push({
+      text: displayText,
+      color: colors.dots.todo,
+    });
   });
-});
 
-// データ変更時に再描画するためのキー
-const dataKey = `${currentMonth}-${menuItems.length}-${events.length}-${budgetItems.length}-${todoItems.length}`;
+  // データ変更時に再描画するためのキー
+  const dataKey = `${currentMonth}-${menuItems.length}-${events.length}-${budgetItems.length}-${todoItems.length}`;
 
-// 現在の月の週数を計算
-const getWeekNumbersForMonth = (monthString: string) => {
-  const date = new Date(monthString);
-  const year = date.getFullYear();
-  const month = date.getMonth();
+  // 現在の月の週数を計算
+  const getWeekNumbersForMonth = (monthString: string) => {
+    const date = new Date(monthString);
+    const year = date.getFullYear();
+    const month = date.getMonth();
 
-  // 月の最初の日
-  const firstDay = new Date(year, month, 1);
-  // 月の最後の日
-  const lastDay = new Date(year, month + 1, 0);
+    // 月の最初の日
+    const firstDay = new Date(year, month, 1);
+    // 月の最後の日
+    const lastDay = new Date(year, month + 1, 0);
 
-  // カレンダーに表示される最初の日（前月の日曜日から）
-  const calendarStart = new Date(firstDay);
-  calendarStart.setDate(calendarStart.getDate() - calendarStart.getDay());
+    // カレンダーに表示される最初の日（前月の日曜日から）
+    const calendarStart = new Date(firstDay);
+    calendarStart.setDate(calendarStart.getDate() - calendarStart.getDay());
 
-  // カレンダーに表示される最後の日（次月の土曜日まで）
-  const calendarEnd = new Date(lastDay);
-  if (calendarEnd.getDay() !== 6) {
-    calendarEnd.setDate(calendarEnd.getDate() + (6 - calendarEnd.getDay()));
-  }
+    // カレンダーに表示される最後の日（次月の土曜日まで）
+    const calendarEnd = new Date(lastDay);
+    if (calendarEnd.getDay() !== 6) {
+      calendarEnd.setDate(calendarEnd.getDate() + (6 - calendarEnd.getDay()));
+    }
 
-  const weekNumbers: number[] = [];
-  const current = new Date(calendarStart);
+    const weekNumbers: number[] = [];
+    const current = new Date(calendarStart);
 
-  while (current <= calendarEnd) {
-    // ISO週番号を計算
-    const tempDate = new Date(current.getTime());
-    tempDate.setHours(0, 0, 0, 0);
-    tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
-    const week1 = new Date(tempDate.getFullYear(), 0, 4);
-    const weekNum =
-      1 +
-      Math.round(
-        ((tempDate.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7,
-      );
-    weekNumbers.push(weekNum);
-    current.setDate(current.getDate() + 7);
-  }
+    while (current <= calendarEnd) {
+      // ISO週番号を計算
+      const tempDate = new Date(current.getTime());
+      tempDate.setHours(0, 0, 0, 0);
+      tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
+      const week1 = new Date(tempDate.getFullYear(), 0, 4);
+      const weekNum =
+        1 +
+        Math.round(
+          ((tempDate.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7,
+        );
+      weekNumbers.push(weekNum);
+      current.setDate(current.getDate() + 7);
+    }
 
-  return weekNumbers;
-};
+    return weekNumbers;
+  };
 
-const weekNumbers = getWeekNumbersForMonth(currentMonth || selectedDate);
+  const weekNumbers = getWeekNumbersForMonth(currentMonth || selectedDate);
 
-return (
-  <GestureDetector gesture={swipeGesture}>
-    <View style={styles.calendarWrapper}>
-      {/* カスタム週数列 */}
-      <View style={styles.weekNumberColumn}>
-        <View style={styles.weekNumberHeader} />
-        {weekNumbers.map((weekNum, index) => (
-          <View key={index} style={styles.weekNumberCell}>
-            <Text style={styles.weekNumberText}>{weekNum}</Text>
-          </View>
-        ))}
+  return (
+    <GestureDetector gesture={swipeGesture}>
+      <View style={styles.calendarWrapper}>
+        {/* カスタム週数列 */}
+        <View style={styles.weekNumberColumn}>
+          <View style={styles.weekNumberHeader} />
+          {weekNumbers.map((weekNum, index) => (
+            <View key={index} style={styles.weekNumberCell}>
+              <Text style={styles.weekNumberText}>{weekNum}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* カレンダー本体 */}
+        <View style={styles.calendarContainer}>
+          <Calendar
+            key={dataKey}
+            current={currentMonth || selectedDate}
+            markedDates={markedDates}
+            onDayPress={onDayPress}
+            onMonthChange={onMonthChange}
+            hideArrows={hideHeader}
+            renderHeader={hideHeader ? () => null : undefined}
+            style={styles.calendar}
+            dayComponent={({ date, state, marking }) => (
+              <CustomDay
+                date={date}
+                state={state}
+                marking={marking}
+                onPress={onDayPress}
+                labels={date ? labelsByDate[date.dateString] : undefined}
+                isSelected={date?.dateString === selectedDate}
+              />
+            )}
+            theme={{
+              backgroundColor: colors.background,
+              calendarBackground: colors.background,
+              textSectionTitleColor: colors.textSecondary,
+              arrowColor: colors.primary,
+              monthTextColor: colors.text,
+              textMonthFontSize: 18,
+              textDayHeaderFontSize: 14,
+              weekVerticalMargin: 0,
+            }}
+          />
+        </View>
       </View>
-
-      {/* カレンダー本体 */}
-      <View style={styles.calendarContainer}>
-        <Calendar
-          key={dataKey}
-          current={currentMonth || selectedDate}
-          markedDates={markedDates}
-          onDayPress={onDayPress}
-          onMonthChange={onMonthChange}
-          hideArrows={hideHeader}
-          renderHeader={hideHeader ? () => null : undefined}
-          style={styles.calendar}
-          dayComponent={({ date, state, marking }) => (
-            <CustomDay
-              date={date}
-              state={state}
-              marking={marking}
-              onPress={onDayPress}
-              labels={date ? labelsByDate[date.dateString] : undefined}
-              isSelected={date?.dateString === selectedDate}
-            />
-          )}
-          theme={{
-            backgroundColor: colors.background,
-            calendarBackground: colors.background,
-            textSectionTitleColor: colors.textSecondary,
-            arrowColor: colors.primary,
-            monthTextColor: colors.text,
-            textMonthFontSize: 18,
-            textDayHeaderFontSize: 14,
-            weekVerticalMargin: 0,
-          }}
-        />
-      </View>
-    </View>
-  </GestureDetector>
-);
+    </GestureDetector>
+  );
 };
-
-

@@ -72,6 +72,6 @@
     "*.{ts,tsx,js,jsx,json,jsonc}": [
       "biome check --write --no-errors-on-unmatched"
     ]
-  }
+  },
   "packageManager": "pnpm@11.1.2"
 }

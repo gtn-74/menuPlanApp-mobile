@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+
+# 同一 ref の古い実行はキャンセル
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # 速く落ちやすいゲート（型・lint・単体・コンポーネント）
+  check:
+    name: Typecheck / Lint / Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (tsgo / TS7)
+        run: pnpm run typecheck
+
+      - name: Lint & format (Biome)
+        run: pnpm exec biome ci .
+
+      - name: Unit tests (Vitest)
+        run: pnpm test
+
+      - name: Component tests (jest-expo + RNTL)
+        run: pnpm run test:components
+
+  # ビルドが通るか（web バンドル / Storybook）
+  build:
+    name: Build (web export / Storybook)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web bundle (expo export)
+        run: pnpm exec expo export --platform web
+
+      - name: Build Storybook
+        run: pnpm run build-storybook

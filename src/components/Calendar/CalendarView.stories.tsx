@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
-import { fn } from 'storybook/test';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { colors } from '../../theme/colors';
+import { fn } from 'storybook/test';
 import { mockBudgetItems, mockEvents, mockMenuItems, mockTodoItems } from '../../mocks/data';
+import { colors } from '../../theme/colors';
 import type { MarkedDates } from '../../types';
 import { CalendarView } from './CalendarView';
 

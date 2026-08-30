@@ -11,9 +11,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { colors } from '@/theme/colors';
 import { firstFieldErrors, signUpFormSchema } from '../../schemas/auth';
 import { useAuthStore } from '../../stores/authStore';
-import { colors } from '../../theme/colors';
 import type { AuthStackParamList } from '../../types';
 import { styles } from './SignUpScreen.styles';
 

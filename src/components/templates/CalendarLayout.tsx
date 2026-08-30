@@ -1,8 +1,8 @@
 import type React from 'react';
 import type { ReactNode } from 'react';
-import {  View } from 'react-native';
-import { styles } from './CalendarLayout.styles';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from './CalendarLayout.styles';
 
 interface CalendarLayoutProps {
   /** 上部のヘッダー（カテゴリ切替・月移動など） */

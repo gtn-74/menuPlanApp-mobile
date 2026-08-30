@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { firstFieldErrors, loginFormSchema } from '../../schemas/auth';
-import { useAuthStore } from '../../stores/authStore';
-import { colors } from '../../theme/colors';
-import type { AuthStackParamList } from '../../types';
+import { firstFieldErrors, loginFormSchema } from '@/schemas/auth';
+import { useAuthStore } from '@/stores/authStore';
+import { colors } from '@/theme/colors';
+import type { AuthStackParamList } from '@/types';
 import { styles } from './LoginScreen.styles';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;

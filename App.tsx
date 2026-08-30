@@ -6,14 +6,22 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ForgotPasswordScreen } from './src/screens/auth/ForgotPasswordScreen';
-import { LoginScreen } from './src/screens/auth/LoginScreen';
-import { SignUpScreen } from './src/screens/auth/SignUpScreen';
-import { CalendarScreen } from './src/screens/CalendarScreen';
+import { LoginScreen } from './src/screens/auth/LoginScreen/LoginScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { useAuthStore } from './src/stores/authStore';
 import { colors } from './src/theme/colors';
 import type { AuthStackParamList, MainStackParamList, MainTabParamList } from './src/types';
+import { StyleSheet, Text } from 'react-native';
+import { SignUpScreen } from '@/screens/auth/SignUpScreen/SignUpScreen';
+import { ForgotPasswordScreen } from '@/screens/auth/ForgotPasswordScreen/ForgotPasswordScreen';
+import { CalendarScreen } from '@/screens/CalendarScreen/CalendarScreen';
+
+// プレースホルダー画面（後で実装）
+const PlaceholderScreen = ({ route }: BottomTabScreenProps<MainTabParamList>) => (
+  <View style={placeholderStyles.container}>
+    <Text style={placeholderStyles.text}>{route.name} 画面は今後実装予定です</Text>
+  </View>
+);
 
 // Ionicons が受け付けるアイコン名（ライブラリの glyphMap から導出）
 type IconName = keyof typeof Ionicons.glyphMap;
@@ -141,14 +149,7 @@ export default function App() {
   );
 }
 
-// プレースホルダー画面（後で実装）
-import { StyleSheet, Text } from 'react-native';
 
-const PlaceholderScreen = ({ route }: BottomTabScreenProps<MainTabParamList>) => (
-  <View style={placeholderStyles.container}>
-    <Text style={placeholderStyles.text}>{route.name} 画面は今後実装予定です</Text>
-  </View>
-);
 
 const placeholderStyles = StyleSheet.create({
   container: {

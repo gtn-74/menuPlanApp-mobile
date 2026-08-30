@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../theme/colors';
+import { colors } from '@/theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,16 +11,25 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
-  header: {
+  logoContainer: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 40,
   },
-  title: {
+  logoCircle: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: colors.backgroundSecondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  appName: {
     fontSize: 28,
     fontWeight: 'bold',
     color: colors.text,
   },
-  subtitle: {
+  appSubtitle: {
     fontSize: 14,
     color: colors.textSecondary,
     marginTop: 4,
@@ -66,7 +75,7 @@ export const styles = StyleSheet.create({
     color: colors.error,
     marginTop: 4,
   },
-  signUpButton: {
+  loginButton: {
     backgroundColor: colors.primary,
     borderRadius: 12,
     height: 48,
@@ -74,10 +83,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
   },
-  signUpButtonText: {
+  loginButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  forgotPassword: {
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  forgotPasswordText: {
+    fontSize: 14,
+    color: colors.primary,
   },
   footer: {
     flexDirection: 'row',

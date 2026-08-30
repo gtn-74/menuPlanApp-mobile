@@ -7,23 +7,17 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import type { DateData } from 'react-native-calendars';
-import { CalendarView } from '../components/Calendar/CalendarView';
-import { Header } from '../components/common/Header';
-import { DayScheduleList } from '../components/DayScheduleList/DayScheduleList';
-import { UserFilterButton } from '../components/molecules/UserFilterButton';
-import { CalendarLayout } from '../components/templates/CalendarLayout';
-import { buildMarkedDates } from '../features/calendar/buildMarkedDates';
-import {
-  mockBudgetItems,
-  mockEvents,
-  mockMenuItems,
-  mockTodoItems,
-  mockUsers,
-} from '../mocks/data';
-import { useFilterStore } from '../stores/filterStore';
-import { colors } from '../theme/colors';
-import type { DayData, MainStackParamList, MainTabParamList, MarkedDates } from '../types';
-import { formatDateJa } from '../utils/date';
+import { CalendarView } from '@/components/Calendar/CalendarView';
+import { Header } from '@/components/common/Header';
+import { DayScheduleList } from '@/components/DayScheduleList/DayScheduleList';
+import { UserFilterButton } from '@/components/molecules/UserFilterButton';
+import { CalendarLayout } from '@/components/templates/CalendarLayout';
+import { buildMarkedDates } from '@/features/calendar/buildMarkedDates';
+import { mockBudgetItems, mockEvents, mockMenuItems, mockTodoItems, mockUsers } from '@/mocks/data';
+import { useFilterStore } from '@/stores/filterStore';
+import { colors } from '@/theme/colors';
+import type { DayData, MainStackParamList, MainTabParamList, MarkedDates } from '@/types';
+import { formatDateJa } from '@/utils/date';
 import { styles } from './CalendarScreen.styles';
 
 // カレンダーはタブ配下だが、Profile は親のメインスタックにあるため両者を合成する

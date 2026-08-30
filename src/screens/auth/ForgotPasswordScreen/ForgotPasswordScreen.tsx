@@ -11,8 +11,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { colors } from '../../theme/colors';
-import type { AuthStackParamList } from '../../types';
+import { colors } from '@/theme/colors';
+import type { AuthStackParamList } from '@/types';
 import { styles } from './ForgotPasswordScreen.styles';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'ForgotPassword'>;

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../theme/colors';
+import { colors } from '@/theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,29 +15,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
-  iconCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: colors.backgroundSecondary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: colors.text,
   },
   subtitle: {
     fontSize: 14,
     color: colors.textSecondary,
-    textAlign: 'center',
-    marginTop: 8,
-    lineHeight: 20,
+    marginTop: 4,
   },
   form: {
-    marginBottom: 24,
+    marginBottom: 32,
   },
   inputGroup: {
     marginBottom: 16,
@@ -69,12 +58,15 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
   },
+  eyeIcon: {
+    padding: 4,
+  },
   errorText: {
     fontSize: 12,
     color: colors.error,
     marginTop: 4,
   },
-  resetButton: {
+  signUpButton: {
     backgroundColor: colors.primary,
     borderRadius: 12,
     height: 48,
@@ -82,20 +74,24 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
   },
-  resetButtonText: {
+  signUpButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
-  backLink: {
+  footer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 4,
+    gap: 8,
   },
-  backLinkText: {
+  footerText: {
     fontSize: 14,
-    color: colors.primary,
+    color: colors.textSecondary,
+  },
+  footerLink: {
+    fontSize: 14,
     fontWeight: '600',
+    color: colors.primary,
   },
 });

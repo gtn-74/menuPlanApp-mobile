@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { colors } from '../../theme/colors';
+import { colors } from '@/theme/colors';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 // ヘッダー(約56) + タブバー(約83) + SafeArea上下(約100)

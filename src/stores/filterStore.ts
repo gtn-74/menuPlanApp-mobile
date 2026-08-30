@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { FilterStateSchema } from '../schemas/domain';
-import type { CategoryFilter, FilterState } from '../types';
-import { createTypedStorage } from '../utils/storage';
+import { FilterStateSchema } from '@/schemas/domain';
+import type { CategoryFilter, FilterState } from '@/types';
+import { createTypedStorage } from '@/utils/storage';
 
 const FILTER_STORAGE_KEY = '@menuPlanApp:filters';
 const filterStorage = createTypedStorage(FILTER_STORAGE_KEY, FilterStateSchema);

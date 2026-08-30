@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { create } from 'zustand';
-import { createTypedStorage } from '../utils/storage';
+import { createTypedStorage } from '@/utils/storage';
 
 const AUTH_STORAGE_KEY = '@menuPlanApp:auth';
 

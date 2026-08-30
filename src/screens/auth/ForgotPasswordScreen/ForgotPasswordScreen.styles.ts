@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../theme/colors';
+import { colors } from '@/theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,31 +11,33 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
-  logoContainer: {
+  header: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 32,
   },
-  logoCircle: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
+  iconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     backgroundColor: colors.backgroundSecondary,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
   },
-  appName: {
-    fontSize: 28,
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
     color: colors.text,
   },
-  appSubtitle: {
+  subtitle: {
     fontSize: 14,
     color: colors.textSecondary,
-    marginTop: 4,
+    textAlign: 'center',
+    marginTop: 8,
+    lineHeight: 20,
   },
   form: {
-    marginBottom: 32,
+    marginBottom: 24,
   },
   inputGroup: {
     marginBottom: 16,
@@ -67,15 +69,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
   },
-  eyeIcon: {
-    padding: 4,
-  },
   errorText: {
     fontSize: 12,
     color: colors.error,
     marginTop: 4,
   },
-  loginButton: {
+  resetButton: {
     backgroundColor: colors.primary,
     borderRadius: 12,
     height: 48,
@@ -83,32 +82,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
   },
-  loginButtonText: {
+  resetButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
-  forgotPassword: {
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  forgotPasswordText: {
-    fontSize: 14,
-    color: colors.primary,
-  },
-  footer: {
+  backLink: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
   },
-  footerText: {
+  backLinkText: {
     fontSize: 14,
-    color: colors.textSecondary,
-  },
-  footerLink: {
-    fontSize: 14,
-    fontWeight: '600',
     color: colors.primary,
+    fontWeight: '600',
   },
 });

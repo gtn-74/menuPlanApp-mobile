@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import type React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { getUserName } from '../../mocks/data';
-import { colors } from '../../theme/colors';
-import type { DayData } from '../../types';
-import { formatDateJa } from '../../utils/date';
+import { getUserName } from '@/mocks/data';
+import { colors } from '@/theme/colors';
+import type { DayData } from '@/types';
+import { formatDateJa } from '@/utils/date';
 import { styles } from './DayScheduleList.styles';
 
 interface DayScheduleListProps {

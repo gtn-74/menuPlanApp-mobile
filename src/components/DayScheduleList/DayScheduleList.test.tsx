@@ -2,7 +2,7 @@
 
 import { render, screen } from '@testing-library/react-native';
 import React from 'react';
-import type { DayData } from '../../types';
+import type { DayData } from '@/types';
 import { DayScheduleList } from './DayScheduleList';
 
 // 空の1日ぶんデータ。テストごとに必要なセクションだけ足す。

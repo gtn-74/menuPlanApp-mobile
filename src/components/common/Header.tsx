@@ -2,8 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import type React from 'react';
 import { useState } from 'react';
 import { Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../../theme/colors';
-import type { CategoryFilter } from '../../types';
+import { colors } from '@/theme/colors';
+import type { CategoryFilter } from '@/types';
 import { styles } from './Header.styles';
 
 interface HeaderProps {

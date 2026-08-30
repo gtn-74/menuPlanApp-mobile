@@ -1,0 +1,5 @@
+# mise 管理の pnpm/node を確実に解決（git hook は PATH が細いことがあるため）
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
+# ステージ済みファイルだけに Biome（format + lint + autofix）を適用
+pnpm exec lint-staged

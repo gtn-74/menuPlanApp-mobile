@@ -36,3 +36,6 @@ ios/build/
 
 # Expo web export
 /dist/
+
+# Vitest coverage
+/coverage/

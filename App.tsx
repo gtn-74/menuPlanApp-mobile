@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { initSentry, Sentry } from './src/lib/sentry';
 import { ForgotPasswordScreen } from './src/screens/auth/ForgotPasswordScreen';
 import { LoginScreen } from './src/screens/auth/LoginScreen';
 // import { SignUpScreen } from './src/screens/auth/SignUpScreen';
@@ -14,6 +15,9 @@ import { LoginScreen } from './src/screens/auth/LoginScreen';
 import { useAuthStore } from './src/stores/authStore';
 import { colors } from './src/theme/colors';
 import type { AuthStackParamList, MainStackParamList, MainTabParamList } from './src/types';
+
+// できるだけ早期に Sentry を初期化（DSN 未設定なら無効）
+initSentry();
 
 // Ionicons が受け付けるアイコン名（ライブラリの glyphMap から導出）
 type IconName = keyof typeof Ionicons.glyphMap;
@@ -117,7 +121,7 @@ function MainNavigator() {
   );
 }
 
-export default function App() {
+function App() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isLoading = useAuthStore((state) => state.isLoading);
   const loadAuth = useAuthStore((state) => state.loadAuth);
@@ -149,6 +153,9 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
+
+// Sentry でラップしてエラー境界/計測を有効化（DSN 未設定時も無害）
+export default Sentry.wrap(App);
 
 // プレースホルダー画面（後で実装）
 import { StyleSheet, Text } from 'react-native';

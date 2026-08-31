@@ -10,6 +10,11 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# カバレッジを PR にコメントするため
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   # 速く落ちやすいゲート（型・lint・単体・コンポーネント）
   check:
@@ -36,8 +41,12 @@ jobs:
       - name: Lint & format (Biome)
         run: pnpm exec biome ci .
 
-      - name: Unit tests (Vitest)
-        run: pnpm test
+      - name: Unit tests + coverage (Vitest)
+        run: pnpm run test:ci
+
+      - name: Report coverage to PR
+        if: github.event_name == 'pull_request'
+        uses: davelosert/vitest-coverage-report-action@v2
 
       - name: Component tests (jest-expo + RNTL)
         run: pnpm run test:components

@@ -8,9 +8,9 @@ import { ActivityIndicator, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ForgotPasswordScreen } from './src/screens/auth/ForgotPasswordScreen';
 import { LoginScreen } from './src/screens/auth/LoginScreen';
-import { SignUpScreen } from './src/screens/auth/SignUpScreen';
-import { CalendarScreen } from './src/screens/CalendarScreen';
-import { ProfileScreen } from './src/screens/ProfileScreen';
+// import { SignUpScreen } from './src/screens/auth/SignUpScreen';
+// import { CalendarScreen } from './src/screens/CalendarScreen';
+// import { ProfileScreen } from './src/screens/ProfileScreen';
 import { useAuthStore } from './src/stores/authStore';
 import { colors } from './src/theme/colors';
 import type { AuthStackParamList, MainStackParamList, MainTabParamList } from './src/types';
@@ -104,6 +104,15 @@ function MainNavigator() {
           presentation: 'modal',
         }}
       />
+      <MainStack.Screen
+        name="MenuAdd"
+        component={MenuAddScreen}
+        options={{
+          title: '献立を追加',
+          headerTintColor: colors.primary,
+          presentation: 'modal',
+        }}
+      />
     </MainStack.Navigator>
   );
 }
@@ -143,6 +152,10 @@ export default function App() {
 
 // プレースホルダー画面（後で実装）
 import { StyleSheet, Text } from 'react-native';
+import { SignUpScreen } from '@/screens/auth/SignUpScreen';
+import { CalendarScreen } from '@/screens/CalendarScreen';
+import { MenuAddScreen } from '@/screens/MenuAddScreen';
+import { ProfileScreen } from '@/screens/ProfileScreen';
 
 const PlaceholderScreen = ({ route }: BottomTabScreenProps<MainTabParamList>) => (
   <View style={placeholderStyles.container}>

@@ -1,0 +1,49 @@
+# Codecov 設定: 中項目(components)ごとに推移を追い、対象外は ignore で分ける。
+# 導入直後は informational:true で CI を落とさない（数字が安定したら false に）。
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto # 前回比で判定（下がったら通知）
+        threshold: 1%
+        informational: true
+    patch:
+      default:
+        target: 80% # このPRの変更行のカバレッジ目標
+        informational: true
+
+# PR コメント: 差分 + 中項目(components) + ファイル
+comment:
+  layout: "condensed_header, diff, components, files"
+  require_changes: false
+
+# 中項目 = パス単位のグルーピング（エリア別に % と推移を分けて表示）
+component_management:
+  individual_components:
+    - component_id: features
+      name: features (logic)
+      paths:
+        - "src/features/**"
+    - component_id: schemas
+      name: schemas
+      paths:
+        - "src/schemas/**"
+    - component_id: stores
+      name: stores
+      paths:
+        - "src/stores/**"
+    - component_id: utils
+      name: utils
+      paths:
+        - "src/utils/**"
+
+# 「悪いが改善余地なし＝測らないと決めた」対象外（分母から除外）
+ignore:
+  - "src/**/*.styles.ts"
+  - "src/mocks/**"
+  - "src/types/**"
+  - "src/lib/**"
+  - "**/*.stories.tsx"
+  - "**/*.test.*"
+  - "App.tsx"

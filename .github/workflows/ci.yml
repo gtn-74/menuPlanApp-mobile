@@ -48,6 +48,14 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: davelosert/vitest-coverage-report-action@v2
 
+      # Codecov に lcov をアップロード（push/PR とも。履歴・components・trend 用）
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
       - name: Component tests (jest-expo + RNTL)
         run: pnpm run test:components
 

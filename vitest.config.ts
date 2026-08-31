@@ -18,7 +18,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       // json-summary は PR コメント用（davelosert/vitest-coverage-report-action）
-      reporter: ['text', 'json', 'json-summary'],
+      // lcov は Codecov 連携用、json-summary は PR コメント用
+      reporter: ['text', 'json', 'json-summary', 'lcov'],
       reportOnFailure: true,
       // vitest が実際にカバーする「ロジック層」のみ計測（描画は jest-expo 側で別計測）
       include: [

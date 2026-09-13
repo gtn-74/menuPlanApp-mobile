@@ -1,0 +1,47 @@
+/* ===========================================================================
+   献立プラン — Typography tokens
+   The app is React Native (system fonts: San Francisco on iOS, Roboto on
+   Android) rendering Japanese + Latin. On the web we standardize on
+   Noto Sans JP (Google Fonts) so Japanese renders consistently, falling back
+   to the native system stack. See typography.fonts.css for the @font-face/link.
+   Scale lifted directly from the app's StyleSheet font sizes.
+   =========================================================================== */
+:root {
+  /* --- Families --- */
+  --kp-font-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont,
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo",
+    "Segoe UI", Roboto, sans-serif;
+
+  /* --- Font sizes (px values from the app) --- */
+  --kp-text-3xl: 28px; /* app name / screen title (bold) */
+  --kp-text-2xl: 20px; /* sheet handles, large numbers */
+  --kp-text-xl: 18px;  /* sheet title, month label */
+  --kp-text-lg: 16px;  /* input text, primary buttons, month nav */
+  --kp-text-md: 15px;  /* list item title, dropdown item */
+  --kp-text-sm: 14px;  /* labels, body, buttons, weekday header */
+  --kp-text-xs: 13px;  /* subtitles, assignee, budget */
+  --kp-text-2xs: 12px; /* time, meta, week number, priority */
+  --kp-text-3xs: 11px; /* priority badge text */
+  --kp-text-micro: 9px;/* calendar day label chips */
+
+  /* --- Weights (RN uses string weights) --- */
+  --kp-weight-regular: 400;
+  --kp-weight-medium: 500;
+  --kp-weight-semibold: 600;
+  --kp-weight-bold: 700;
+
+  /* --- Line heights --- */
+  --kp-leading-tight: 1.2;
+  --kp-leading-normal: 1.4;
+  --kp-leading-relaxed: 1.6;
+
+  /* ---------------------------------------------------------------------
+     Semantic type aliases
+     --------------------------------------------------------------------- */
+  --type-display: var(--kp-weight-bold) var(--kp-text-3xl) / var(--kp-leading-tight) var(--kp-font-sans);
+  --type-title: var(--kp-weight-semibold) var(--kp-text-xl) / var(--kp-leading-tight) var(--kp-font-sans);
+  --type-heading: var(--kp-weight-semibold) var(--kp-text-lg) / var(--kp-leading-normal) var(--kp-font-sans);
+  --type-body: var(--kp-weight-regular) var(--kp-text-md) / var(--kp-leading-normal) var(--kp-font-sans);
+  --type-label: var(--kp-weight-semibold) var(--kp-text-sm) / var(--kp-leading-normal) var(--kp-font-sans);
+  --type-caption: var(--kp-weight-regular) var(--kp-text-xs) / var(--kp-leading-normal) var(--kp-font-sans);
+}

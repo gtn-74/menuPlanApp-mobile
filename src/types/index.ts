@@ -42,7 +42,8 @@ export type AuthStackParamList = {
 export type MainStackParamList = {
   Main: NavigatorScreenParams<MainTabParamList>;
   Profile: undefined;
-  MenuAdd: { date: string };
+  // menuId を渡すと編集、無ければその日付の新規追加
+  MenuAdd: { date: string; menuId?: string };
 };
 
 // ボトムタブのナビゲーション型

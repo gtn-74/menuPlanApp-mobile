@@ -76,10 +76,10 @@ CalendarScreen ──────────┤ useMenus()（hook）
 - **フロー**: Playwright（作成→カレンダー反映）… E2E 整備後
 
 ## 9. 段階（PR 分割）
-1. `createVersionedStorage` ＋ `MenuRepository`/`LocalMenuRepository` ＋ `menuStore` ＋テスト（UIなし）
-2. 献立**作成**フォーム画面 ＋ CalendarScreen を menuStore 購読に（seed 込み）
-3. **編集・削除**
-4. MenuScreen 一覧（#8）
+1. ✅ `createVersionedStorage` ＋ `MenuRepository`/`LocalMenuRepository` ＋ `menuStore` ＋テスト（UIなし）
+2. ✅ 献立**作成**フォーム画面 ＋ CalendarScreen を menuStore 購読に
+3. ✅ **編集・削除**（`MenuAddScreen` が menuId の有無で追加/編集を兼ねる）
+4. ✅ MenuScreen 一覧（#8）… 日別/週別＋クイック追加
 5. `ApiMenuRepository`＋MSW（#14）
 
 ## 10. API 移行パス
@@ -87,8 +87,37 @@ CalendarScreen ──────────┤ useMenus()（hook）
 - 応答は同じ `MenuItemSchema.parse` で検証（境界検証を再利用）。
 - テストは MSW で HTTP をモック。
 
-## 11. 確認事項（要決定）
-- **A. 追加UI**: 既存ボトムシート内にフォーム？ それとも専用 `MenuAddScreen`（#4想定）？
-- **B. 入力項目**: 現行 `MenuItem` は「料理名・予算・材料・写真」。#4 は「料理名・メモ・写真」。→ **予算・材料でいく**か、`description(メモ)` を足すか。
-- **C. 初期シード**: 起動時に mocks の献立を投入する？ それとも**空スタート**？
-- **D. 状態管理**: menuStore(Zustand) で進めてOK？（後で TanStack Query 移行前提）
+## 11. 確認事項（決定済み）
+- **A. 追加UI**: 専用 `MenuAddScreen`（モーダル）＋ MenuScreen 内のインライン「クイック追加」の2本立て。
+- **B. 入力項目**: **予算・材料でいく**（`description` は足さない）。ただし**予算は任意**。
+- **C. 初期シード**: 空スタート。`seedIfEmpty` は実装しない（mocks は家計簿/予定/Todo の表示用に残る）。
+- **D. 状態管理**: menuStore(Zustand) で進める（後で TanStack Query 移行前提）。
+
+## 12. MenuScreen（#8）の決定事項
+段階4（MenuScreen 一覧）にあたって決めたこと。
+
+### 表示単位
+- **食事区分（朝/昼/夕）は持たない**。1日に献立を**フラットに複数件**ぶら下げる。
+  → `MenuItemSchema` は変更なし、ストレージの migration も不要（v1 のまま）。
+  → 将来入れる場合は `mealType` 追加＋ v1→v2 migration（既存データは「夕食」に寄せる）で対応する。
+- **日別**（1日を深く）と**週別**（7日を見渡す）をタブで切り替える。
+
+### 週別ビューのレイアウト
+- **7列の表グリッド**。ただし画面幅を7等分すると1列 50px 前後になり料理名がほぼ読めないため、
+  **列幅は固定（150px）＋横スクロール**とする（`MenuWeekBoard.styles.ts` の `WEEK_COLUMN_WIDTH`）。
+- 縦スクロールは画面側の `ScrollView` が持ち、横スクロールは週ボードが持つ（入れ子は逆方向なので競合しない）。
+- 週の起点は**日曜**（カレンダー画面の react-native-calendars に合わせる）。
+
+### 登録フロー
+- **クイック追加**: 料理名だけ入力して即保存（`quickAddToDraft` → `budget: 0`）。週を一気に埋める用途。
+  週別ビューでは「追加」を押した列にだけ入力欄が開く（7列ぶん常時表示すると狭い列が埋まるため）。
+- **詳細フォーム**: `MenuAddScreen` で予算・材料まで入力。既存の献立をタップすると同じ画面が編集モードで開く。
+- これに伴い `menuFormSchema` の **budget を任意**にした（未入力＝0。"abc"/"-1" は従来どおりエラー）。
+
+### 日付ユーティリティ
+- `new Date('YYYY-MM-DD')` は **UTC 深夜**にパースされ、UTC より西のタイムゾーンで日付が1日ずれる。
+  週の切り出しで致命的なので、`utils/date.ts` に**ローカル正午起点でパースする `parseDateKey`** を置き、
+  `formatDateJa` も含めて全てそれを使う（日本時間での結果は従来と同じ）。
+
+### 実装した範囲
+段階3（編集・削除）と段階4（MenuScreen）をまとめて実施。写真と API 連携は引き続き後続。

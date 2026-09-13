@@ -53,7 +53,7 @@ function TabNavigator() {
       })}
     >
       <Tab.Screen name="Calendar" component={CalendarScreen} options={{ title: 'カレンダー' }} />
-      <Tab.Screen name="Menu" component={PlaceholderScreen} options={{ title: '献立' }} />
+      <Tab.Screen name="Menu" component={MenuScreen} options={{ title: '献立' }} />
       <Tab.Screen name="Budget" component={PlaceholderScreen} options={{ title: '家計簿' }} />
       <Tab.Screen name="Schedule" component={PlaceholderScreen} options={{ title: '予定' }} />
       {/* 以下はプロフィール設定で有効化可能
@@ -111,11 +111,12 @@ function MainNavigator() {
       <MainStack.Screen
         name="MenuAdd"
         component={MenuAddScreen}
-        options={{
-          title: '献立を追加',
+        // 同じ画面で追加と編集を兼ねるので、menuId の有無でタイトルを出し分ける
+        options={({ route }) => ({
+          title: route.params.menuId ? '献立を編集' : '献立を追加',
           headerTintColor: colors.primary,
           presentation: 'modal',
-        }}
+        })}
       />
     </MainStack.Navigator>
   );
@@ -162,6 +163,7 @@ import { StyleSheet, Text } from 'react-native';
 import { SignUpScreen } from '@/screens/auth/SignUpScreen';
 import { CalendarScreen } from '@/screens/CalendarScreen';
 import { MenuAddScreen } from '@/screens/MenuAddScreen';
+import { MenuScreen } from '@/screens/MenuScreen';
 import { ProfileScreen } from '@/screens/ProfileScreen';
 
 const PlaceholderScreen = ({ route }: BottomTabScreenProps<MainTabParamList>) => (

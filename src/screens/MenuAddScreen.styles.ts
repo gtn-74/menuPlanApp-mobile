@@ -27,4 +27,13 @@ export const styles = StyleSheet.create({
     marginTop: 8,
   },
   saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  multilineInput: { minHeight: 80 },
+  deleteButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 12,
+  },
+  deleteButtonText: { color: colors.error, fontSize: 14, fontWeight: '600' },
 });

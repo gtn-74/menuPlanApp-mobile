@@ -111,11 +111,12 @@ function MainNavigator() {
       <MainStack.Screen
         name="MenuAdd"
         component={MenuAddScreen}
-        options={{
-          title: '献立を追加',
+        // 同じ画面で追加と編集を兼ねるので、menuId の有無でタイトルを出し分ける
+        options={({ route }) => ({
+          title: route.params.menuId ? '献立を編集' : '献立を追加',
           headerTintColor: colors.primary,
           presentation: 'modal',
-        }}
+        })}
       />
     </MainStack.Navigator>
   );

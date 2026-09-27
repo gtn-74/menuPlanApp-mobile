@@ -25,7 +25,11 @@ ios/build/
 .agents/
 
 # Claude Code
-.claude/
+# エージェント定義（.claude/agents/）はチームで共有するのでコミットする。
+# 個人設定と一時ファイルだけ除外する。
+.claude/*
+!.claude/agents/
+.claude/settings.local.json
 # Playwright
 /test-results/
 /playwright-report/

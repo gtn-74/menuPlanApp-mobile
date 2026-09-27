@@ -7,13 +7,7 @@ import {
   sumBudget,
 } from './menuSelectors';
 
-const menu = (
-  id: string,
-  date: string,
-  name: string,
-  createdAt: string,
-  budget = 0,
-): MenuItem => ({
+const menu = (id: string, date: string, name: string, createdAt: string, budget = 0): MenuItem => ({
   id,
   date,
   name,

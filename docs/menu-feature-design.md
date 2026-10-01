@@ -76,10 +76,11 @@ CalendarScreen ──────────┤ useMenus()（hook）
 - **フロー**: Playwright（作成→カレンダー反映）… E2E 整備後
 
 ## 9. 段階（PR 分割）
-1. `createVersionedStorage` ＋ `MenuRepository`/`LocalMenuRepository` ＋ `menuStore` ＋テスト（UIなし）
-2. 献立**作成**フォーム画面 ＋ CalendarScreen を menuStore 購読に（seed 込み）
-3. **編集・削除**
-4. MenuScreen 一覧（#8）
+1. ✅ `createVersionedStorage` ＋ `MenuRepository`/`LocalMenuRepository` ＋ `menuStore` ＋テスト（UIなし）
+2. ✅ 献立**作成**フォーム画面 ＋ CalendarScreen を menuStore 購読に
+3. ✅ **編集・削除**（`MenuAddScreen` が `menuId` の有無で追加/編集を兼ねる）
+4. ~~MenuScreen 一覧（#8）~~ → **Epic #57（週間献立プラン）の週プラン画面 #61 に統合**。
+   献立タブのホームは「日別/週別の一覧」ではなく「夕食の週プラン」になった
 5. `ApiMenuRepository`＋MSW（#14）
 
 ## 10. API 移行パス
@@ -87,8 +88,20 @@ CalendarScreen ──────────┤ useMenus()（hook）
 - 応答は同じ `MenuItemSchema.parse` で検証（境界検証を再利用）。
 - テストは MSW で HTTP をモック。
 
-## 11. 確認事項（要決定）
-- **A. 追加UI**: 既存ボトムシート内にフォーム？ それとも専用 `MenuAddScreen`（#4想定）？
-- **B. 入力項目**: 現行 `MenuItem` は「料理名・予算・材料・写真」。#4 は「料理名・メモ・写真」。→ **予算・材料でいく**か、`description(メモ)` を足すか。
-- **C. 初期シード**: 起動時に mocks の献立を投入する？ それとも**空スタート**？
-- **D. 状態管理**: menuStore(Zustand) で進めてOK？（後で TanStack Query 移行前提）
+## 11. 確認事項（決定済み）
+- **A. 追加UI**: 専用 `MenuAddScreen`（モーダル）。`menuId` を渡すと編集モードになり、削除もここから行う。
+- **B. 入力項目**: **予算・材料でいく**（`description` は足さない）。ただし**予算は任意**
+  （未入力＝0。献立は「まず名前だけ決めて金額は後で」という使い方が普通なため）。
+- **C. 初期シード**: 空スタート。`seedIfEmpty` は実装しない（mocks は家計簿/予定/Todo の表示用に残る）。
+- **D. 状態管理**: menuStore(Zustand) で進める（後で TanStack Query 移行前提 → #56）。
+
+## 12. 日付ユーティリティについて
+
+`new Date('YYYY-MM-DD')` は ISO 日付として **UTC 深夜**にパースされるため、UTC より西の
+タイムゾーンで `getDate()` が前日を返す。`formatDateJa` がこれを踏んでいたので、
+**ローカル正午起点でパースする `parseDateKey`**（`src/utils/date.ts`）を置き、そこを経由させた。
+正午起点にしているのは、深夜起点だと DST のある地域で ±1h の加算が日付をまたぐため。
+日本時間での表示結果は従来と同じ。
+
+Epic #57 では週の切り出し（`startOfWeek` / `addDays` / `buildWeekDates`）が必要になるが、
+それらは #59（planSelectors）で `parseDateKey` の上に足す。

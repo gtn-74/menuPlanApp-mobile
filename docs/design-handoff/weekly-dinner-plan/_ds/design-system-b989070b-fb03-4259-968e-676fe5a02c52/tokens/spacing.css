@@ -1,0 +1,24 @@
+/* ===========================================================================
+   献立プラン — Spacing tokens
+   4px base grid, matching the app's padding/margin/gap values.
+   =========================================================================== */
+:root {
+  --kp-space-0: 0;
+  --kp-space-1: 2px;
+  --kp-space-2: 4px;
+  --kp-space-3: 6px;
+  --kp-space-4: 8px;
+  --kp-space-5: 10px;
+  --kp-space-6: 12px;
+  --kp-space-8: 16px;
+  --kp-space-10: 20px;
+  --kp-space-12: 24px;
+  --kp-space-16: 32px;
+  --kp-space-20: 40px;
+
+  /* Common semantic spacing */
+  --space-inset-card: var(--kp-space-8);     /* 16 — screen/card padding */
+  --space-inset-control: var(--kp-space-6);  /* 12 — input/button h-padding */
+  --space-stack: var(--kp-space-8);          /* 16 — between form groups */
+  --space-gap-inline: var(--kp-space-4);     /* 8  — icon↔label, chips */
+}

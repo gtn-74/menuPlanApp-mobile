@@ -1,0 +1,34 @@
+/* ===========================================================================
+   献立プラン — Radii, shadows, motion
+   Soft rounded corners and gentle shadows. The app uses circular avatars and
+   day-cells, 8px controls, 12px inputs/cards, 20px bottom-sheet tops.
+   =========================================================================== */
+:root {
+  /* --- Border radius --- */
+  --kp-radius-sm: 4px;   /* small chips, priority badges, indicators */
+  --kp-radius-md: 8px;   /* buttons, dropdown trigger, today button */
+  --kp-radius-lg: 12px;  /* inputs, cards, dropdown menu */
+  --kp-radius-xl: 20px;  /* bottom sheet top corners */
+  --kp-radius-pill: 999px;
+  --kp-radius-circle: 50%; /* avatars, day-number badge */
+
+  /* --- Shadows --- */
+  /* Dropdown / popover: y+4, blur 12, 15% */
+  --kp-shadow-popover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* Bottom sheet rising from bottom: y-4, blur 12, 10% */
+  --kp-shadow-sheet: 0 -4px 12px rgba(0, 0, 0, 0.10);
+  /* Resting card lift */
+  --kp-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  /* Floating action / pressed primary */
+  --kp-shadow-raised: 0 2px 8px rgba(245, 124, 0, 0.25);
+
+  /* --- Borders --- */
+  --kp-border-width: 1px;
+  --kp-border-hairline: 1px solid var(--kp-border);
+
+  /* --- Motion --- */
+  --kp-ease: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --kp-duration-fast: 120ms; /* @kind other */
+  --kp-duration: 200ms; /* @kind other */
+  --kp-duration-sheet: 300ms; /* @kind other */
+}

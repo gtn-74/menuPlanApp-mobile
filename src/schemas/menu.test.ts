@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { MenuDraftSchema, menuFormSchema } from './menu';
 
 describe('menuFormSchema', () => {
-  it('正しい入力は通る（budget は文字列でも coerce）', () => {
+  it('正しい入力は通る（budget は文字列でも数値になる）', () => {
     const r = menuFormSchema.safeParse({ name: 'カレー', budget: '800' });
     expect(r.success).toBe(true);
     if (r.success) expect(r.data.budget).toBe(800);
@@ -13,12 +13,42 @@ describe('menuFormSchema', () => {
     expect(r.success).toBe(false);
   });
 
+  it('料理名の前後の空白は落ちる', () => {
+    const r = menuFormSchema.safeParse({ name: '  カレー  ', budget: '0' });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.name).toBe('カレー');
+  });
+
   it('budget が数値でなければエラー', () => {
     expect(menuFormSchema.safeParse({ name: 'A', budget: 'abc' }).success).toBe(false);
   });
 
   it('budget が負ならエラー', () => {
     expect(menuFormSchema.safeParse({ name: 'A', budget: '-1' }).success).toBe(false);
+  });
+
+  it('budget 未入力（空文字）は 0 として通る', () => {
+    const r = menuFormSchema.safeParse({ name: 'A', budget: '' });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.budget).toBe(0);
+  });
+
+  it('budget 未指定（undefined）も 0 として通る', () => {
+    const r = menuFormSchema.safeParse({ name: 'A' });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.budget).toBe(0);
+  });
+
+  it('budget が空白だけでも 0 として通る', () => {
+    const r = menuFormSchema.safeParse({ name: 'A', budget: '   ' });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.budget).toBe(0);
+  });
+
+  it('エラーは budget フィールドに紐づく（firstFieldErrors で拾える path）', () => {
+    const r = menuFormSchema.safeParse({ name: 'A', budget: 'abc' });
+    expect(r.success).toBe(false);
+    if (!r.success) expect(r.error.issues[0]?.path).toEqual(['budget']);
   });
 });
 

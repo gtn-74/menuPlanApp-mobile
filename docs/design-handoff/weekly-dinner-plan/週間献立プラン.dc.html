@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/design-system-b989070b-fb03-4259-968e-676fe5a02c52/tokens/typography.fonts.css">
+<link rel="stylesheet" href="_ds/design-system-b989070b-fb03-4259-968e-676fe5a02c52/tokens/colors.css">
+<link rel="stylesheet" href="_ds/design-system-b989070b-fb03-4259-968e-676fe5a02c52/tokens/typography.css">
+<link rel="stylesheet" href="_ds/design-system-b989070b-fb03-4259-968e-676fe5a02c52/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/design-system-b989070b-fb03-4259-968e-676fe5a02c52/tokens/effects.css">
+<link rel="stylesheet" href="_ds/design-system-b989070b-fb03-4259-968e-676fe5a02c52/styles.css">
+<script src="_ds/design-system-b989070b-fb03-4259-968e-676fe5a02c52/_ds_bundle.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<style>
+  body { margin:0; background:#ece9e4; font-family:"Noto Sans JP", -apple-system, sans-serif; }
+  a { color:#f57c00; } a:hover { color:#ff9800; }
+  ::-webkit-scrollbar { width:0; height:0; }
+  @keyframes kpFadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes kpSheetUp { from { transform:translateY(100%); } to { transform:none; } }
+</style>
+</helmet>
+<div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; box-sizing:border-box;">
+<div style="width:390px; height:760px; background:#fff; border-radius:44px; box-shadow:0 24px 70px rgba(0,0,0,.22), 0 0 0 11px #1c1c1e, 0 0 0 12px #333; overflow:hidden; position:relative; display:flex; flex-direction:column;">
+
+  <div style="height:44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 24px; font-size:14px; font-weight:600; color:#333;">
+    <span>9:41</span>
+    <span style="display:flex; gap:6px; align-items:center; font-size:15px; color:#333;">
+      <ion-icon name="cellular"></ion-icon><ion-icon name="wifi"></ion-icon><ion-icon name="battery-full"></ion-icon>
+    </span>
+  </div>
+
+  <div style="flex:none; display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 12px 10px 8px; border-bottom:1px solid #e0e0e0;">
+    <div style="display:flex; align-items:center; gap:2px; min-width:0;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ back }}" style="padding:4px; cursor:pointer; display:flex; align-items:center; color:#ff9800;">
+          <ion-icon name="chevron-back" style="font-size:22px;"></ion-icon>
+        </div>
+      </sc-if>
+      <span style="font-size:16px; font-weight:600; color:#333; padding-left:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ title }}</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; flex:none;">
+      <sc-if value="{{ isWeek }}" hint-placeholder-val="{{ true }}">
+        <span style="display:inline-flex; align-items:center; gap:4px; background:#f5f5f5; color:#333; font-size:13px; font-weight:500; padding:6px 10px; border-radius:8px;">今週<ion-icon name="chevron-down" style="font-size:16px;"></ion-icon></span>
+      </sc-if>
+      <sc-if value="{{ isCalendar }}" hint-placeholder-val="{{ true }}">
+        <span style="background:#ff9800; color:#fff; font-size:13px; font-weight:500; padding:6px 10px; border-radius:8px;">12</span>
+        <span style="display:inline-flex; align-items:center; gap:4px; background:#f5f5f5; color:#333; font-size:13px; font-weight:500; padding:6px 10px; border-radius:8px;">すべて<ion-icon name="chevron-down" style="font-size:16px;"></ion-icon></span>
+      </sc-if>
+      <ion-icon name="person-circle-outline" style="font-size:28px; color:#333;"></ion-icon>
+    </div>
+  </div>
+
+  <div style="flex:1; overflow-y:auto; background:#f5f5f5;">
+
+    <sc-if value="{{ showSubNav }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex; gap:8px; padding:12px 16px 0; background:#f5f5f5; overflow-x:auto;">
+        <sc-for list="{{ subNav }}" as="s" hint-placeholder-count="4">
+          <x-import component-from-global-scope="DesignSystem_b98907.Chip" role="toggle" active="{{ s.active }}" icon="{{ s.icon }}" on-click="{{ s.go }}" dc-props="{{ chipProps }}" hint-size="auto,32px">{{ s.label }}</x-import>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isWeek }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:#fff; border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between;">
+            <span style="font-size:15px; font-weight:600; color:#333;">今週の夕食</span>
+            <span style="font-size:13px; color:#757575;">{{ decidedText }}</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between;">
+              <span style="font-size:13px; color:#757575;">食費の見込み</span>
+              <span style="font-size:14px; font-weight:600; color:#333;">{{ spendText }}</span>
+            </div>
+            <div style="height:6px; border-radius:3px; background:#f5f5f5; overflow:hidden;">
+              <div style="height:100%; border-radius:3px; background:#4caf50; transition:width .3s cubic-bezier(.4,0,.2,1); width: {{ budgetPct }};"></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <x-import component-from-global-scope="DesignSystem_b98907.Button" size="sm" icon="sparkles" on-click="{{ autoFill }}" style="{{ fillBtnStyle }}" hint-size="auto,36px">まとめて提案</x-import>
+            <x-import component-from-global-scope="DesignSystem_b98907.Button" size="sm" variant="secondary" icon="cart-outline" on-click="{{ goShopping }}" hint-size="auto,36px">買い物リスト</x-import>
+          </div>
+        </div>
+
+        <sc-if value="{{ hasBatch }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ goBatch }}" style="display:flex; align-items:center; gap:10px; background:#ffe0b2; border-radius:12px; padding:12px 14px; cursor:pointer;">
+            <ion-icon name="time-outline" style="font-size:20px; color:#f57c00; flex:none;"></ion-icon>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:600; color:#333;">日曜に作り置きできる献立が{{ batchCount }}品</div>
+              <div style="font-size:12px; color:#8a6d3b; margin-top:2px;">{{ batchNames }}</div>
+            </div>
+            <ion-icon name="chevron-forward" style="font-size:18px; color:#f57c00; flex:none;"></ion-icon>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ weekDays }}" as="d" hint-placeholder-count="7">
+          <div onClick="{{ d.onTap }}" style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; padding:12px 14px; display:flex; gap:12px; align-items:center; cursor:pointer; animation:kpFadeUp .24s cubic-bezier(.4,0,.2,1) both;">
+            <div style="flex:none; width:42px; display:flex; flex-direction:column; align-items:center; gap:2px;">
+              <span style="font-size:11px; font-weight:500; color: {{ d.dowColor }};">{{ d.dow }}</span>
+              <span style="display:flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; font-size:15px; font-weight:600; color: {{ d.numColor }}; background: {{ d.numBg }}; border: {{ d.numBorder }};">{{ d.num }}</span>
+            </div>
+            <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:3px;">
+              <sc-if value="{{ d.hasMenu }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="width:4px; height:14px; border-radius:2px; background:#ff9800; flex:none;"></span>
+                  <span style="font-size:15px; font-weight:500; color:#333; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ d.menuName }}</span>
+                </div>
+                <span style="font-size:12px; color:#757575; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding-left:10px;">{{ d.menuSub }}</span>
+              </sc-if>
+              <sc-if value="{{ d.noMenu }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; align-items:center; gap:6px; color:#bdbdbd;">
+                  <ion-icon name="add-circle-outline" style="font-size:18px; color:#ff9800;"></ion-icon>
+                  <span style="font-size:14px; color:#9e9e9e;">献立を決める</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ showLunch }}" hint-placeholder-val="{{ true }}">
+                <span style="font-size:11px; color:#9e9e9e; padding-left:10px;">{{ d.lunchText }}</span>
+              </sc-if>
+            </div>
+            <sc-if value="{{ d.hasMenu }}" hint-placeholder-val="{{ true }}">
+              <span style="flex:none; font-size:13px; font-weight:600; color:#4caf50;">{{ d.priceText }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div style="height:8px;"></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSuggest }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:14px; color:#757575;">{{ suggestDateText }} の夕食</span>
+          <span onClick="{{ shuffle }}" style="display:inline-flex; align-items:center; gap:4px; font-size:13px; font-weight:500; color:#ff9800; cursor:pointer;"><ion-icon name="refresh" style="font-size:16px;"></ion-icon>他の候補</span>
+        </div>
+        <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="3">
+          <div style="background:#fff; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,.08); padding:14px; display:flex; flex-direction:column; gap:10px; animation:kpFadeUp .24s cubic-bezier(.4,0,.2,1) both;">
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+              <div style="width:48px; height:48px; border-radius:12px; background:#ffe0b2; display:flex; align-items:center; justify-content:center; flex:none;">
+                <ion-icon name="restaurant" style="font-size:24px; color:#f57c00;"></ion-icon>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:16px; font-weight:600; color:#333;">{{ s.name }}</div>
+                <div style="font-size:12px; color:#757575; margin-top:3px;">{{ s.meta }}</div>
+              </div>
+              <span style="flex:none; font-size:15px; font-weight:600; color:#4caf50;">{{ s.priceText }}</span>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <sc-for list="{{ s.reasons }}" as="r" hint-placeholder-count="2">
+                <span style="display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:500; padding:4px 8px; border-radius:4px; color: {{ r.color }}; background: {{ r.bg }};"><ion-icon name="{{ r.icon }}" style="font-size:13px;"></ion-icon>{{ r.text }}</span>
+              </sc-for>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <x-import component-from-global-scope="DesignSystem_b98907.Button" size="sm" block="{{ true }}" on-click="{{ s.choose }}" hint-size="100%,36px">この献立にする</x-import>
+              <x-import component-from-global-scope="DesignSystem_b98907.Button" size="sm" variant="secondary" on-click="{{ s.open }}" hint-size="auto,36px">レシピ</x-import>
+            </div>
+          </div>
+        </sc-for>
+        <div onClick="{{ goRequests }}" style="display:flex; align-items:center; gap:8px; justify-content:center; padding:12px; border:1px dashed #e0e0e0; border-radius:12px; color:#757575; font-size:13px; cursor:pointer;">
+          <ion-icon name="heart-outline" style="font-size:16px; color:#e91e63;"></ion-icon>家族のリクエストから選ぶ
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRecipe }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex; flex-direction:column;">
+        <div style="background:#fff; padding:16px; display:flex; flex-direction:column; gap:12px; border-bottom:1px solid #e0e0e0;">
+          <div style="display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:64px; height:64px; border-radius:12px; background:#ffe0b2; display:flex; align-items:center; justify-content:center; flex:none;">
+              <ion-icon name="restaurant" style="font-size:32px; color:#f57c00;"></ion-icon>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:18px; font-weight:700; color:#333;">{{ recipe.name }}</div>
+              <div style="font-size:13px; color:#757575; margin-top:4px;">{{ recipe.meta }}</div>
+              <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
+                <sc-for list="{{ recipe.tags }}" as="t" hint-placeholder-count="2">
+                  <span style="font-size:11px; font-weight:500; padding:3px 8px; border-radius:4px; color: {{ t.color }}; background: {{ t.bg }};">{{ t.text }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; background:#f5f5f5; border-radius:8px; padding:10px 12px;">
+            <ion-icon name="heart" style="font-size:16px; color:#e91e63; flex:none;"></ion-icon>
+            <span style="font-size:12px; color:#555; flex:1;">{{ recipe.voteText }}</span>
+            <div style="display:flex; gap:-4px;">
+              <sc-for list="{{ recipe.fans }}" as="f" hint-placeholder-count="2">
+                <span style="width:22px; height:22px; border-radius:50%; background:#ff9800; color:#fff; font-size:10px; font-weight:600; display:flex; align-items:center; justify-content:center; margin-left:-4px; border:1.5px solid #fff;">{{ f.initial }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff; margin-top:8px; padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <span style="font-size:15px; font-weight:600; color:#333;">材料（{{ servingsText }}）</span>
+            <span style="font-size:12px; color:#757575;">{{ recipe.haveText }}</span>
+          </div>
+          <sc-for list="{{ recipe.ings }}" as="i" hint-placeholder-count="5">
+            <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #e0e0e0;">
+              <ion-icon name="{{ i.icon }}" style="font-size:18px; color: {{ i.color }}; flex:none;"></ion-icon>
+              <span style="flex:1; font-size:14px; color:#333;">{{ i.name }}</span>
+              <span style="font-size:12px; color: {{ i.color }};">{{ i.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff; margin-top:8px; padding:16px 16px 20px;">
+          <div style="font-size:15px; font-weight:600; color:#333; margin-bottom:10px;">作り方</div>
+          <sc-for list="{{ recipe.steps }}" as="st" hint-placeholder-count="3">
+            <div style="display:flex; gap:12px; padding:8px 0;">
+              <span style="flex:none; width:22px; height:22px; border-radius:50%; background:#ffe0b2; color:#f57c00; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;">{{ st.n }}</span>
+              <span style="font-size:14px; line-height:1.6; color:#333;">{{ st.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:16px; display:flex; gap:8px;">
+          <x-import component-from-global-scope="DesignSystem_b98907.Button" block="{{ true }}" icon="calendar-outline" on-click="{{ recipe.assign }}" hint-size="100%,48px">{{ recipe.ctaText }}</x-import>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isFridge }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:#fff; border-radius:12px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,.08); display:flex; align-items:center; gap:12px;">
+          <ion-icon name="alert-circle" style="font-size:26px; color:#f44336; flex:none;"></ion-icon>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:14px; font-weight:600; color:#333;">{{ expiringText }}</div>
+            <div style="font-size:12px; color:#757575; margin-top:2px;">早めに使う献立を提案できます</div>
+          </div>
+          <x-import component-from-global-scope="DesignSystem_b98907.Button" size="sm" on-click="{{ suggestFromFridge }}" hint-size="auto,36px">提案</x-import>
+        </div>
+        <sc-for list="{{ fridgeGroups }}" as="g" hint-placeholder-count="3">
+          <div style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; overflow:hidden;">
+            <div style="display:flex; align-items:center; gap:6px; padding:10px 14px; border-bottom:1px solid #e0e0e0;">
+              <ion-icon name="{{ g.icon }}" style="font-size:16px; color: {{ g.color }};"></ion-icon>
+              <span style="font-size:13px; font-weight:600; color:#333;">{{ g.name }}</span>
+              <span style="font-size:12px; color:#bdbdbd;">{{ g.countText }}</span>
+            </div>
+            <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+              <div onClick="{{ it.toggle }}" style="display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid #f5f5f5; cursor:pointer;">
+                <span style="width:4px; align-self:stretch; min-height:26px; border-radius:2px; background: {{ it.tone }}; flex:none;"></span>
+                <span style="flex:1; font-size:14px; color: {{ it.textColor }}; text-decoration: {{ it.deco }};">{{ it.name }}</span>
+                <span style="font-size:12px; color:#757575;">{{ it.qty }}</span>
+                <span style="font-size:11px; font-weight:500; padding:2px 8px; border-radius:4px; color: {{ it.expColor }}; background: {{ it.expBg }};">{{ it.exp }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+        <div style="height:4px;"></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRequests }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:#fff; border-radius:12px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,.08);">
+          <div style="font-size:14px; font-weight:600; color:#333;">今週の「食べたい」</div>
+          <div style="font-size:12px; color:#757575; margin-top:3px; line-height:1.6;">家族の投票が多い献立から優先して提案します</div>
+          <div style="display:flex; gap:14px; margin-top:12px;">
+            <sc-for list="{{ members }}" as="m" hint-placeholder-count="3">
+              <x-import component-from-global-scope="DesignSystem_b98907.Avatar" name="{{ m.name }}" initial="{{ m.initial }}" size="{{ 40 }}" show-name="{{ true }}" active="{{ m.active }}" hint-size="44px,62px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ requests }}" as="q" hint-placeholder-count="4">
+          <div style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; padding:12px 14px; display:flex; align-items:center; gap:12px; animation:kpFadeUp .24s cubic-bezier(.4,0,.2,1) both;">
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:15px; font-weight:500; color:#333;">{{ q.name }}</div>
+              <div style="font-size:12px; color:#757575; margin-top:3px;">{{ q.by }}</div>
+            </div>
+            <div onClick="{{ q.vote }}" style="flex:none; display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 10px; border-radius:8px; cursor:pointer; background: {{ q.bg }};">
+              <ion-icon name="{{ q.icon }}" style="font-size:18px; color: {{ q.color }};"></ion-icon>
+              <span style="font-size:11px; font-weight:600; color: {{ q.color }};">{{ q.count }}</span>
+            </div>
+            <div onClick="{{ q.plan }}" style="flex:none; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; background:#f5f5f5; cursor:pointer;">
+              <ion-icon name="calendar-outline" style="font-size:18px; color:#ff9800;"></ion-icon>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex; align-items:center; gap:8px; background:#fff; border:1px dashed #e0e0e0; border-radius:12px; padding:12px 14px; color:#bdbdbd; font-size:14px;">
+          <ion-icon name="add" style="font-size:20px; color:#ff9800;"></ion-icon>食べたいものをリクエスト
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isShopping }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:#fff; border-radius:12px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,.08); display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between;">
+            <span style="font-size:14px; font-weight:600; color:#333;">今週の買い物</span>
+            <span style="font-size:13px; color:#757575;">{{ shopProgressText }}</span>
+          </div>
+          <div style="height:6px; border-radius:3px; background:#f5f5f5; overflow:hidden;">
+            <div style="height:100%; border-radius:3px; background:#4caf50; transition:width .3s cubic-bezier(.4,0,.2,1); width: {{ shopPct }};"></div>
+          </div>
+          <div style="font-size:12px; color:#757575;">{{ shopNote }}</div>
+        </div>
+        <sc-for list="{{ shopGroups }}" as="g" hint-placeholder-count="3">
+          <div style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; overflow:hidden;">
+            <div style="display:flex; align-items:center; gap:6px; padding:10px 14px; border-bottom:1px solid #e0e0e0;">
+              <ion-icon name="{{ g.icon }}" style="font-size:16px; color: {{ g.color }};"></ion-icon>
+              <span style="font-size:13px; font-weight:600; color:#333;">{{ g.name }}</span>
+            </div>
+            <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+              <div onClick="{{ it.toggle }}" style="display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid #f5f5f5; cursor:pointer;">
+                <ion-icon name="{{ it.icon }}" style="font-size:20px; color: {{ it.iconColor }}; flex:none;"></ion-icon>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:14px; color: {{ it.textColor }}; text-decoration: {{ it.deco }};">{{ it.name }}</div>
+                  <div style="font-size:11px; color:#bdbdbd; margin-top:2px;">{{ it.forText }}</div>
+                </div>
+                <span style="font-size:13px; color:#757575;">{{ it.priceText }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+        <div style="height:4px;"></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isCalendar }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#fff; padding:8px 0 12px;">
+        <div style="display:grid; grid-template-columns:28px repeat(7,1fr); padding:0 4px;">
+          <span></span>
+          <sc-for list="{{ dowHeads }}" as="h" hint-placeholder-count="7">
+            <span style="text-align:center; font-size:12px; font-weight:500; padding:6px 0; color: {{ h.color }};">{{ h.label }}</span>
+          </sc-for>
+        </div>
+        <sc-for list="{{ calRows }}" as="row" hint-placeholder-count="5">
+          <div style="display:grid; grid-template-columns:28px repeat(7,1fr); padding:0 4px; border-top:1px solid #f5f5f5;">
+            <span style="display:flex; align-items:center; justify-content:center; font-size:10px; color:#bdbdbd;">{{ row.week }}</span>
+            <sc-for list="{{ row.cells }}" as="c" hint-placeholder-count="7">
+              <div onClick="{{ c.onTap }}" style="min-height:58px; padding:4px 2px; display:flex; flex-direction:column; align-items:center; gap:2px; cursor: {{ c.cursor }};">
+                <span style="display:flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; font-size:13px; font-weight:500; color: {{ c.numColor }}; background: {{ c.numBg }}; border: {{ c.numBorder }};">{{ c.num }}</span>
+                <span style="display:flex; gap:2px; height:5px;">
+                  <sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="2">
+                    <span style="width:5px; height:5px; border-radius:50%; background: {{ d.color }};"></span>
+                  </sc-for>
+                </span>
+                <span style="font-size:9px; line-height:1.2; color:#f57c00; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ c.chip }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:12px 16px 16px; display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; flex-wrap:wrap; gap:12px;">
+          <sc-for list="{{ legend }}" as="l" hint-placeholder-count="5">
+            <span style="display:inline-flex; align-items:center; gap:5px; font-size:11px; color:#757575;"><span style="width:7px; height:7px; border-radius:50%; background: {{ l.color }};"></span>{{ l.label }}</span>
+          </sc-for>
+        </div>
+        <div onClick="{{ goWeek }}" style="display:flex; align-items:center; gap:10px; background:#fff; border-radius:12px; border:1px solid #e0e0e0; padding:12px 14px; cursor:pointer;">
+          <ion-icon name="restaurant" style="font-size:20px; color:#ff9800; flex:none;"></ion-icon>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:14px; font-weight:600; color:#333;">今週の夕食プラン</div>
+            <div style="font-size:12px; color:#757575; margin-top:2px;">{{ decidedText }} ・ 空いている日はまとめて提案できます</div>
+          </div>
+          <ion-icon name="chevron-forward" style="font-size:18px; color:#bdbdbd; flex:none;"></ion-icon>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isBudget }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:#fff; border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between;">
+            <span style="font-size:15px; font-weight:600; color:#333;">1月の食費</span>
+            <span style="font-size:20px; font-weight:700; color:#4caf50;">{{ monthFoodText }}</span>
+          </div>
+          <div style="height:6px; border-radius:3px; background:#f5f5f5; overflow:hidden;">
+            <div style="height:100%; border-radius:3px; background:#4caf50; width: {{ monthFoodPct }};"></div>
+          </div>
+          <div style="font-size:12px; color:#757575;">{{ monthFoodNote }}</div>
+        </div>
+        <div style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; padding:4px 14px 8px;">
+          <div style="font-size:13px; font-weight:600; color:#333; padding:10px 0 2px;">献立からの記録（今週）</div>
+          <sc-for list="{{ foodLog }}" as="f" hint-placeholder-count="3">
+            <x-import component-from-global-scope="DesignSystem_b98907.ListItem" tone="budget" meta="{{ f.meta }}" title="{{ f.title }}" subtitle="{{ f.subtitle }}" trailing="{{ f.amount }}" hint-size="100%,64px"></x-import>
+          </sc-for>
+        </div>
+        <div style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; padding:4px 14px 8px;">
+          <div style="font-size:13px; font-weight:600; color:#333; padding:10px 0 2px;">その他の支出</div>
+          <sc-for list="{{ otherLog }}" as="f" hint-placeholder-count="2">
+            <x-import component-from-global-scope="DesignSystem_b98907.ListItem" tone="budget" meta="{{ f.meta }}" title="{{ f.title }}" subtitle="{{ f.subtitle }}" trailing="{{ f.amount }}" hint-size="100%,64px"></x-import>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; padding:4px 14px 8px;">
+          <div style="display:flex; align-items:center; gap:6px; padding:12px 0 4px;">
+            <ion-icon name="time-outline" style="font-size:18px; color:#2196f3;"></ion-icon>
+            <span style="font-size:13px; font-weight:600; color:#333;">予定</span>
+          </div>
+          <sc-for list="{{ events }}" as="e" hint-placeholder-count="3">
+            <x-import component-from-global-scope="DesignSystem_b98907.ListItem" tone="{{ e.tone }}" meta="{{ e.meta }}" title="{{ e.title }}" subtitle="{{ e.subtitle }}" hint-size="100%,64px"></x-import>
+          </sc-for>
+        </div>
+        <div style="background:#fff; border-radius:12px; border:1px solid #e0e0e0; overflow:hidden;">
+          <div style="display:flex; align-items:center; gap:6px; padding:12px 14px 8px;">
+            <ion-icon name="checkbox-outline" style="font-size:18px; color:#e91e63;"></ion-icon>
+            <span style="font-size:13px; font-weight:600; color:#333;">Todo</span>
+          </div>
+          <sc-for list="{{ todos }}" as="t" hint-placeholder-count="3">
+            <div onClick="{{ t.toggle }}" style="display:flex; align-items:center; gap:10px; padding:11px 14px; border-top:1px solid #f5f5f5; cursor:pointer;">
+              <ion-icon name="{{ t.icon }}" style="font-size:20px; color: {{ t.iconColor }}; flex:none;"></ion-icon>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:14px; color: {{ t.textColor }}; text-decoration: {{ t.deco }};">{{ t.title }}</div>
+                <div style="font-size:11px; color:#9e9e9e; margin-top:2px;">{{ t.who }}</div>
+              </div>
+              <span style="flex:none; font-size:11px; font-weight:500; color:#fff; padding:2px 8px; border-radius:4px; background: {{ t.prColor }};">{{ t.pr }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size:12px; color:#9e9e9e; line-height:1.6; padding:0 2px;">買い物リストでチェックした食材は、Todo の「買い物」にまとめて反映されます。</div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ hasSheet }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:0; right:0; top:0; bottom:70px; background:rgba(0,0,0,.32); display:flex; align-items:flex-end;">
+      <div onClick="{{ closeSheet }}" style="position:absolute; inset:0;"></div>
+      <div style="position:relative; width:100%; height:86%; background:#fff; border-radius:20px 20px 0 0; box-shadow:0 -4px 12px rgba(0,0,0,.10); display:flex; flex-direction:column; animation:kpSheetUp .3s cubic-bezier(.4,0,.2,1) both;">
+        <div style="flex:none; display:flex; justify-content:center; padding:10px 0 4px;">
+          <span style="width:40px; height:4px; border-radius:2px; background:#e0e0e0;"></span>
+        </div>
+        <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:4px 20px 12px; border-bottom:1px solid #e0e0e0;">
+          <span style="font-size:18px; font-weight:700; color:#333;">{{ sheet.dateText }}</span>
+          <div onClick="{{ closeSheet }}" style="display:flex; padding:4px; cursor:pointer;"><ion-icon name="close" style="font-size:24px; color:#757575;"></ion-icon></div>
+        </div>
+        <div style="flex:1; overflow-y:auto; padding:4px 20px 20px;">
+          <sc-if value="{{ sheet.isEmpty }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:48px 0;">
+              <ion-icon name="calendar-outline" style="font-size:32px; color:#bdbdbd;"></ion-icon>
+              <span style="font-size:14px; color:#9e9e9e;">予定・献立はありません</span>
+            </div>
+          </sc-if>
+          <sc-for list="{{ sheet.sections }}" as="sec" hint-placeholder-count="3">
+            <div style="padding:16px 0 4px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <ion-icon name="{{ sec.icon }}" style="font-size:18px; color: {{ sec.color }};"></ion-icon>
+                <span style="font-size:14px; font-weight:600; color:#333;">{{ sec.title }}</span>
+              </div>
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="2">
+                <div onClick="{{ it.onTap }}" style="display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-bottom:1px solid #e0e0e0; cursor: {{ it.cursor }};">
+                  <span style="width:4px; align-self:stretch; min-height:40px; border-radius:2px; background: {{ it.tone }}; flex:none;"></span>
+                  <div style="flex:1; min-width:0;">
+                    <sc-if value="{{ it.meta }}" hint-placeholder-val="{{ true }}">
+                      <div style="font-size:12px; color:#757575; margin-bottom:2px;">{{ it.meta }}</div>
+                    </sc-if>
+                    <div style="font-size:15px; font-weight:500; color:#333;">{{ it.title }}</div>
+                    <sc-if value="{{ it.sub }}" hint-placeholder-val="{{ true }}">
+                      <div style="font-size:13px; color:#757575; margin-top:2px;">{{ it.sub }}</div>
+                    </sc-if>
+                  </div>
+                  <sc-if value="{{ it.trailing }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:none; font-size:13px; font-weight:600; color: {{ it.trailingColor }};">{{ it.trailing }}</span>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+        <div style="flex:none; display:flex; gap:8px; padding:12px 20px 16px; border-top:1px solid #e0e0e0;">
+          <x-import component-from-global-scope="DesignSystem_b98907.Button" block="{{ true }}" icon="{{ sheet.ctaIcon }}" on-click="{{ sheet.cta }}" hint-size="100%,48px">{{ sheet.ctaText }}</x-import>
+          <x-import component-from-global-scope="DesignSystem_b98907.Button" variant="secondary" icon="add" on-click="{{ sheet.addOther }}" hint-size="auto,48px">予定</x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:50%; bottom:86px; transform:translateX(-50%); background:rgba(51,51,51,.94); color:#fff; font-size:13px; font-weight:500; padding:10px 16px; border-radius:20px; white-space:nowrap; animation:kpFadeUp .2s cubic-bezier(.4,0,.2,1) both;">{{ toast }}</div>
+  </sc-if>
+
+  <div style="flex:none; height:64px; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid #e0e0e0; background:#fff; padding-bottom:6px;">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+      <div onClick="{{ t.go }}" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; cursor:pointer; min-height:44px;">
+        <span style="position:relative; display:flex;">
+          <ion-icon name="{{ t.icon }}" style="font-size:24px; color: {{ t.color }};"></ion-icon>
+          <sc-if value="{{ t.badge }}" hint-placeholder-val="{{ true }}">
+            <span style="position:absolute; top:-3px; right:-8px; min-width:15px; height:15px; padding:0 4px; box-sizing:border-box; border-radius:8px; background:#f44336; color:#fff; font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center;">{{ t.badge }}</span>
+          </sc-if>
+        </span>
+        <span style="font-size:10px; color: {{ t.color }};">{{ t.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="position:absolute; bottom:7px; left:50%; transform:translateX(-50%); width:130px; height:5px; border-radius:3px; background:#1c1c1e; opacity:.85;"></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:440,&quot;height&quot;:810},&quot;servings&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:1,&quot;max&quot;:8,&quot;unit&quot;:&quot;人&quot;,&quot;section&quot;:&quot;設定&quot;},&quot;weeklyBudget&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:5000,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:2000,&quot;max&quot;:12000,&quot;step&quot;:500,&quot;unit&quot;:&quot;円&quot;,&quot;section&quot;:&quot;設定&quot;},&quot;showLunch&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;設定&quot;}}">
+const V = "var(--kp-menu)";
+
+const RECIPES = [
+  { id:"r1", name:"豚の生姜焼き", time:20, price:780, batch:false, ings:[["豚ロース薄切り 300g","肉・魚",420],["玉ねぎ","野菜",60],["しょうが","野菜",80],["醤油","調味料",0],["みりん","調味料",0]],
+    steps:["豚肉に薄く片栗粉をまぶします。","玉ねぎを薄切りにして、油をひいたフライパンで炒めます。","醤油・みりん・すりおろし生姜を合わせて回しかけ、汁気を煮からめます。"] },
+  { id:"r2", name:"チキンカレー", time:40, price:920, batch:true, ings:[["鶏もも肉 400g","肉・魚",480],["じゃがいも","野菜",0],["にんじん","野菜",0],["玉ねぎ","野菜",60],["カレールー","その他",180]],
+    steps:["野菜と鶏肉を一口大に切ります。","鍋で炒めてから水を加え、15分ほど煮込みます。","火を止めてルーを溶かし、弱火で10分煮ます。"] },
+  { id:"r3", name:"鮭のホイル焼き", time:25, price:860, batch:false, ings:[["生鮭 3切れ","肉・魚",620],["しめじ","野菜",0],["バター","その他",120],["レモン","野菜",120]],
+    steps:["アルミホイルに鮭・しめじ・バターをのせて包みます。","フライパンに並べ、蓋をして中火で12分蒸し焼きにします。","レモンを添えて出来上がりです。"] },
+  { id:"r4", name:"麻婆豆腐", time:20, price:640, batch:false, ings:[["豚ひき肉 200g","肉・魚",0],["木綿豆腐","その他",0],["長ねぎ","野菜",120],["豆板醤","調味料",0]],
+    steps:["ねぎをみじん切りにし、ひき肉と一緒に炒めます。","豆板醤と調味料を加え、水溶き片栗粉でとろみをつけます。","角切りの豆腐を加え、崩さないように2分煮ます。"] },
+  { id:"r5", name:"肉じゃが", time:35, price:720, batch:true, ings:[["牛こま切れ 250g","肉・魚",460],["じゃがいも","野菜",0],["にんじん","野菜",0],["玉ねぎ","野菜",60],["しらたき","その他",100]],
+    steps:["野菜を乱切りにし、牛肉と一緒に鍋で炒めます。","出汁と調味料を加え、落とし蓋で20分煮ます。","火を止めて10分置き、味を含ませます。"] },
+  { id:"r6", name:"鶏の唐揚げ", time:30, price:690, batch:false, ings:[["鶏もも肉 500g","肉・魚",540],["片栗粉","その他",80],["にんにく","野菜",70],["醤油","調味料",0]],
+    steps:["鶏肉を調味液に20分漬け込みます。","片栗粉をまぶし、170℃で3分揚げます。","一度取り出し、190℃で1分二度揚げします。"] },
+  { id:"r7", name:"具だくさん豚汁", time:25, price:520, batch:true, ings:[["豚バラ薄切り 150g","肉・魚",280],["大根","野菜",150],["にんじん","野菜",0],["ごぼう","野菜",90],["味噌","調味料",0]],
+    steps:["根菜を薄切りにし、豚バラと一緒に炒めます。","出汁を加えて15分煮込みます。","火を弱めて味噌を溶き入れます。"] },
+  { id:"r8", name:"ナポリタン", time:20, price:480, batch:false, ings:[["スパゲティ","その他",130],["ウインナー","肉・魚",210],["ピーマン","野菜",100],["玉ねぎ","野菜",60],["ケチャップ","調味料",0]],
+    steps:["麺を茹でている間に具材を炒めます。","ケチャップを加えて軽く煮詰めます。","茹で上がった麺を和えて絡めます。"] },
+];
+
+const FRIDGE = [
+  { name:"木綿豆腐", qty:"1丁", cat:"その他", days:0 },
+  { name:"豚ひき肉", qty:"200g", cat:"肉・魚", days:1 },
+  { name:"牛乳", qty:"500ml", cat:"その他", days:2 },
+  { name:"しめじ", qty:"1袋", cat:"野菜", days:3 },
+  { name:"玉ねぎ", qty:"3個", cat:"野菜", days:12 },
+  { name:"にんじん", qty:"2本", cat:"野菜", days:9 },
+  { name:"じゃがいも", qty:"4個", cat:"野菜", days:20 },
+  { name:"卵", qty:"8個", cat:"その他", days:6 },
+  { name:"味噌", qty:"400g", cat:"調味料", days:60 },
+  { name:"醤油", qty:"1本", cat:"調味料", days:90 },
+  { name:"みりん", qty:"1本", cat:"調味料", days:90 },
+  { name:"ケチャップ", qty:"1本", cat:"調味料", days:45 },
+  { name:"豆板醤", qty:"1瓶", cat:"調味料", days:80 },
+  { name:"片栗粉", qty:"200g", cat:"その他", days:70 },
+];
+
+const MEMBERS = [
+  { id:"u1", name:"パパ", initial:"パ" },
+  { id:"u2", name:"ママ", initial:"マ" },
+  { id:"u3", name:"太郎", initial:"太" },
+];
+
+const DAYS = [
+  { key:"2026-01-12", num:12, dow:"月", lunch:"給食：わかめごはん・鶏の照り焼き" },
+  { key:"2026-01-13", num:13, dow:"火", lunch:"給食：ミートソーススパゲティ" },
+  { key:"2026-01-14", num:14, dow:"水", lunch:"給食：ごはん・肉じゃが" },
+  { key:"2026-01-15", num:15, dow:"木", lunch:"給食：パン・ポトフ" },
+  { key:"2026-01-16", num:16, dow:"金", lunch:"給食：カレーライス" },
+  { key:"2026-01-17", num:17, dow:"土", lunch:"お昼：未定" },
+  { key:"2026-01-18", num:18, dow:"日", lunch:"お昼：未定" },
+];
+
+const CAT_META = {
+  "野菜": { icon:"leaf-outline", color:"#4caf50" },
+  "肉・魚": { icon:"fish-outline", color:"#f44336" },
+  "その他": { icon:"cube-outline", color:"#2196f3" },
+  "調味料": { icon:"flask-outline", color:"#9c27b0" },
+};
+const CAT_ORDER = ["野菜","肉・魚","その他","調味料"];
+
+const DOW = ["木","金","土","日","月","火","水"];
+const dowOf = (num) => DOW[(num - 1) % 7];
+
+const DAY_EVENTS = {
+  7:  [{ time:"17:30", title:"太郎のスイミング", type:"personal" }],
+  13: [{ time:"19:00", title:"PTA定例会", type:"family" }],
+  14: [{ time:"07:30", title:"ゴミ出し", type:"personal" }],
+  18: [{ time:"10:00", title:"買い出し（まとめ買い）", type:"family" }, { time:"15:00", title:"日曜の作り置き", type:"family" }],
+  21: [{ time:"18:00", title:"歯科の予約", type:"personal" }],
+  24: [{ time:"11:00", title:"実家へ帰省", type:"family" }],
+  30: [{ time:"09:00", title:"健康診断", type:"personal" }],
+};
+const DAY_BUDGETS = {
+  5:  [{ title:"食費", sub:"スーパー", amt:3280 }],
+  9:  [{ title:"外食", sub:"家族でランチ", amt:4600 }],
+  13: [{ title:"食費", sub:"スーパー", amt:2140 }],
+  16: [{ title:"日用品", sub:"ドラッグストア", amt:1860 }],
+  20: [{ title:"食費", sub:"精肉店", amt:1240 }],
+  25: [{ title:"食費", sub:"スーパー", amt:5320 }],
+  28: [{ title:"日用品", sub:"ネット注文", amt:2480 }],
+};
+const DAY_TODOS = {
+  6:  [{ title:"牛乳を買う", pr:"高", who:"ママ" }],
+  13: [{ title:"体操服を洗う", pr:"中", who:"パパ" }],
+  19: [{ title:"冷蔵庫の整理", pr:"低", who:"太郎" }],
+  27: [{ title:"月末の家計簿まとめ", pr:"中", who:"パパ" }],
+};
+const PR_COLOR = { "高":"#f44336", "中":"#ff9800", "低":"#9e9e9e" };
+
+const yen = (n) => "¥" + n.toLocaleString();
+const baseName = (s) => s.split(" ")[0];
+
+class Component extends DCLogic {
+  state = {
+    screen: "week",
+    from: "week",
+    todosDone: ["t3"],
+    recipeId: null,
+    suggestDate: null,
+    shuffleN: 0,
+    plan: { "2026-01-12":"r1", "2026-01-13":"r4", "2026-01-16":"r6" },
+    consumed: [],
+    checked: [],
+    votes: { q1:3, q2:2, q3:1, q4:2 },
+    myVotes: ["q1"],
+    toast: null,
+  };
+
+  requestsData = [
+    { id:"q1", name:"鶏の唐揚げ", by:"太郎がリクエスト・1月10日", recipeId:"r6" },
+    { id:"q2", name:"鮭のホイル焼き", by:"ママがリクエスト・1月9日", recipeId:"r3" },
+    { id:"q3", name:"麻婆豆腐", by:"パパがリクエスト・1月8日", recipeId:"r4" },
+    { id:"q4", name:"具だくさん豚汁", by:"ママがリクエスト・1月7日", recipeId:"r7" },
+  ];
+
+  flash(msg) {
+    clearTimeout(this._t);
+    this.setState({ toast: msg });
+    this._t = setTimeout(() => this.setState({ toast: null }), 1900);
+  }
+
+  go(screen, patch) {
+    const cur = this.state.screen;
+    const isPush = screen === "suggest" || screen === "recipe";
+    const curPush = cur === "suggest" || cur === "recipe";
+    const from = isPush ? (curPush ? this.state.from : cur) : this.state.from;
+    this.setState({ screen, from, ...(patch || {}) });
+  }
+
+  fridgeNames() {
+    return FRIDGE.filter((f) => !this.state.consumed.includes(f.name)).map((f) => f.name);
+  }
+
+  missingFor(recipe) {
+    const have = this.fridgeNames();
+    return recipe.ings.filter((i) => !have.includes(baseName(i[0])));
+  }
+
+  score(r) {
+    const have = this.fridgeNames();
+    let s = 0;
+    r.ings.forEach((i) => { if (have.includes(baseName(i[0]))) s += 2; });
+    const q = this.requestsData.find((x) => x.recipeId === r.id);
+    if (q) s += this.state.votes[q.id] * 1.5;
+    const soon = FRIDGE.filter((f) => f.days <= 2 && !this.state.consumed.includes(f.name)).map((f) => f.name);
+    r.ings.forEach((i) => { if (soon.includes(baseName(i[0]))) s += 4; });
+    return s;
+  }
+
+  candidates(n) {
+    const used = Object.values(this.state.plan);
+    const pool = RECIPES.filter((r) => !used.includes(r.id));
+    const ranked = pool.map((r) => ({ r, s: this.score(r) })).sort((a, b) => b.s - a.s).map((x) => x.r);
+    const off = this.state.shuffleN % Math.max(1, ranked.length - n + 1);
+    return ranked.slice(off, off + n);
+  }
+
+  reasonsFor(r) {
+    const out = [];
+    const soon = FRIDGE.filter((f) => f.days <= 2 && !this.state.consumed.includes(f.name)).map((f) => f.name);
+    const hit = r.ings.map((i) => baseName(i[0])).filter((n) => soon.includes(n));
+    if (hit.length) out.push({ text: hit[0] + "が期限間近", icon:"alert-circle-outline", color:"#f44336", bg:"#ffebee" });
+    const q = this.requestsData.find((x) => x.recipeId === r.id);
+    if (q && this.state.votes[q.id] >= 2) out.push({ text:"家族の投票 " + this.state.votes[q.id] + "票", icon:"heart", color:"#e91e63", bg:"#fce4ec" });
+    const miss = this.missingFor(r).length;
+    if (miss <= 1) out.push({ text:"買い足し" + miss + "品でOK", icon:"checkmark-circle-outline", color:"#4caf50", bg:"#e8f5e9" });
+    if (r.batch) out.push({ text:"作り置き向き", icon:"time-outline", color:"#f57c00", bg:"#fff3e0" });
+    if (!out.length) out.push({ text:"今週まだ登場していません", icon:"sparkles-outline", color:"#757575", bg:"#f5f5f5" });
+    return out.slice(0, 3);
+  }
+
+  assign(date, id) {
+    const plan = { ...this.state.plan, [date]: id };
+    const r = RECIPES.find((x) => x.id === id);
+    const d = DAYS.find((x) => x.key === date);
+    this.setState({ plan, screen:"week", suggestDate:null });
+    this.flash("1月" + d.num + "日（" + d.dow + "）を「" + r.name + "」にしました");
+  }
+
+  autoFill() {
+    const plan = { ...this.state.plan };
+    const used = Object.values(plan);
+    const pool = RECIPES.filter((r) => !used.includes(r.id)).map((r) => ({ r, s: this.score(r) })).sort((a, b) => b.s - a.s).map((x) => x.r);
+    let n = 0;
+    DAYS.forEach((d) => { if (!plan[d.key] && pool[n]) { plan[d.key] = pool[n].id; n++; } });
+    this.setState({ plan });
+    this.flash(n > 0 ? n + "日分の献立を提案しました" : "今週の夕食はすべて決まっています");
+  }
+
+  buildSheet(num) {
+    const st = this.state;
+    const day = DAYS.find((d) => d.num === num);
+    const r = day ? RECIPES.find((x) => x.id === st.plan[day.key]) : null;
+    const evs = DAY_EVENTS[num] || [];
+    const bgs = DAY_BUDGETS[num] || [];
+    const tds = DAY_TODOS[num] || [];
+    const sections = [];
+
+    if (evs.length) sections.push({
+      title:"予定", icon:"time-outline", color:"#2196f3",
+      items: evs.map((e) => ({
+        tone: e.type === "family" ? "#9c27b0" : "#2196f3",
+        meta: e.time, title: e.title, sub: e.type === "family" ? "家族" : "個人",
+        trailing: "", trailingColor:"#757575", cursor:"default", onTap: () => {},
+      })),
+    });
+
+    sections.push({
+      title:"献立", icon:"restaurant-outline", color:"#ff9800",
+      items: r ? [{
+        tone:"#ff9800", meta:"夕食", title: r.name,
+        sub: r.ings.slice(0, 3).map((i) => baseName(i[0])).join("、") + (r.ings.length > 3 ? "…" : ""),
+        trailing: yen(r.price), trailingColor:"#4caf50", cursor:"pointer",
+        onTap: () => this.setState({ sheetNum: null, screen:"recipe", from:"calendar", recipeId: r.id, suggestDate: day.key }),
+      }] : [{
+        tone:"#e0e0e0", meta:"夕食", title:"まだ決まっていません",
+        sub: day ? "タップして提案から選べます" : "今週以外の日はこれから登録します",
+        trailing:"", trailingColor:"#757575", cursor:"pointer",
+        onTap: () => day
+          ? this.setState({ sheetNum: null, screen:"suggest", from:"calendar", suggestDate: day.key, shuffleN: 0 })
+          : this.flash("この日は今週の範囲外です"),
+      }],
+    });
+
+    if (bgs.length) sections.push({
+      title:"家計簿", icon:"wallet-outline", color:"#4caf50",
+      items: bgs.map((b) => ({
+        tone:"#4caf50", meta:"", title: b.title, sub: b.sub,
+        trailing: "−" + yen(b.amt), trailingColor:"#4caf50", cursor:"default", onTap: () => {},
+      })),
+    });
+
+    if (tds.length) sections.push({
+      title:"Todo", icon:"checkbox-outline", color:"#e91e63",
+      items: tds.map((t) => ({
+        tone:"#e91e63", meta:"", title: t.title, sub: t.who + " ・ 担当",
+        trailing: t.pr, trailingColor: PR_COLOR[t.pr], cursor:"default", onTap: () => {},
+      })),
+    });
+
+    return {
+      dateText: "1月" + num + "日（" + dowOf(num) + "）",
+      isEmpty: false,
+      sections,
+      ctaIcon: r ? "restaurant-outline" : "sparkles",
+      ctaText: r ? "レシピを見る" : "献立を決める",
+      cta: () => {
+        if (r) this.setState({ sheetNum: null, screen:"recipe", from:"calendar", recipeId: r.id, suggestDate: day.key });
+        else if (day) this.setState({ sheetNum: null, screen:"suggest", from:"calendar", suggestDate: day.key, shuffleN: 0 });
+        else { this.setState({ sheetNum: null }); this.flash("今週の日付から献立を決められます"); }
+      },
+      addOther: () => this.flash("予定・家計簿・Todo の追加は各タブから行えます"),
+    };
+  }
+
+  renderVals() {
+    const st = this.state;
+    const servings = this.props.servings ?? 4;
+    const weeklyBudget = this.props.weeklyBudget ?? 5000;
+    const showLunch = this.props.showLunch ?? false;
+    const screen = st.screen;
+
+    const planned = DAYS.filter((d) => st.plan[d.key]);
+    const spend = planned.reduce((a, d) => a + RECIPES.find((r) => r.id === st.plan[d.key]).price, 0);
+
+    const weekDays = DAYS.map((d) => {
+      const r = RECIPES.find((x) => x.id === st.plan[d.key]);
+      const isSun = d.dow === "日", isSat = d.dow === "土";
+      const today = d.key === "2026-01-12";
+      return {
+        dow: d.dow, num: d.num,
+        dowColor: isSun ? "#f44336" : isSat ? "#2196f3" : "#757575",
+        numColor: today ? "#fff" : "#333",
+        numBg: today ? "#ff9800" : "transparent",
+        numBorder: today ? "1px solid #ff9800" : "1px solid transparent",
+        hasMenu: !!r, noMenu: !r,
+        menuName: r ? r.name : "",
+        menuSub: r ? r.ings.slice(0, 3).map((i) => baseName(i[0])).join("、") + (r.ings.length > 3 ? "…" : "") : "",
+        priceText: r ? yen(r.price) : "",
+        lunchText: d.lunch,
+        onTap: () => r ? this.go("recipe", { recipeId: r.id, suggestDate: d.key }) : this.go("suggest", { suggestDate: d.key, shuffleN: 0 }),
+      };
+    });
+
+    const batch = planned.map((d) => RECIPES.find((r) => r.id === st.plan[d.key])).filter((r) => r.batch);
+
+    const sugDate = DAYS.find((d) => d.key === st.suggestDate) || DAYS[0];
+    const suggestions = this.candidates(3).map((r) => ({
+      name: r.name,
+      meta: r.time + "分 ・ " + r.ings.length + "品の材料 ・ " + servings + "人分",
+      priceText: yen(r.price),
+      reasons: this.reasonsFor(r),
+      choose: () => this.assign(sugDate.key, r.id),
+      open: () => this.go("recipe", { recipeId: r.id }),
+    }));
+
+    const rec = RECIPES.find((x) => x.id === st.recipeId) || RECIPES[0];
+    const have = this.fridgeNames();
+    const missing = this.missingFor(rec);
+    const fans = MEMBERS.slice(0, rec.batch ? 2 : 3);
+    const qv = this.requestsData.find((x) => x.recipeId === rec.id);
+    const recipe = {
+      name: rec.name,
+      meta: rec.time + "分 ・ " + yen(rec.price) + " ・ " + servings + "人分",
+      tags: [
+        { text: "夕食", color:"#fff", bg:"#ff9800" },
+        rec.batch ? { text:"作り置き可", color:"#f57c00", bg:"#fff3e0" } : { text:"当日調理", color:"#757575", bg:"#f5f5f5" },
+        { text: rec.time <= 20 ? "時短" : "じっくり", color:"#2196f3", bg:"#e3f2fd" },
+      ],
+      voteText: qv ? "家族の「食べたい」" + st.votes[qv.id] + "票 ・ 前回は12月18日" : "前回つくったのは12月22日",
+      fans,
+      ings: rec.ings.map((i) => {
+        const ok = have.includes(baseName(i[0]));
+        return { name: i[0], note: ok ? "冷蔵庫にあり" : "買う " + yen(i[2]), icon: ok ? "checkmark-circle" : "cart-outline", color: ok ? "#4caf50" : "#f57c00" };
+      }),
+      haveText: missing.length ? "買い足し " + missing.length + "品" : "すべて揃っています",
+      steps: rec.steps.map((t, n) => ({ n: n + 1, text: t })),
+      ctaText: st.plan[st.suggestDate] === rec.id ? "別の日にも追加する" : "この日の献立にする",
+      assign: () => this.assign(st.suggestDate || (DAYS.find((d) => !st.plan[d.key]) || DAYS[0]).key, rec.id),
+    };
+
+    const fridgeGroups = CAT_ORDER.map((c) => {
+      const items = FRIDGE.filter((f) => f.cat === c).map((f) => {
+        const gone = st.consumed.includes(f.name);
+        const soon = f.days <= 2;
+        return {
+          name: f.name, qty: f.qty,
+          tone: gone ? "#e0e0e0" : soon ? "#f44336" : CAT_META[c].color,
+          textColor: gone ? "#bdbdbd" : "#333",
+          deco: gone ? "line-through" : "none",
+          exp: gone ? "使い切り" : f.days === 0 ? "今日まで" : f.days <= 7 ? "あと" + f.days + "日" : "十分",
+          expColor: gone ? "#bdbdbd" : soon ? "#f44336" : f.days <= 7 ? "#f57c00" : "#9e9e9e",
+          expBg: gone ? "#f5f5f5" : soon ? "#ffebee" : f.days <= 7 ? "#fff3e0" : "#f5f5f5",
+          toggle: () => this.setState({ consumed: gone ? st.consumed.filter((x) => x !== f.name) : [...st.consumed, f.name] }),
+        };
+      });
+      return { name: c, icon: CAT_META[c].icon, color: CAT_META[c].color, countText: items.length + "点", items };
+    });
+    const soonList = FRIDGE.filter((f) => f.days <= 2 && !st.consumed.includes(f.name));
+
+    const shopMap = {};
+    planned.forEach((d) => {
+      const r = RECIPES.find((x) => x.id === st.plan[d.key]);
+      this.missingFor(r).forEach((i) => {
+        const k = i[0];
+        if (!shopMap[k]) shopMap[k] = { name: k, cat: i[1], price: i[2], uses: [] };
+        shopMap[k].uses.push(r.name);
+      });
+    });
+    const shopAll = Object.values(shopMap);
+    const shopGroups = CAT_ORDER.map((c) => ({
+      name: c, icon: CAT_META[c].icon, color: CAT_META[c].color,
+      items: shopAll.filter((i) => i.cat === c).map((i) => {
+        const done = st.checked.includes(i.name);
+        return {
+          name: i.name, priceText: yen(i.price), forText: i.uses.join("・") + " に使います",
+          icon: done ? "checkbox" : "square-outline",
+          iconColor: done ? "#4caf50" : "#bdbdbd",
+          textColor: done ? "#bdbdbd" : "#333",
+          deco: done ? "line-through" : "none",
+          toggle: () => this.setState({ checked: done ? st.checked.filter((x) => x !== i.name) : [...st.checked, i.name] }),
+        };
+      }),
+    })).filter((g) => g.items.length);
+    const doneCount = shopAll.filter((i) => st.checked.includes(i.name)).length;
+    const shopTotal = shopAll.reduce((a, i) => a + i.price, 0);
+
+    const titles = { calendar:"2026年1月", week:"1月12日 - 18日", suggest:"献立の提案", recipe:"レシピ", fridge:"冷蔵庫", requests:"食べたい", shopping:"買い物リスト", budget:"家計簿", schedule:"予定" };
+    const MENU_GROUP = ["week","fridge","requests","shopping","suggest","recipe"];
+    const tabDef = [
+      { id:"calendar", label:"カレンダー", on:"calendar", off:"calendar-outline", group:["calendar"] },
+      { id:"week", label:"献立", on:"restaurant", off:"restaurant-outline", group: MENU_GROUP },
+      { id:"budget", label:"家計簿", on:"wallet", off:"wallet-outline", group:["budget"] },
+      { id:"schedule", label:"予定", on:"time", off:"time-outline", group:["schedule"] },
+    ];
+    const subDef = [
+      { id:"week", label:"週プラン", icon:"restaurant-outline" },
+      { id:"fridge", label:"冷蔵庫", icon:"cube-outline" },
+      { id:"requests", label:"食べたい", icon:"heart-outline" },
+      { id:"shopping", label:"買い物", icon:"cart-outline" },
+    ];
+
+    const DOTS = { menu:"#ff9800", budget:"#4caf50", personal:"#2196f3", family:"#9c27b0", todo:"#e91e63" };
+    const mockDots = { budget:[5,9,13,16,20,25,28], personal:[7,14,21,30], family:[18,24], todo:[6,13,19,27] };
+    const calRows = [];
+    for (let w = 0; w < 5; w++) {
+      const cells = [];
+      for (let i = 0; i < 7; i++) {
+        const num = w * 7 + i - 3;
+        if (num < 1 || num > 31) { cells.push({ num:"", dots:[], chip:"", cursor:"default", numColor:"transparent", numBg:"transparent", numBorder:"1px solid transparent", onTap: () => {} }); continue; }
+        const day = DAYS.find((d) => d.num === num);
+        const r = day ? RECIPES.find((x) => x.id === st.plan[day.key]) : null;
+        const dots = [];
+        if (r) dots.push({ color: DOTS.menu });
+        if (mockDots.budget.includes(num)) dots.push({ color: DOTS.budget });
+        if (mockDots.personal.includes(num)) dots.push({ color: DOTS.personal });
+        if (mockDots.family.includes(num)) dots.push({ color: DOTS.family });
+        if (mockDots.todo.includes(num)) dots.push({ color: DOTS.todo });
+        const today = num === 12;
+        cells.push({
+          num, dots: dots.slice(0, 4), chip: r ? r.name : "",
+          cursor: "pointer",
+          numColor: today ? "#fff" : i === 0 ? "#f44336" : i === 6 ? "#2196f3" : "#333",
+          numBg: today ? "#ff9800" : "transparent",
+          numBorder: "1px solid transparent",
+          onTap: () => this.setState({ sheetNum: num }),
+        });
+      }
+      calRows.push({ week: String(w + 1), cells });
+    }
+
+    const monthBase = 23400;
+    const monthFood = monthBase + spend;
+    const foodLog = planned.map((d) => {
+      const r = RECIPES.find((x) => x.id === st.plan[d.key]);
+      return { meta: "1月" + d.num + "日（" + d.dow + "）", title: r.name, subtitle: "食費 ・ 材料" + r.ings.length + "品", amount: "−" + yen(r.price) };
+    });
+    const otherLog = [
+      { meta:"1月10日（土）", title:"日用品", subtitle:"ドラッグストア", amount:"−¥3,280" },
+      { meta:"1月9日（金）", title:"外食", subtitle:"家族でランチ", amount:"−¥4,600" },
+    ];
+    const events = [
+      { tone:"family", meta:"1月13日（火）19:00", title:"PTA定例会", subtitle:"家族" },
+      { tone:"personal", meta:"1月14日（水）07:30", title:"ゴミ出し", subtitle:"個人" },
+      { tone:"family", meta:"1月18日（日）10:00", title:"買い出し（まとめ買い）", subtitle:"家族" },
+    ];
+    const TODOS = [
+      { id:"t1", title:"牛乳を買う", who:"ママ", pr:"高", prColor:"#f44336" },
+      { id:"t2", title:"月末の家計簿まとめ", who:"パパ", pr:"中", prColor:"#ff9800" },
+      { id:"t3", title:"献立の写真を整理", who:"太郎", pr:"低", prColor:"#9e9e9e" },
+    ];
+
+    return {
+      title: titles[screen] || "", showBack: screen === "suggest" || screen === "recipe",
+      back: () => this.go(st.from || "week"),
+      isWeek: screen === "week", isSuggest: screen === "suggest", isRecipe: screen === "recipe",
+      isFridge: screen === "fridge", isRequests: screen === "requests", isShopping: screen === "shopping",
+      isCalendar: screen === "calendar", isBudget: screen === "budget", isSchedule: screen === "schedule",
+      showSubNav: ["week","fridge","requests","shopping"].includes(screen),
+      chipProps: { style: { flexShrink: 0, whiteSpace: "nowrap" } },
+      hasSheet: !!st.sheetNum,
+      closeSheet: () => this.setState({ sheetNum: null }),
+      sheet: this.buildSheet(st.sheetNum || 12, servings),
+      subNav: subDef.map((s) => ({ label: s.label, icon: s.icon, active: screen === s.id, go: () => this.go(s.id) })),
+      dowHeads: ["日","月","火","水","木","金","土"].map((l, i) => ({ label: l, color: i === 0 ? "#f44336" : i === 6 ? "#2196f3" : "#757575" })),
+      calRows,
+      legend: [
+        { label:"献立", color: DOTS.menu }, { label:"家計簿", color: DOTS.budget },
+        { label:"個人", color: DOTS.personal }, { label:"家族", color: DOTS.family }, { label:"Todo", color: DOTS.todo },
+      ],
+      goWeek: () => this.go("week"),
+      monthFoodText: yen(monthFood),
+      monthFoodPct: Math.min(100, Math.round((monthFood / 60000) * 100)) + "%",
+      monthFoodNote: "予算 " + yen(60000) + " ・ 今週の献立分 " + yen(spend) + " を含みます",
+      foodLog, otherLog, events,
+      todos: TODOS.map((t) => {
+        const done = st.todosDone.includes(t.id);
+        return {
+          title: t.title, who: t.who + " ・ 担当", pr: t.pr, prColor: t.prColor,
+          icon: done ? "checkbox" : "square-outline",
+          iconColor: done ? "#4caf50" : "#757575",
+          textColor: done ? "#bdbdbd" : "#333",
+          deco: done ? "line-through" : "none",
+          toggle: () => this.setState({ todosDone: done ? st.todosDone.filter((x) => x !== t.id) : [...st.todosDone, t.id] }),
+        };
+      }),
+      showLunch, servingsText: servings + "人分",
+      weekDays,
+      decidedText: planned.length + "/7日 決定",
+      spendText: yen(spend) + " / " + yen(weeklyBudget),
+      budgetPct: Math.min(100, Math.round((spend / weeklyBudget) * 100)) + "%",
+      fillBtnStyle: { flex: 1 },
+      autoFill: () => this.autoFill(),
+      goShopping: () => this.go("shopping"),
+      goBatch: () => this.flash("日曜にまとめて調理する手順をまとめました"),
+      hasBatch: batch.length > 0, batchCount: batch.length, batchNames: batch.map((r) => r.name).join("・"),
+      suggestDateText: "1月" + sugDate.num + "日（" + sugDate.dow + "）",
+      suggestions, shuffle: () => this.setState({ shuffleN: st.shuffleN + 1 }),
+      goRequests: () => this.go("requests"),
+      recipe,
+      fridgeGroups,
+      expiringText: soonList.length ? soonList.map((f) => f.name).join("・") + " の期限が近づいています" : "期限が近い食材はありません",
+      suggestFromFridge: () => this.go("suggest", { suggestDate: DAYS.find((d) => !st.plan[d.key])?.key || DAYS[2].key, shuffleN: 0 }),
+      members: MEMBERS.map((m) => ({ ...m, active: true })),
+      requests: this.requestsData.slice().sort((a, b) => st.votes[b.id] - st.votes[a.id]).map((q) => {
+        const mine = st.myVotes.includes(q.id);
+        return {
+          name: q.name, by: q.by, count: st.votes[q.id],
+          icon: mine ? "heart" : "heart-outline",
+          color: mine ? "#e91e63" : "#9e9e9e",
+          bg: mine ? "#fce4ec" : "#f5f5f5",
+          vote: () => this.setState({
+            myVotes: mine ? st.myVotes.filter((x) => x !== q.id) : [...st.myVotes, q.id],
+            votes: { ...st.votes, [q.id]: st.votes[q.id] + (mine ? -1 : 1) },
+          }),
+          plan: () => this.go("suggest", { suggestDate: DAYS.find((d) => !st.plan[d.key])?.key || DAYS[2].key, shuffleN: 0, recipeId: q.recipeId }),
+        };
+      }),
+      shopGroups,
+      shopProgressText: doneCount + "/" + shopAll.length + "品",
+      shopPct: shopAll.length ? Math.round((doneCount / shopAll.length) * 100) + "%" : "0%",
+      shopNote: "合計 約" + yen(shopTotal) + "（冷蔵庫にある材料は除いています）",
+      hasToast: !!st.toast, toast: st.toast,
+      tabs: tabDef.map((t) => {
+        const active = t.group.includes(screen);
+        return {
+          label: t.label, icon: active ? t.on : t.off,
+          color: active ? "#ff9800" : "#757575",
+          badge: t.id === "week" && shopAll.length - doneCount > 0 ? String(shopAll.length - doneCount) : null,
+          go: () => this.go(t.id),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

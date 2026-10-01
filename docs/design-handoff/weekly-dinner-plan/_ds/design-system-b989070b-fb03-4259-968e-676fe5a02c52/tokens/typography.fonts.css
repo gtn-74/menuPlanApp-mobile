@@ -1,0 +1,8 @@
+/* ===========================================================================
+   献立プラン — Webfont declarations
+   The native app uses platform system fonts. For web parity across Japanese
+   glyphs we load Noto Sans JP from Google Fonts. SUBSTITUTION: this is the
+   closest free match to the iOS Hiragino / Android Noto rendering — swap in
+   the licensed system stack for production native builds.
+   =========================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap");
